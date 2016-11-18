@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice" pageWidth="544" pageHeight="294" orientation="Landscape" columnWidth="544" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9a2dd5db-85c8-4cbd-bdc5-1c8c2ee6d80a">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="103"/>
+	<property name="ireport.y" value="53"/>
+	<parameter name="projectName" class="java.lang.String"/>
+	<parameter name="resourceName" class="java.lang.String"/>
+	<parameter name="customerName" class="java.lang.String"/>
+	<parameter name="totalPriceChinese" class="java.lang.String"/>
+	<parameter name="totalPrice" class="java.math.BigDecimal"/>
+	<parameter name="paymentMode" class="java.lang.String"/>
+	<parameter name="receviceName" class="java.lang.String"/>
+	<parameter name="printName" class="java.lang.String"/>
+	<parameter name="printDate" class="java.util.Date"/>
+	<parameter name="isPreview" class="java.lang.Boolean"/>
+	<field name="accountName" class="java.lang.String"/>
+	<field name="timeZone" class="java.lang.String"/>
+	<field name="unitPrice" class="java.math.BigDecimal"/>
+	<field name="fee" class="java.math.BigDecimal"/>
+	<background>
+		<band height="294" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{isPreview}==true]]></printWhenExpression>
+			<image>
+				<reportElement x="0" y="0" width="544" height="294" uuid="b05aa1d6-6f15-4295-9d29-8ec19ec20a9e"/>
+				<imageExpression><![CDATA["C:\\Users\\fujing\\Desktop\\发票.gif"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="93" splitType="Stretch">
+			<textField pattern="yyyy年M月d日 HH:mm">
+				<reportElement x="103" y="76" width="125" height="15" uuid="359a49be-9981-411c-b95e-ff944fa93736"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{printDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="265" y="76" width="100" height="15" uuid="c24afc71-aa87-41f8-9b2a-7a5e1b1ca460"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[其他服务业]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="102" y="1" width="160" height="15" uuid="f13b715c-7543-4fc0-b2e1-fd46c98b0d98"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{projectName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="50" y="1" width="52" height="15" uuid="47ad8bc3-a39e-4357-a611-6d60e43ff8c9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[项目名称：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="16" width="52" height="15" uuid="cf71e802-7269-43b1-9b86-52af962845e4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[资源名称：]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="102" y="16" width="160" height="15" uuid="1a8e36c2-ebca-41e8-a1c4-2d765b63ce9f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{resourceName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="262" y="16" width="50" height="15" uuid="90821417-1003-4a98-8d28-c1ed4d6ab934"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[客户名称：]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="312" y="16" width="192" height="15" uuid="e6e300d4-0ecd-4919-a90e-422f14b499aa"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="84" y="0" width="42" height="15" uuid="fa7c3374-b530-4bb0-8459-7b1d55704ac1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[收费科目]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="0" width="42" height="15" uuid="058ed243-ac4a-427e-9c68-6f058bcd0c99"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[收费时间]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="0" width="47" height="15" uuid="ff0e6b2e-05c2-4005-bb2e-03e6872d4c2b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[收费标准]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="0" width="26" height="15" uuid="238789f2-fc4e-4dc5-be70-9ab748b75cb1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[金额]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="46" y="0" width="101" height="14" uuid="1551498b-e9b3-4c39-bb32-19380c67616c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{accountName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="146" y="0" width="208" height="14" uuid="90404fba-83ea-46f3-9780-385426e0a3bd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{timeZone}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="354" y="0" width="47" height="14" uuid="d8035ad5-2c8c-43b3-916e-5957202d23ba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unitPrice}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="401" y="0" width="85" height="14" uuid="c4d34f01-858e-426b-a349-84445107887f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fee}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement x="65" y="1" width="104" height="15" uuid="62e185a9-8e9a-4bf8-b1a1-e7486ad0f9e8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[合计人民币（大写）：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="354" y="1" width="50" height="15" uuid="120b2415-606a-4434-80a7-03faa31fac1c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[（小写）：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="65" y="15" width="54" height="15" uuid="6bea15c7-ee06-467a-abb3-20119b9fd843"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[收费方式：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="15" width="42" height="15" uuid="0f9b2570-b449-4dea-8e50-43f6a37f1b58"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[开票人：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="366" y="15" width="42" height="15" uuid="0722bd79-e4a2-4042-9e42-5d5e5a29120f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[收款人：]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="168" y="1" width="123" height="15" uuid="02314fde-8051-4cc1-b1a6-4110b5517c10"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalPriceChinese}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="404" y="1" width="100" height="15" uuid="5373e056-12a5-4857-a772-c99e67d9758a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalPrice}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="119" y="15" width="131" height="15" uuid="204fa043-d9ee-4faa-9acd-9e8b31757f99"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{paymentMode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="292" y="15" width="80" height="15" uuid="c5f58a93-f7d2-4280-9425-c3979489acb5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{printName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+
+	<entity name="contact" label="联系人" table="T_SYS_CONTACT" update="true" insert="true">
+		<id column="CONTACT_ID" name="contactId" type="java.lang.Long" length="22" sequence="SEQ_ID" />
+		<property column="BIZ_CODE" name="bizCode" type="java.lang.String" length="64" required="false" label="业务编码" update="true" insert="true" />
+		<property column="BIZ_ID" name="bizId" type="java.lang.String" length="64" required="false" label="业务ID" update="true" insert="true" />
+		<property column="NAME" name="name" type="java.lang.String" length="64" required="false" label="姓名" update="true" insert="true" />
+		<property column="ALIAS" name="alias" type="java.lang.String" length="64" required="false" label="称呼" update="true" insert="true" />
+		<property column="ADDRESS" name="address" type="java.lang.String" length="256" required="false" label="地址" update="true" insert="true" />
+		<property column="POST_CODE" name="postCode" type="java.lang.String" length="16" required="false" label="邮编" update="true" insert="true" />
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="排序号" update="true" insert="true" />
+		<property column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" update="true" insert="true" />
+
+        <condition column="BIZ_CODE" name="bizCode" symbol="="/>
+        <condition column="BIZ_ID" name="bizId" symbol="="/>
+
+	</entity>
+
+	<entity name="contactWay" label="联系方式" table="SYS_CONTACT_WAY" update="true" insert="true">
+		<id column="CONTACT_WAY_ID" name="contactWayId" type="java.lang.Long" length="22" sequence="SEQ_ID" />
+		<property column="CONTACT_ID" name="contactId" type="java.lang.Long" length="22" required="false" label="主键" update="true" insert="true" />
+		<property column="NAME" name="name" type="java.lang.String" length="64" required="false" label="联系方式显示名字" update="true" insert="true" />
+		<property column="KEY" name="key" type="java.lang.String" length="32" required="false" label="联系方式Key" update="true" insert="true" />
+		<property column="VALUE" name="value" type="java.lang.String" length="256" required="false" label="联系方式Value" update="true" insert="true" />
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="排序号" update="true" insert="true" />
+		<property column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" update="true" insert="true" />
+
+        <condition column="CONTACT_ID" name="contactId" symbol="="/>
+
+        <sql name="queryNoContact">
+            select scc.biz_code,
+                   scc.key,
+                   1 as SEQUENCE,
+                   (select name
+                      from sys_dictionary_detail sdd
+                     where sdd.dict_id = (select dict_id
+                                            from sys_dictionary
+                                           where code = 'contactWay'
+                                             and status = 1)
+                       and sdd.value = scc.key) as name
+                      from sys_contact_configuration scc
+                     where biz_code = :bizCode
+        </sql>
+
+        <sql name="queryContactWayByBizCodeAndBizId">
+            select scw.name, scw.key, scw.value
+              from sys_contact_way scw
+             where scw.contact_id = (select sc.contact_id
+                                       from t_sys_contact sc
+                                      where sc.biz_code = :bizCode
+                                        and sc.biz_id = :bizId)
+            order by scw.sequence asc
+        </sql>
+	</entity>
+
+    <entity name="contactConfiguration" label="联系方式配置" table="SYS_CONTACT_CONFIGURATION" update="true" insert="true">
+        <id column="CONTACT_CONFIGURATION_ID" name="contactConfigurationId" type="java.lang.Long" length="22" sequence="SEQ_ID" />
+        <property column="BIZ_CODE" name="bizCode" type="java.lang.String" length="64" required="false" label="业务编码" update="true" insert="true" />
+        <property column="KEY" name="key" type="java.lang.String" length="32" required="false" label="联系方式类别" update="true" insert="true" />
+        <property column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" update="true" insert="true" />
+        <property column="STATUS" name="status" type="java.lang.Long" length="22" required="false" label="状态1,启用;-1,禁用" update="true" insert="true" />
+        <property column="NAME" name="name" type="java.lang.String" length="32" required="false" label="联系方式名称" update="false" insert="false">
+            select name
+                from sys_dictionary_detail sdd
+               where sdd.dict_id = (select dict_id
+                                      from sys_dictionary
+                                     where code = 'contactWay'
+                                       and status = 1)
+                 and sdd.value = contactConfiguration.key
+        </property>
+        <condition column="BIZ_CODE" name="bizCode" symbol="=" />
+        <condition column="NAME" name="name" symbol="like" />
+        <condition column="BIZ_CODE" name="bizCodeLike" symbol="like"/>
+        <condition column="STATUS" name="status" symbol="="/>
+    </entity>
+
+</domain>

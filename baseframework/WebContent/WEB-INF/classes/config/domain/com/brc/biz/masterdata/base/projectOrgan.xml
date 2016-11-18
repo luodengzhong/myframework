@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+	<entity name="projectOrgan" label="项目权限关联表" table="MD_PROJECT_ORGAN" update="true" insert="true">
+		<id column="PROJECT_ORGAN_ID" name="projectOrganId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="BIZ_ID" name="bizId" type="java.lang.String" length="65" required="false" label="机构ID" update="true" insert="true"/>
+		<property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="项目ID" update="true" insert="true"/>
+		<property column="ORG_ID" name="orgId" type="java.lang.String" length="65" required="false" label="机构ID" update="true" insert="true"/>
+		<property column="FULL_ID" name="fullId" type="java.lang.String" length="2048" required="false" label="fullId" update="true" insert="true"/>
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本信息" update="true" insert="true"/>
+		<sql name="query">
+			SELECT P.PROJECT_ID,P.NAME,P.CODE,P.SEQUENCE FROM MD_PROJECT P,MD_PROJECT_ORGAN R 
+				WHERE P.PROJECT_ID=R.PROJECT_ID AND P.RESOURCE_KIND_ID='project' AND BIZ_ID=:bizId
+		</sql>
+		<sql name="selected">
+			SELECT P.PROJECT_ID,P.NAME,P.CODE,P.SEQUENCE FROM MD_PROJECT P,MD_PROJECT_ORGAN R 
+				WHERE P.PROJECT_ID=R.PROJECT_ID AND P.RESOURCE_KIND_ID='project' AND R.BIZ_ID=:bizId
+		</sql>
+		<sql name="unselected">
+			SELECT P.PROJECT_ID,P.NAME,P.CODE,P.SEQUENCE FROM MD_PROJECT P WHERE PROJECT_ID NOT IN (
+				SELECT PROJECT_ID FROM MD_PROJECT_ORGAN WHERE BIZ_ID=:bizId
+			) AND P.RESOURCE_KIND_ID='project'
+		</sql>
+		<sql name="batchDelete">
+			DELETE FROM MD_PROJECT_ORGAN  p WHERE PROJECT_ID IN (%s) AND BIZ_ID='%s'
+		</sql>	
+		
+		<condition  column="NAME" name="name" symbol="like" alias="P"/>
+		<condition  column="CODE" name="code" symbol="like" alias="P"/>
+	</entity>
+	
+    <entity name="vProjectOrgan" label="项目机构视图" table="V_MD_PROJECT_ORGAN" update="false" insert="false">
+		<property column="ID" name="id" type="java.lang.String" length="65" required="false" label="名称" update="true" insert="true"/>
+        <property column="NAME" name="name" type="java.lang.String" length="128" required="false" label="名称" update="true" insert="true"/>
+        <property column="CODE" name="code" type="java.lang.String" length="32" required="false" label="编码" update="true" insert="true"/>
+        <property column="RESOURCE_KIND_ID" name="resourceKindId" type="java.lang.String" length="20" required="false" label="资源类型" update="true" insert="true"/>
+        <property column="PARENT_ID" name="parentId" type="java.lang.String" length="65" required="false" label="父节点" update="true" insert="true"/>
+        <property column="ORG_ID" name="orgId" type="java.lang.String" length="65" required="false" label="机构ID" update="true" insert="true"/>
+        <property column="ORG_KIND_ID" name="orgKindId" type="java.lang.String" length="8" required="false" label="机构类型ID" update="true" insert="true"/>
+	    <property column="Has_Children" name="hasChildren" type="java.lang.Integer" update="false" insert="false">
+            SELECT count(*) hasChildren FROM V_MD_PROJECT_ORGAN  WHERE PARENT_ID=vProjectOrgan.ID
+        </property>
+	    <property column="FULL_ID" name="fullId" type="java.lang.String" length="2048" required="false" label="机构ID" update="true" insert="true"/>
+		<condition  column="PARENT_ID" name="parentId" symbol="="/>
+		<condition  column="CODE" name="code" symbol="="/>
+
+    </entity>
+</domain>

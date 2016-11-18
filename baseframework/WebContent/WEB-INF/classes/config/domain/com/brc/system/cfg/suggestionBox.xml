@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+
+	<entity name="suggestionBox" label="意见箱" table="SYS_SUGGESTION_BOX">
+		<id column="BOX_ID" name="boxId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="SUGGESTION_KIND" name="suggestionKind" type="java.lang.String" length="8" required="false" label="类别"/>
+		<property column="FUN_NAME" name="funName" type="java.lang.String" length="128" required="false" label="功能"/>
+		<property column="PERSON_ID" name="personId" type="java.lang.String" length="32" required="false" label="提交人"/>
+		<property column="PERSON_NAME" name="personName" type="java.lang.String" length="64" required="false" label="提交人名字"/>
+		<property column="CONTENT" name="content" type="java.lang.String" length="1024" required="false" label="内容"/>
+		<property column="CREATE_TIME" name="createTime" type="java.util.Date" length="7" required="false" label="创建时间"/>
+		<property column="REMARK" name="remark" type="java.lang.String" length="1024" required="false" label="批注"/>
+		<condition column="SUGGESTION_KIND" name="suggestionKind" symbol="=" />
+		<condition column="FUN_NAME" name="funName" symbol="like" />
+		<condition column="PERSON_NAME" name="personName" symbol="like" />
+		<condition column="CREATE_TIME" name="createTimeBegin" symbol="&gt;=" type="java.util.Date" />
+		<condition column="CREATE_TIME" name="createTimeEnd" symbol="&lt;=" type="java.util.Date" />
+	</entity>
+
+</domain>

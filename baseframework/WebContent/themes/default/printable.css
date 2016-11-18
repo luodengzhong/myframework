@@ -1,0 +1,162 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	font-size: 12px;
+	font-family: "Î¢ÈíÑÅºÚ", "ËÎÌå", Arial, sans-serif;
+}
+
+body {
+	padding: 5px;
+	width: 210mm;
+}
+.ui-tab-loading{ 
+	position: absolute;
+	z-index: 91000;
+	top:30px;
+	left:0;
+	background:white url('images/loading.gif') no-repeat center 40%; 
+	width:100%; 
+	height:100%;
+	_height:800px;
+}
+.subject {
+	margin: 10px auto 10px;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.bill_info {
+	font-size: 14px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	display: inline-block;
+	width: 99%;
+}
+
+.tableInput {
+	font-size: 9pt;
+	width: 100%;
+	table-layout: fixed;
+	border: 1px solid #000;
+	border-width: 1px 0 0 1px;
+	border-collapse: collapse;
+	font-size: 13px;
+	position: relative;
+}
+
+table.tableInput td {
+	border: 1px solid #000;
+	border-width: 0 1px 1px 0;
+	padding: 2px 3px 1px 3px;
+	text-align: left;
+	height: auto;
+	vertical-align: middle;
+	word-break: break-all;
+	min-height: 23px;
+}
+
+table.tableInput td span.labelSpan {
+	position: relative;
+	left: 10%;
+}
+
+.radio, .checkbox, .radiochecked, .checkboxchecked {
+	vertical-align: middle;
+	height: 13px;
+	width: 13px;
+	overflow: hidden;
+	display: -moz-inline-stack;
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+	margin-right: 5px;
+}
+
+.radio, .radiochecked {
+	background: url('images/form/radio.gif') no-repeat 0 0;
+}
+
+.checkbox, .checkboxchecked {
+	background: url('images/form/checkbox.gif') no-repeat 0 0;
+}
+
+.checkboxchecked, .radiochecked {
+	background-position: -13px -13px;
+}
+
+.navline {
+	height: 1px;
+	line-height: 1px;
+	width: 100%;
+	border-bottom: 1px solid #f5f5f5;
+	background-color: #D9D9D9;
+	width: 100%;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+.navTitle {
+	padding-left: 7px;
+	position: relative;
+	margin-bottom: 4px;
+}
+
+.navTitle span {
+	margin-top: 4px;
+	font-weight: bold;
+}
+
+.navTitle .titleSpan {
+	cursor: pointer;
+}
+
+.navTitle .togglebtn {
+	position: absolute;
+	top: 3px;
+	right: 15px;
+	background: url(ui/ui_arrows.gif) no-repeat 0px -19px;
+	height: 20px;
+	width: 16px;
+	cursor: pointer;
+}
+
+.navTitle .togglebtn:hover {
+	background-position: 0px 0px;
+}
+
+.navTitle .togglebtn-down {
+	background-position: -15px -19px;
+}
+
+.navTitle .togglebtn-down:hover {
+	background-position: -15px 0px;
+}
+
+.navTitle .search {
+	background: url(images/icons/search.png) no-repeat center left;
+	width: 20px;
+	height: 16px;
+	display: inline-block;
+}
+
+.navTitle .group {
+	background: url(images/icons/group.gif) no-repeat center left;
+	width: 20px;
+	height: 16px;
+	display: inline-block;
+}
+
+.navTitle .email {
+	background: url(images/icons/email.png) no-repeat center left;
+	width: 20px;
+	height: 16px;
+	display: inline-block;
+}
+
+.navTitle .emailOpen {
+	background: url(images/icons/email_open_image.png) no-repeat center left;
+	width: 20px;
+	height: 16px;
+	display: inline-block;
+}

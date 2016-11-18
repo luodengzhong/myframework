@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+
+	<entity name="commonHandler" label="通用处理人设置" table="SYS_COMMON_HANDLER">
+		<id column="COMMON_HANDLER_ID" name="commonHandlerId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="BIZ_ID" name="bizId" type="java.lang.Long" length="22" required="false" label="业务ID"/>
+		<property column="KIND_ID" name="kindId" type="java.lang.String" length="12" required="false" label="receiver 接收人 feedbacker 反馈人 feedbackViewer 反馈查看人"/>
+		<property column="ORG_UNIT_ID" name="orgUnitId" type="java.lang.String" length="65" required="false" label="机构ID"/>
+		<property column="ORG_UNIT_NAME" name="orgUnitName" type="java.lang.String" length="128" required="false" label="组织单元名称"/>
+		<property column="ORG_KIND_ID" name="orgKindId" type="java.lang.String" length="1024" required="false" label="组织单元类别"/>
+		<property column="FULL_ID" name="fullId" type="java.lang.String" length="1024" required="false" label="ID全路径"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="序号"/>
+		<property column="GROUP_ID" name="groupId" type="java.lang.Long" length="22" required="false" label="分组ID"/>
+		<property column="HANDLE_KIND_NAME" name="handleKindName" type="java.lang.String" length="128" required="false" label="环节描述"/>
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号"/>
+		<sql name="deleteByBizId">delete from sys_common_handler where  biz_id=?</sql>
+		<sql name="deleteByHandlerId">delete from sys_common_handler where  common_handler_id=?</sql>
+		<sql name="getHandlerOrgByBizId">
+			select  t.common_handler_id,
+				       t.kind_id,
+				       t.org_unit_id,
+				       t.org_unit_id as id,
+				       t.org_unit_name,
+				       t.org_unit_name as name,
+				       t.org_kind_id,
+				       t.full_id,
+				       t.sequence,
+				       t.group_id,
+				       t.handle_kind_name,
+				       o.status,
+				       nvl(o.full_name,t.org_unit_name) as full_name,
+				       nvl(o.full_sequence,'/000')  as full_sequence
+				  from sys_common_handler t, sa_oporg o
+				 where t.org_unit_id = o.id(+)
+				   and t.biz_id = ?
+				 order by nvl(t.group_id,0),nvl(o.full_sequence,'/000') asc
+		</sql>
+		<sql name="getHandlerByBizIdAndKindId">
+			select  t.common_handler_id,
+				       t.kind_id,
+				       t.org_unit_id,
+				       t.org_unit_id as id,
+				       t.org_unit_name,
+				       t.org_unit_name as name,
+				       t.org_kind_id,
+				       t.full_id,
+				       o.person_id,
+				       o.status,
+				       nvl(o.full_name,t.org_unit_name) as full_name,
+				       nvl(o.full_sequence,'/000')  as full_sequence
+				  from sys_common_handler t, sa_oporg o
+				 where t.org_unit_id = o.id(+)
+				   and t.biz_id = ?
+				   and t.kind_id=?
+				 order by nvl(o.full_sequence,'/000') asc
+		</sql>
+		<sql name="getPersonByBizIdAndKindId">
+			select a.full_id, a.person_id
+			  from (select o.full_id, o.person_id
+			          from v_sys_common_handler t, sa_oporg o
+			         where t.biz_id = ?
+			           and t.kind_id = ?
+			           and o.org_kind_id = 'psm'
+			           and o.full_id like t.full_id || '%') t,
+			       sa_opperson p,
+			       sa_oporg a
+			 where t.person_id = p.id
+			   and p.status = 1
+			   and a.id = p.id || '@' || p.main_org_id
+		</sql>
+		<!--流程模板定义中查询处理人-->
+		<sql name="queryUserProcessByBizId">
+			select t.common_handler_id,
+				       t.kind_id,
+				       t.org_unit_id,
+				       o.id,
+				       t.org_unit_name,
+				       o.name,
+				       o.org_kind_id,
+				       o.full_id,
+				       t.sequence,
+				       t.group_id,
+				       t.handle_kind_name,
+				       o.status,
+				       o.full_name
+				  from sys_common_handler t, sa_oporg o, sa_opperson p
+				 where p.id = substr(t.org_unit_id, 1, instr(t.org_unit_id, '@') - 1)
+				   and o.id = p.id || '@' || p.main_org_id
+				   and o.status = 1
+				   and t.biz_id = ?
+				 order by t.group_id, t.sequence asc
+		</sql>
+		<!--查询自由流程处理人使用-->
+		<sql name="queryHandlerPersonsByKindIdObGroupId">
+			select o.full_id, o.full_name, t.group_id, t.handle_kind_name
+				  from sys_common_handler t, sa_oporg o, sa_opperson p
+				 where p.id = substr(t.org_unit_id, 1, instr(t.org_unit_id, '@') - 1)
+				   and o.id = p.id || '@' || p.main_org_id
+				   and o.status = 1
+				   and t.biz_id = ?
+				   and t.kind_id = ?
+				 order by t.group_id, t.sequence asc
+		</sql>
+		<sql-query>
+				select  t.common_handler_id,
+				       t.kind_id,
+				       t.org_unit_id,
+				       t.org_unit_name,
+				       t.org_kind_id,
+				       t.biz_id,
+				       t.full_id,
+				       t.sequence,
+				       nvl(o.full_name,t.org_unit_name) as full_name,
+				       nvl(o.full_sequence,'/000')  as full_sequence
+				  from sys_common_handler t, sa_oporg o
+				 where t.org_unit_id = o.id(+)
+		</sql-query>
+		<condition column="BIZ_ID" name="bizId" symbol="=" alias="t"/>
+		<condition column="full_name" name="fullName" symbol="like" alias="o"/>
+		<condition column="kind_id" name="kindId" symbol="=" alias="t"/>
+	</entity>
+	
+	<entity name="commonHandlerGroup" label="用户分组" table="SYS_COMMON_HANDLER_GROUP">
+		<id column="HANDLER_GROUP_ID" name="handlerGroupId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="CODE" name="code" type="java.lang.String" length="32" required="false" label="分组编码"/>
+		<property column="NAME" name="name" type="java.lang.String" length="64" required="false" label="分组名称"/>
+		<property column="GROUP_KIND" name="groupKind" type="java.lang.String" length="8" required="false" label="分组类别(系统,个人)"/>
+		<property column="CREATE_BY" name="createBy" type="java.lang.String" length="65" required="false" label="create_by" default-expr="currentPersonId()" fill-kind="insert"/>
+		<property column="CREATE_DATE" name="createDate" type="java.util.Date" length="7" required="false" label="create_date" default-expr="currentDateTime()" fill-kind="insert"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="序号"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" length="1" required="false" label="状态" default-expr="1" fill-kind="insert"/>
+		<property column="REMARK" name="remark" type="java.lang.String" length="256" required="false" label="备注"/>
+		<version column="VERSION" name="version" type="java.lang.Long" />
+		<sql name="getCommonHandlerGroup">
+			select * from sys_common_handler_group t where t.group_kind='users' and t.create_by=? order by t.sequence,t.handler_group_id asc
+		</sql>
+	</entity>
+	
+	<entity name="rtxGroup" label="RTX群定义" table="SYS_RTX_GROUP">
+		<id column="RTX_GROUP_ID" name="rtxGroupId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="CODE" name="code" type="java.lang.String" length="32" required="false" label="分组编码"/>
+		<property column="NAME" name="name" type="java.lang.String" length="64" required="false" label="分组名称"/>
+		<property column="CREATE_BY" name="createBy" type="java.lang.String" length="65" required="false" label="create_by" default-expr="currentPersonId()" fill-kind="insert"/>
+		<property column="CREATE_DATE" name="createDate" type="java.util.Date" length="7" required="false" label="create_date" default-expr="currentDateTime()" fill-kind="insert"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" length="1" required="false" label="状态" default-expr="1" fill-kind="insert"/>
+		<property column="REMARK" name="remark" type="java.lang.String" length="256" required="false" label="备注"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="序号"/>
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号"/>
+		<sql name="getUserRTXGroup">
+		select t.rtx_group_id,
+			       t.name,
+			       (select count(0)
+			          from sys_rtx_group_detail d
+			         where t.rtx_group_id = d.rtx_group_id
+			           and d.is_ad in (1, 5)
+			           and d.person_id = ?) is_ad
+			  from sys_rtx_group t
+			 where exists
+			 (select 0
+			          from sys_rtx_group_detail d
+			         where t.rtx_group_id = d.rtx_group_id
+			           and d.person_id =?)
+			 order by t.rtx_group_id asc
+
+		</sql>
+		<sql name="isCreateBy">select count(0) from sys_rtx_group t where t.rtx_group_id=? and t.create_by  like ?</sql>
+		<sql-query>
+		select g.rtx_group_id, g.name, o.name as create_by_name,g.rtx_server_group_id
+		  from sys_rtx_group g, sa_opperson o
+		 where g.create_by = o.id
+		</sql-query>
+		<condition column="name" name="params" symbol="like" alias="g">
+			  and (g.name like :params or o.name like :params)
+		</condition>
+	</entity>
+
+	<entity name="rtxGroupDetail" label="RTX群成员" table="SYS_RTX_GROUP_DETAIL">
+		<id column="RTX_GROUP_DETAIL_ID" name="rtxGroupDetailId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="RTX_GROUP_ID" name="rtxGroupId" type="java.lang.Long" length="22" required="false" label="group_id"/>
+		<property column="PERSON_ID" name="personId" type="java.lang.String" length="65" required="false" label="人员ID"/>
+		<property column="IS_AD" name="isAd" type="java.lang.Integer" length="1" required="false" label="是否管理员"/>
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号"/>
+		<sql name="insertSql"> 
+		insert into sys_rtx_group_detail
+		  (rtx_group_detail_id, rtx_group_id, person_id, is_ad, version)
+		  select seq_id.nextval, ?, o.person_id, 0, seq_id.nextval
+		    from sa_oporg o
+		   where o.id = ?
+		     and not exists (select 0
+		            from sys_rtx_group_detail a
+		           where a.rtx_group_id = ?
+		             and a.person_id = o.person_id)
+		</sql>
+		<sql name="deleteSql"><![CDATA[delete from sys_rtx_group_detail t where t.rtx_group_id=? and t.rtx_group_detail_id=? and t.is_ad <> 5]]></sql>
+		<sql name="updateIsADSql"><![CDATA[update sys_rtx_group_detail t set t.is_ad=? where t.rtx_group_id=? and t.rtx_group_detail_id=? and t.is_ad <> 5]]></sql>
+		<sql-query>
+			select t.rtx_group_detail_id,
+			       t.is_ad,
+			       p.id,
+			       p.name,
+			       p.login_name,
+			       o.full_name,
+			       o.full_sequence,
+			       o.status
+			  from sys_rtx_group_detail t, sa_opperson p, sa_oporg o
+			 where t.person_id = p.id
+			   and o.id = p.id || '@' || p.main_org_id
+		</sql-query>
+		<condition column="RTX_GROUP_ID" name="rtxGroupId" symbol="=" alias="t"/>
+		<condition column="name" name="personName" symbol="like" alias="p"/>
+	</entity>
+
+</domain>

@@ -1,0 +1,340 @@
+html {
+	font-size: 12px;
+	margin: 0px;
+	color: #000000;
+	overflow: hidden;
+}
+
+body {
+	font-size: 12px;
+	margin: 0px;
+	height: 100%;
+	overflow: hidden;
+    /*background: #f2f2f2;
+	background: url(images/bg.jpg) left bottom;*/
+}
+/*.bg{
+	background: #f2f2f2;
+	background: url(images/bg.jpg) left bottom;
+}
+.indexMainDiv{
+	background:url(images/portal_bg.jpg) no-repeat left bottom;
+	background-attachment: fixed;
+	z-indx:10;
+}*/
+
+img {
+	border: 0px;
+}
+
+a {
+	color: #333;
+	cursor: pointer;
+	text-decoration: none;
+	font-size: 13px;
+}
+
+a:hover {
+	font-size: 13px;
+	text-decoration: none;
+}
+
+.page-loading {
+	display: none;
+	background: url('images/loading.gif') no-repeat center center;
+	width: 100%;
+	height: 100px;
+	_height: 100px;
+	z-index: 99999;
+}
+
+#indexHead {
+	/*background-color: #FFFFFF; B6C5EE  93B7F3*/
+	width: 100%;
+	height: 69px;
+	overflow: hidden;
+	border-bottom: 1px #9BA2B2 solid;
+	/*background-image: url(images/top-bg.jpg);
+	background-repeat:repeat-x;*/
+}
+
+#indexHeadLeft {
+	float: left;
+	padding: 0px;
+}
+
+#indexHeadRight {
+	float: right;
+	padding-top: 10px;
+	padding-right: 10px;
+	line-height: 25px;
+}
+#indexHeadRight a{
+	float: left;
+	width:48px;
+	height:48px;
+	padding-right: 10px;
+}
+#indexHeadRight a.bianqian{
+	background: url(images/bianqian0.gif) no-repeat center;
+}
+#indexHeadRight a.bianqian:hover{
+	background: url(images/bianqian1.gif) no-repeat center;
+}
+#indexHeadRight a.richeng{
+	background: url(images/richeng0.gif) no-repeat center;
+}
+#indexHeadRight a.richeng:hover{
+	background: url(images/richeng1.gif) no-repeat center;
+}
+.time_start {
+	float: left;
+	width: 9px;
+	background: url(images/time_start.gif) no-repeat center;
+	height: 19px;
+	line-height: 19px;
+}
+
+.time_content {
+	float: left;
+	background-color: #B7161E;
+	color: #ffffff;
+	height: 19px;
+	line-height: 19px;
+}
+
+.time_end {
+	float: left;
+	width: 9px;
+	background: url(images/time_end.gif) no-repeat center;
+	height: 19px;
+	line-height: 19px;
+}
+.user_info {   
+    height: 45px;
+    line-height: 45px;
+    padding-right: 10px;
+    text-align: right;
+}
+.blank_div_5px {
+	text-align:center;
+	height: 5px;
+	clear: both;
+}
+
+#indexNavigation {
+	height: 26px;
+	line-height: 26px;
+	/*background-image: url(images/top-bg2.jpg);
+	background-repeat:repeat-x;*/
+	background-image: url(images/index_navigation.gif);
+	border-bottom: 1px #D6D6D6 solid;
+	width: 100%;
+	overflow: hidden;
+}
+
+#login_user_info {
+	clear: both;
+	float: right;
+}
+
+#indexQuickNavigation {
+	float: left;
+	padding-left: 5px;
+}
+
+#indexQuickNavigation .span_link {
+	float: left;
+	margin-top: 1px;
+	margin-right: 5px;
+	width: 17px;
+	height: 23px;
+	display: none;
+}
+
+#indexQuickNavigation .span_link:hover {
+	cursor:pointer;
+}
+#btnLeft {
+	background: url(../ligerUI/Gray/images/layout/tabs-tools.png) 0px 0px no-repeat;
+	border-left: 1px solid #cccccc;
+}
+#btnRight {
+	background: url(../ligerUI/Gray/images/layout/tabs-tools.png) 0px -200px no-repeat;
+	border-right: 1px solid #cccccc;
+}
+#btnLeft:hover {
+	background-position: 0px -100px;
+}
+#btnRight:hover {
+	background-position: 0px -250px;
+}
+
+.ui-spastic-nav li a {
+	height: 20px;
+	line-height: 20px;
+	padding: 3px 10px;
+}
+
+.ui-spastic-nav .selected a {
+	padding: 3px 9px;
+}
+
+#indexOtherNavigation {
+	float: right;
+	width: 650px;
+	padding-right: 10px;
+}
+
+#indexOtherNavigation .headNav {
+	float: right;
+}
+
+#indexOtherNavigation .headNav ul.mainHeadUl {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.mainHeadUl li {
+	float: left;
+	display: none;
+	background: none;
+	position: relative;
+	z-index: 999;
+	margin: 0 1px;
+}
+.mainHeadUl li a {
+	display: block;
+	padding: 0;
+	text-decoration: none;
+	color: #333333;
+	zoom: 1;
+	border-left: 1px solid transparent;
+	border-right: 1px solid transparent;
+	padding: 0px 5px;
+}
+.mainHeadUl li a:hover, .mainHeadUl li a.hov {
+	background-color: #fff;
+	border-left: 1px solid #d5dce8;
+	border-right: 1px solid #d5dce8;
+	color: #576482;
+}
+/* @group subnav */
+.mainHeadUl ul {
+	display: none;
+}
+.popmenuUl {
+	position: absolute;
+	left: 1px;
+	display: none;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	z-index:10000;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	-o-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	padding-bottom: 3px;
+	border:1px solid #d0d0d0;
+	border-top:0px;
+	background-color: #fff;
+}
+.popmenuUl  li {
+	width: 100px;
+	border-top: 1px solid #d0d0d0;
+	text-align: left;
+	display: none;
+	position: relative;
+	z-index: 999;
+	margin: 0 1px;
+	background-color: #fff;
+}
+.popmenuUl .hasFun{
+	display:block;
+}
+.popmenuUl  li:hover {
+	border-left: 0px solid transparent;
+	border-right: 0px solid transparent;
+	background-color: #edf3f7;
+}
+.popmenuUl  a {
+	display: block;
+	height: 20px;
+	line-height: 20px;
+	padding: 3px 5px;
+	color: #333;
+	border-bottom: 1px solid transparent;
+	text-transform:  uppercase;
+	color: #797979;
+	font-weight: normal;
+}
+.popmenuUl  a:hover {
+	text-decoration: none;
+	border-right-color: transparent;
+	border-left-color: transparent;
+	background: transparent;
+	color: #4e4e4e;
+}
+
+#indexBottom {
+	background-image: url(images/index_navigation.gif);
+	height: 26px;
+	line-height: 26px;
+	text-align: center;
+	border: 1px #D6D6D6 solid;
+}
+
+#menuTree {
+	height: 100px;
+	display: block;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.passwordStrength{
+	display:inline-block;
+	text-align:center;
+	height:22px;
+	width:38px;
+	margin:2px 3px 2px 3px;
+	border: 1px solid #99ccff;
+	background-color:#e0f0ff;
+}
+#indexTaskCenterButtons div{
+	margin-left: 10%;
+	margin-top:0px;
+	margin-bottom: 0px;
+}
+#indexTaskCenterButtons div a{
+	text-aling:center;
+	display:inline-block;
+	margin:1px;
+	text-decoration: none;
+	padding:10px;
+	font-size: 14px;
+	color: #3b4f85;
+}
+#indexTaskCenterButtons div a:hover{
+	margin:0px;
+	background-color: #f6e8b2;
+    border: 1px solid #f1c43f;
+    color:#000000;
+}
+#index-layout-header-lock{
+    cursor: pointer;
+    height: 20px;
+    overflow: hidden;
+    position: absolute;
+    right: 23px;
+    top: 3px;
+    width: 20px;
+}
+.l-layout-header-open-lock{
+	background: url("images/icons/lock_open.png") 0px 0px no-repeat;
+}
+.l-layout-header-lock{
+	background: url("images/icons/lock.png") 0px 0px no-repeat;
+}

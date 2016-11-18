@@ -1,0 +1,142 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body>
+	<div id="twin_tabs" class="mini-tabs" activeindex="0" style="border: 0; width: 100%; height: 100%;" bodystyle="padding:0;">
+		<div name="base" title="常规" bodystyle="padding:5px;">
+			<table style="font-size: 12px;">
+				<tbody>
+					<tr>
+						<td style="width: 100px;">任务名称：</td>
+						<td style="width: 220px;"><input id="twin_name" class="mini-textbox" style="width:200px"></td>
+						<td style="width: 80px;">任务类别：</td>
+						<td style="width: 220px;">
+							<input type='hidden' id="twin_task_kind_id">
+							<input type='hidden' id="twin_extended_code">
+							<input class="mini-combobox combox_button" style="width:153px;" id="twin_task_kind"  readonly="true"/>
+						</td>
+					</tr>
+					<tr>
+						<td>完成百分比：</td>
+						<td><input id="twin_percentcomplete" class="mini-spinner" minvalue="0" maxvalue="100"></td>
+						<td>工期 (天)：</td>
+						<td><input id="twin_duration" class="mini-spinner" minvalue="0" maxvalue="10000"></td>
+					</tr>
+					<tr>
+						<td>汇报类型：</td>
+						<td><input id="twin_reporting_work_kind" class="mini-combobox" multiSelect="true" valuefield="value" textfield="text"></td>
+						<td>任务级别：</td>
+						<td><input id="twin_task_level_kind" class="mini-combobox" valuefield="value" textfield="text"></td>
+					</tr>
+					<tr>
+						<td>责任部门：</td>
+						<td>
+							<input type='hidden' id="twin_task_duty_dept_id">
+							<input id="twin_task_duty_dept_name" class="mini-combobox combox_button" style="width:153px;" readonly="true">
+						</td>
+						<td>责任者：</td>
+						<td>
+							<input type='hidden' id="twin_task_owner_id">
+							<input id="twin_task_owner_name" class="mini-combobox combox_button" style="width:153px;" readonly="true">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+			<fieldset style="padding: 0; width: auto; border: #92a5c7 1px solid">
+				<legend>日期</legend>
+				<div style="padding: 5px;">
+					<span>开始日期：</span> 
+					<input id="twin_start" class="mini-datepicker"> 
+					<span style="margin-left: 60px;">完成日期：</span> 
+					<input id="twin_finish" class="mini-datepicker">
+				</div>
+			</fieldset>
+			<br>
+			<fieldset id="fs_actualdate" style="padding: 0; width: auto; border: #92a5c7 1px solid">
+				<legend>实际日期</legend>
+				<div style="padding: 5px;">
+					<span>开始日期：</span>
+					<input id="twin_actualstart" class="mini-datepicker"> 
+					<span style="margin-left: 60px;">完成日期：</span> 
+					<input id="twin_actualfinish" class="mini-datepicker">
+				</div>
+			</fieldset>
+		</div>
+		<div title="前置任务">
+			<div class="mini-panel" showheader="false" showtoolbar="true" style="width: 100%; height: 100%;" borderstyle="border:0"
+				bodystyle="padding:0;">
+				<div property="toolbar" id="twin_linkbar" class="mini-toolbar" style="border: 0;">
+					<a id="twin_linkadd" class="mini-button">增加</a> <a id="twin_linkdel" class="mini-button">删除</a>
+				</div>
+				<div id="twin_linkgrid" class="mini-datagrid" style="width: 100%; height: 100%;" borderstyle="border:0;" allowcelledit="true"
+					allowcellselect="true" showfooter="false">
+					<div property="columns">
+						<div field="PredecessorID" editor="textbox">标识</div>
+						<div field="PredecessorName" width="200">任务名称</div>
+						<div field="Type" editor="{type: 'combobox', valueField: 'ID', textField: 'Name'}">类型</div>
+						<div field="LinkLag" editor="{type: 'spinner', minValue: -1000, maxValue: 1000}">延隔时间</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div title="人员">
+			<div class="mini-panel" showheader="false" showtoolbar="true" style="width: 100%; height: 100%;" borderstyle="border:0"
+				bodystyle="padding:0;">
+				<div property="toolbar" id="twin_resbar" class="mini-toolbar" style="border: 0;">
+					<a id="twin_resadd" class="mini-button">增加</a> <a id="twin_resdel" class="mini-button">删除</a>
+				</div>
+				<div class="mini-tabs" activeindex="0" style="border: 0; width: 99%; height:98%;margin:2px;" bodystyle="padding:0;">
+					<div title="管理者" style="border: 0;">
+						<div id="twin_resgrid" class="mini-datagrid" style="width: 100%; height: 100%;" borderstyle="border:0;" allowcelledit="true"
+							allowcellselect="true" showfooter="false">
+							<div property="columns">
+								<div field="fullName" width="220" style="text-align:center;">路径</div>
+								<div field="orgName" width="80" style="text-align:center;">名称</div>
+							</div>
+						</div>
+					</div>
+					<div title="执行者" style="border: 0;">
+						<div id="twin_executorgrid" class="mini-datagrid" style="width: 100%; height: 100%;" borderstyle="border:0;" allowcelledit="true"
+							allowcellselect="true" showfooter="false">
+							<div property="columns">
+								<div field="fullName" width="220" style="text-align:center;">路径</div>
+								<div field="orgName" width="80" style="text-align:center;">名称</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div title="任务选项" bodystyle="padding:5px;">
+			<fieldset style="padding: 0; width: auto; border: #92a5c7 1px solid;">
+				<legend>任务限制</legend>
+				<div style="padding: 5px;">
+					<div>
+						<span>限制类型：</span> <input id="twin_constrainttype" class="mini-combobox" valuefield="ID" textfield="Name"> <span
+							style="margin-left: 70px;">限制日期：</span> <input id="twin_constraintdate" class="mini-datepicker">
+					</div>
+					<div style="margin-top: 8px;">
+						<input id="twin_fixeddate" class="mini-checkbox" text="固定日期（限摘要任务）" disabled="disabled">
+					</div>
+					<div style="margin-top: 8px;">
+						<input id="twin_milestone" class="mini-checkbox" text="标记为里程碑">
+					</div>
+					<div style="margin-top: 8px;">
+						<input id="twin_critical2" class="mini-checkbox" text="标记为关键任务（手动）">
+					</div>
+					<!-- <div style="margin-top: 8px;">
+						WBS：<input id="twin_wbs" class="mini-textbox">
+					</div> -->
+				</div>
+			</fieldset>
+			<div style="margin-top: 8px;">备注:</div>
+			<div id="twin_notes" class="mini-textarea" style="width: 100%; height:120px"></div>
+		</div>
+		<div title="扩展属性" bodystyle="padding:5px;" name="extended_field">
+			<div id="task_extended_field"></div>
+		</div>
+	</div>
+</body>
+</html>

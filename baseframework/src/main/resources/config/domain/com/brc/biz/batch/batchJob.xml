@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+	<entity name="batchJob" label="批量执行任务" table="SYS_BATCH_JOB" update="true" insert="true">
+		<id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="JOB_NAME" name="jobName" type="java.lang.String" length="200" required="false" label="" update="true" insert="true"/>
+		<property column="JOB_CODE" name="jobCode" type="java.lang.String" length="200" required="false" label="" update="true" insert="true"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" length="22" required="false" label="" update="true" insert="true"/>
+		<property column="JOB_CLASS_NAME" name="jobClassName" type="java.lang.String" length="500" required="false" label="" update="true" insert="true"/>
+		<property column="BEAN_NAME" name="beanName" type="java.lang.String" length="100" required="false" label="" update="true" insert="true"/>
+		<property column="METHOD_NAME" name="methodName" type="java.lang.String" length="100" required="false" label="" update="true" insert="true"/>
+		<property column="JOB_PARAM" name="jobParam" type="java.lang.String" length="1024" required="false" label="" update="true" insert="true"/>
+		<property column="MAX_THREAD_COUNT" name="maxThreadCount" type="java.lang.Integer" length="1" required="false" label="" update="true" insert="true"/>
+		<property column="THRESHOLD" name="threshold" type="java.lang.Integer" length="1" required="false" label="启动阀值" update="true" insert="true"/>
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+        <condition column="BIZ_ID" name="bizId" type="java.lang.Long" symbol="=" />
+        <condition column="JOB_NAME" name="jobName" type="java.lang.String" symbol="like" />
+        <condition column="JOB_CODE" name="jobCode" type="java.lang.String" symbol="like" />
+        <condition column="STATUS" name="status" type="java.lang.Integer" symbol="like" />
+	</entity>
+</domain>

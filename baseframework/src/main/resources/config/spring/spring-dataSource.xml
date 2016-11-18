@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd">
+            
+	<bean id="lobHandler" lazy-init="true"
+		class="org.springframework.jdbc.support.lob.OracleLobHandler">
+		<property name="nativeJdbcExtractor">
+			<ref bean="nativeJdbcExtractor" />
+		</property>
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="batchUpdate" propagation="REQUIRED" />
+			<!-- 流程相关 -->
+			<tx:method name="complete*" propagation="REQUIRED" />
+			<tx:method name="advance" propagation="REQUIRED" />
+			<tx:method name="abort*" propagation="REQUIRED" />
+			<tx:method name="suspend*" propagation="REQUIRED" />
+			<tx:method name="recover*" propagation="REQUIRED" />
+			<tx:method name="sleep" propagation="REQUIRED" />	
+			<tx:method name="recallProcessInstance" propagation="REQUIRED" />	
+			<tx:method name="back" propagation="REQUIRED" />
+			<tx:method name="withdrawTask" propagation="REQUIRED" />	
+			<tx:method name="transmit" propagation="REQUIRED" />	
+			<tx:method name="makeACopyFor" propagation="REQUIRED" />	
+			<tx:method name="create*" propagation="REQUIRED" />
+			<tx:method name="newCoordinationTask" propagation="REQUIRED" />	
+			<tx:method name="assist" propagation="REQUIRED" />
+			<tx:method name="launchMendTask" propagation="REQUIRED" />
+			 
+			<tx:method name="mend" propagation="REQUIRED" />
+			
+			<tx:method name="replenish" propagation="REQUIRED" />
+			<tx:method name="handTasks" propagation="REQUIRED" />
+			<!--  
+			<tx:method name="onEnd" propagation="REQUIRED" />
+			<tx:method name="onBeforeComplete" propagation="REQUIRED" />
+			-->
+			<tx:method name="synDeptAndUser" propagation="NOT_SUPPORTED" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut id="allServiceMethod" expression="execution(* com.brc.*..service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="allServiceMethod" />
+	</aop:config>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<bean id="jdbcDao" class="com.brc.system.data.impl.JDBCDaoImpl" >
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="lobHandler" ref="lobHandler"/>
+	</bean>
+</beans>

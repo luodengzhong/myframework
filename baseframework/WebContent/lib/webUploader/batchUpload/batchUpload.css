@@ -1,0 +1,156 @@
+.webuploader-container {
+	position: relative;
+}
+.webuploader-element-invisible {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px,1px,1px,1px);
+}
+.webuploader-pick {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	background: #00b7ee;
+	padding: 10px 16px;
+	color: #fff; font-size: 16px;
+	font-weight:bold;
+	text-align: center;
+	border-radius: 3px;
+	overflow: hidden;
+	line-height:22px;
+	height: 22px;
+}
+.webuploader-pick-hover {
+	background: #00a2d4;
+}
+
+.webuploader-pick-disable {
+	opacity: 0.6;
+	pointer-events:none;
+}
+
+.webuploader-progress {
+	background: white;
+	height: 20px;
+	padding: 2px;
+	border: 1px solid green;
+	margin: 2px;
+} 
+.webuploader-progress span {
+	background: green; 
+	height: 16px; 
+	text-align: center; 
+	padding: 1px; 
+	margin: 1px; 
+    display: block; 
+    color: yellow; 
+    font-weight: bold; 
+    font-size: 14px; 
+    width: 0%;
+} 
+
+.uploaderWrapper{
+	margin: 10px;
+}
+
+#picker {
+    display: inline-block;
+    line-height: 1.428571429;
+    vertical-align: middle;
+    margin: 0 12px 0 0;
+}
+#picker .webuploader-pick {
+    padding: 6px 12px;
+    display: block;
+}
+#uploaderFileList{
+	width: 99%;
+	height:230px;
+	position:relative;
+	border: 1px solid #d0d0d0;
+	margin-bottom: 10px;
+	overflow-y:auto;
+	overflow-x:hidden;  
+}
+#uploaderFileList li {
+	margin: 5px;
+	padding-bottom:3px;
+	border-bottom: 1px dotted #a0a0a0;
+}
+#uploaderFileList .itemDel{
+	margin-left: 15px;
+	color: blue;
+	cursor: pointer;
+}
+#uploaderFileList .errorMsg{
+	color: red;
+	font-weight: bold;
+}
+
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    margin-right:10px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.428571429;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.btn:active,.btn.active {
+	background-image:none
+}
+.btn-default {
+	text-shadow:0 1px 0 #fff;
+	background-image:-webkit-linear-gradient(top,#fff 0,#e0e0e0 100%);
+	background-image:linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
+	background-repeat:repeat-x;
+	border-color:#dbdbdb;
+	border-color:#ccc;
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe0e0e0',GradientType=0);
+	filter:progid:DXImageTransform.Microsoft.gradient(enabled=false)
+}
+.btn-default:hover,.btn-default:focus {
+	background-color:#e0e0e0;
+	background-position:0 -15px
+}
+.btn-default:active,.btn-default.active {
+	background-color:#e0e0e0;
+	border-color:#dbdbdb
+	-webkit-box-shadow:inset 0 3px 5px rgba(0,0,0,0.125);
+	box-shadow:inset 0 3px 5px rgba(0,0,0,0.125)
+}
+
+.uploader-progress {
+	background: white;
+	height: 20px;
+	padding: 2px;
+	border: 1px solid green;
+	margin: 2px;
+	width: 300px;
+} 
+.uploader-progress span {
+	background: green; 
+	height: 16px; 
+	line-height:16px;
+	text-align: center; 
+	padding: 1px; 
+	margin: 1px; 
+    display: block; 
+    color: yellow; 
+    font-weight: bold; 
+    font-size: 14px; 
+    width: 0%;
+}

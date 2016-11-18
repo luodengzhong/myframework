@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+
+	<entity name="permissionfield" label="字段权限模板定义" table="SA_OPPERMISSIONFIELD">
+		<id column="FIELD_ID" name="fieldId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="false" label="父类别ID"/>
+		<property column="FIELD_NAME" name="fieldName" type="java.lang.String" length="64" required="false" label="字段名称"/>
+		<property column="FIELD_CODE" name="fieldCode" type="java.lang.String" length="32" required="false" label="字段编码"/>
+		<property column="FIELD_TYPE" name="fieldType" type="java.lang.Integer" length="1" required="false" label="字段类型"/>
+		<property column="FIELD_AUTHORITY" name="fieldAuthority" type="java.lang.String" length="16" required="false" label="默认权限"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" length="1" required="false" label="状态" default-expr="0" fill-kind="insert"/>
+		<condition column="FIELD_NAME" name="name" symbol="like"/>
+		<condition column="FIELD_CODE" name="code" symbol="like"/>
+		<condition column="PARENT_ID" name="parentId" symbol="="/>
+		<condition column="STATUS" name="status" symbol="="/>
+		<condition column="FIELD_TYPE" name="fieldType" symbol="="/>
+	</entity>
+
+	<entity name="functionFieldGroup" label="功能字段权限设置表" table="SA_OPFUNCTION_FIELD_GROUP">
+		<id column="FUNCTION_FIELD_GROUP_ID" name="functionFieldGroupId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="FUNCTION_ID" name="functionId" type="java.lang.Long" length="22" required="true" label="功能ID"/>
+		<property column="NAME" name="name" type="java.lang.String" length="32" required="false" label="名称"/>
+		<property column="CODE" name="code" type="java.lang.String" length="32" required="false" label="编码"/>
+		<condition column="FUNCTION_ID" name="functionId" symbol="="/>
+		<sql name="getOperatorPermissionFieldByFunction">
+			SELECT f.field_code, f.field_authority, f.field_type
+			  FROM sa_opfunction_field_group t, sa_opfunction_permissionfield f
+			 where t.function_field_group_id = f.function_field_group_id
+			   and t.function_id = ?
+			   and exists (select 0 from sa_oporg o, sa_opauthorize a, sa_oprole r, sa_oppermission p
+			         where o.person_id = ?
+			           and o.status = 1
+			           and o.org_kind_id = 'psm'
+			           and o.full_id like a.org_full_id || '%'
+			           and r.status = 1
+			           and p.permission_kind = 'field'
+			           and a.role_id = r.id
+			           and p.role_id = r.id
+			           and p.function_id = f.function_field_group_id)
+			 order by f.field_code desc
+		</sql>
+	</entity>
+
+	<entity name="functionPermissionField" label="功能字段权限对应表" table="SA_OPFUNCTION_PERMISSIONFIELD">
+		<id column="PERMISSION_FIELD_ID" name="permissionFieldId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="FUNCTION_FIELD_GROUP_ID" name="functionFieldGroupId" type="java.lang.Long" length="22" required="true" label="function_field_group_id"/>
+		<property column="FIELD_NAME" name="fieldName" type="java.lang.String" length="64" required="false" label="字段名称"/>
+		<property column="FIELD_CODE" name="fieldCode" type="java.lang.String" length="32" required="false" label="字段编码"/>
+		<property column="FIELD_TYPE" name="fieldType" type="java.lang.Integer" length="1" required="false" label="字段类型"/>
+		<property column="FIELD_AUTHORITY" name="fieldAuthority" type="java.lang.String" length="16" required="false" label="权限"/>
+		<condition column="FUNCTION_FIELD_GROUP_ID" name="functionFieldGroupId" symbol="="/>
+	</entity>
+
+
+</domain>

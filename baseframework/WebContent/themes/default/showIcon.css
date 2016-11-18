@@ -1,0 +1,58 @@
+#showImgMain {
+	width: 610px;
+	height: 280px;
+	text-align: left;
+	border: 1px solid #a0a0a0;
+}
+#showFunctionImgDirs{
+	width: 80px;
+	height: 280px;
+	float: left;
+	overflow-x:hidden;
+	overflow-y:auto;  
+}
+#showFunctionImgDirs a{
+	width: 100%;
+	display: inline-block;
+	margin: 5px;
+	border-bottom: 1px solid #d0d0d0;
+}
+
+#showFunctionImgs {
+	position: relative;
+	height: 280px;
+	width: 400px;
+	float: left;
+	overflow-y: auto;
+	overflow-x: hidden;
+	display: inline-block;
+}
+
+#showChooseOk {
+	position: relative;
+	height: 280px;
+	width: 120px;
+	float: right;
+	text-align: center;
+	overflow: hidden;
+	display: inline-block;
+}
+
+#showChooseOk p {
+	margin: 10px;
+}
+
+.functionImg {
+	position: relative;
+	float: left;
+	margin: 5px;
+	width: 66px;
+	height: 66px;
+	overflow: hidden;
+	text-align: center;
+	cursor: pointer;
+}
+
+.functionImg img,#showChooseOk img {
+	border: 1px solid #a0a0a0;
+}

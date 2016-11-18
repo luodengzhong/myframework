@@ -1,0 +1,19 @@
+<!DOCTYPE jboss-web PUBLIC "-//JBoss//DTD Web Application 5.0//EN"
+        "http://www.jboss.org/j2ee/dtd/jboss-web_5_0.dtd">
+<jboss-web>
+    <class-loading java2ClassLoadingCompliance="true">
+        <loader-repository>
+            com.example:archive=xt.war
+            <loader-repository-config>java2ParentDelegation=true</loader-repository-config>
+        </loader-repository>
+    </class-loading>
+    <replication-config>
+        <replication-trigger>SET_AND_NON_PRIMITIVE_GET</replication-trigger>
+        <replication-granularity>SESSION</replication-granularity>
+        <replication-field-batch-mode>true</replication-field-batch-mode>
+        <use-jk>true</use-jk>
+        <max-unreplicated-interval>30</max-unreplicated-interval>
+        <snapshot-mode>INSTANT</snapshot-mode>
+        <snapshot-interval>1000</snapshot-interval>
+    </replication-config>
+</jboss-web> 

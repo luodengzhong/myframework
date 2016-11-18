@@ -1,0 +1,164 @@
+
+        .htree{
+            margin:0;
+            padding:0;
+            font-size:14px;
+        }
+        .leaf
+        {
+            border: solid 1px green;
+            height:23px;
+            line-height:23px;
+            margin: 3px 0;
+            padding:0 3px;
+            position:relative;
+            display:inline-block;
+            *display:inline;
+            zoom:1;
+            padding:7px 7px;
+        }
+        .parent
+        {
+            margin: 4px 0 4px 1px;
+            position:relative;
+        }
+        .node{
+            width:207px;
+            overflow:hidden;
+            word-break:break-all;
+            border:solid 1px #44BBA3;
+            padding:1px 1px;
+            vertical-align:middle;
+            min-height:32px; 
+            line-height:16px;
+            height:32px; 
+        }
+        .lnode{
+            width:257px;
+            overflow:hidden;
+            word-break:break-all;
+            border:solid 1px #44BBA3;
+            padding:1px 1px;
+            vertical-align:middle;
+            min-height:32px; 
+            line-height:16px;
+            height:32px; 
+        }
+        .pnode{
+            width:90px;
+            overflow:hidden;
+            word-break:break-all;
+            border:solid 1px #44BBA3;
+            font-weight:700;
+            min-height:32px; 
+            height:32px; 
+            line-height:16px;
+            vertical-align:middle;
+            padding:1px 1px;
+        }
+        .node2{
+            width:207px;
+            overflow:hidden;
+            border:solid 1px #44BBA3;
+            padding:1px 1px;
+            vertical-align:middle;
+            min-height:32px; 
+            line-height:32px;
+            height:32px; 
+        }
+        .lnode2{
+            width:257px;
+            overflow:hidden;
+            border:solid 1px #44BBA3;
+            padding:1px 1px;
+            vertical-align:middle;
+            min-height:32px; 
+            line-height:32px;
+            height:32px; 
+        }
+        .pnode2{
+            width:90px;
+            overflow:hidden;
+            border:solid 1px #44BBA3;
+            font-weight:700;
+            min-height:32px; 
+            height:32px; 
+            line-height:32px;
+            vertical-align:middle;
+            padding:1px 1px;
+        }
+        .hline{
+            height:1px;
+            width:13px;
+            background:#ccc;
+            font-size:0;
+            overflow:hidden;
+            position:absolute;
+            top:50%;
+        }
+        .hlline{
+            height:1px;
+            width:13px;
+            background:#ccc;
+            font-size:0;
+            overflow:hidden;
+            position:absolute;
+            top:50%;
+        }
+        .hfline{
+            height:1px;
+            width:12px;
+            background:#ccc;
+            font-size:0;
+            overflow:hidden;
+            position:absolute;
+            top:50%;
+        }
+        .phlline{
+            height:1px;
+            width:13px;
+            background:#ccc;
+            font-size:0;
+            overflow:hidden;
+            position:absolute;
+            top:50%;
+        }
+        .hline_r{
+            left:210px;
+        }
+        .fhline_r{
+            left:93px;
+        }
+        .phline_r{
+            left:93px;
+        }
+        .prochline_r{
+            left:260px;
+        }
+        .hline_l{
+            left:-13px;
+        }
+        .vline{
+            width:1px;
+            background:#ccc;
+            position:absolute;
+            font-size:0;
+            overflow:hidden;
+            left:-13px;
+        }
+        .vline_t{
+            height:50%;
+            top:50%;
+        }
+        .vline_diff{
+            height:8px;
+            bottom:-8px;
+        }
+        .vline_m{
+            height:100%;
+            top:0;
+        }
+        .vline_b{
+            height:50%;
+            top:0;
+        }

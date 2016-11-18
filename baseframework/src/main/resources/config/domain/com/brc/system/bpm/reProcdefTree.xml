@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+
+	<entity name="reProcdefTree" label="流程定义树" table="ACT_RE_PROCDEF_TREE" >
+
+		<id column="RE_PROCDEF_TREE_ID" name="reProcdefTreeId" type="java.lang.Long" length="22" sequence="SEQ_ID" />
+
+		<property column="CODE" name="code" type="java.lang.String" length="32" required="false" label="编码"  />
+		<property column="NAME" name="name" type="java.lang.String" length="256" required="false" label="名称"  />
+		<property column="FULL_ID" name="fullId" type="java.lang.String" length="1024" required="false" label="ID全路径"  />
+		<property column="FULL_NAME" name="fullName" type="java.lang.String" length="1024" required="false" label="名称全路径"  />
+		<property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="false" label="父节点ID"  />
+		<property column="STATUS" name="status" type="java.lang.Integer" length="22" required="false" label="状态"  />
+		<property column="DESCRIPTION" name="description" type="java.lang.String" length="600" required="false" label="描述"  />
+		<property column="SEQUENCE" name="sequence" type="java.lang.Integer" length="22" required="false" label="排序号"  />
+		<version column="VERSION" name="version" type="java.lang.Long"  required="false" label="版本号"  />
+		<property column="KEY" name="key" type="java.lang.String" length="16" required="false" label="流程Key"  />
+		<property column="NODE_KIND_ID" name="nodeKindId" type="java.lang.String" length="32" required="false" label="节点类型"  />
+		<property column="NEED_TIMING" name="needTiming" type="java.lang.Integer"   required="false" label="是否计时"  />
+		<property column="APP_MODEL_ID" name="appModelId" type="java.lang.Long"   required="false" label="APP模型id"  />
+		<property column="APP_MODEL_NAME" name="appModelName" type="java.lang.String" length="64" required="false" label="APP模型" update="false" insert="false" />
+		<property column="APPROVAL_RULE_PROC_DEF_KEY" name="approvalRuleProcDefKey" type="java.lang.String" length="64" required="false" label="流程审批规则Key"  />
+		<property column="SHOW_QUERY_HANDLERS" name="showQueryHandlers" type="java.lang.Integer"   required="false" label="显示询问处理人对话框"  />
+	
+		<sql-detail>
+			select reProcdefTree.*, m.model_name app_model_name
+			  from ACT_RE_PROCDEF_TREE reProcdefTree
+			  left join app_model m
+			    on reProcdefTree.app_model_id = m.app_model_id
+			    where reProcdefTree.re_procdef_tree_id = :reProcdefTreeId
+		</sql-detail>
+
+		<sql name="queryProcdefTree">
+		<![CDATA[
+			select reProcdefTree.*, m.model_type, m.model_name,
+				   (select count(*)
+					   from act_re_procdef_tree p
+					  where p.parent_id = reProcdefTree.re_procdef_tree_id %s) as has_children,
+				   'false' as is_expand
+			  from act_re_procdef_tree reProcdefTree
+			  left join app_model m 
+				on reProcdefTree.app_model_id = m.app_model_id
+			 where  %s reProcdefTree.parent_id = :parentId
+			  
+			 order by sequence
+		]]>
+		</sql>
+		
+		<sql name="queryProc">
+		<![CDATA[
+			select reProcdefTree.*, m.model_type, m.model_name,
+				   (select count(*)
+					   from act_re_procdef_tree p
+					  where p.parent_id = reProcdefTree.re_procdef_tree_id) as has_children,
+				   'false' as is_expand
+			  from act_re_procdef_tree reProcdefTree
+			  left join app_model m 
+				on reProcdefTree.app_model_id = m.app_model_id
+			 where reProcdefTree.parent_id = ?
+			    and reProcdefTree.node_kind_id in ('folder', 'proc')
+			 order by sequence
+		]]>
+		</sql>
+		
+		<sql name="queryParentInfo">
+			select t.re_procdef_tree_id,
+			       t.code,
+			       t.name,
+			       t.node_kind_id,
+			       (select sys_connect_by_path(tt.name, '/') areaPath
+                  from act_re_procdef_tree tt
+                 where tt.re_procdef_tree_id = t.re_procdef_tree_id
+                connect by prior tt.re_procdef_tree_id = tt.parent_id
+                 start with tt.re_procdef_tree_id = 1) AS path,
+			       t.parent_id,
+			       t.status,
+			       t.description,
+			       t.sequence,
+			       t.version
+			  from act_re_procdef_tree t
+			 where t.re_procdef_tree_id = :parentId
+		</sql>
+		
+		<sql name="deleteCascade">
+			delete from act_re_procdef_tree
+			 where re_procdef_tree_id in
+			       (select t.re_procdef_tree_id
+			          from act_re_procdef_tree t
+			         where re_procdef_tree_id = :reProcdefTreeId
+			        union
+			        select re_procdef_tree_id
+			          from act_re_procdef_tree
+			         start with parent_id = :reProcdefTreeId
+			        connect by prior re_procdef_tree_id = parent_id)
+		</sql>
+		
+		<sql name="loadHighestVersionOfResource">
+			select *
+			  from (select t.*
+			          from act_re_procdef t
+			         where t.resource_name_ = :resourceName
+			         order by t.version_ desc)
+			 where rownum = 1			
+		</sql>
+		
+		<sql name="queryProcInfoByProcId">
+			select * from act_re_procdef where id_=:procId
+		</sql>
+		
+		<sql name="queryMaxVersionProcessByKey">
+			select *
+			  from (select t.*
+			          from act_re_procdef t
+			         where t.key_ = :key
+			         order by t.version_ desc)
+			 where rownum = 1
+		</sql>
+		<sql name="selectProcUnitDefinitionObject">
+			  select * from act_re_procdef_tree t where t.key = ? and t.code = ? and t.node_kind_id = 'procUnit'
+		</sql>
+		<condition column="CODE" name="code" symbol="like" alias=""/>
+		<condition column="NAME" name="name" symbol="like" alias=""/>
+	</entity>
+
+</domain>

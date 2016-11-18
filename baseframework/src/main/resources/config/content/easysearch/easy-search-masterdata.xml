@@ -1,0 +1,636 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<easy-search-mapping>
+    <!-- 选择项目方案 -->
+    <query-scheme name="mdProjectSchemeSelect" desc="选择项目方案">
+        <sql>
+            SELECT ID, NAME, CODE, IS_SCHEME, SEQUENCE
+            FROM MD_PROJECT_SCHEME
+            WHERE IS_SCHEME = 1
+            AND STATUS = 1
+        </sql>
+        <orderby>SEQUENCE asc</orderby>
+        <field name="ID" code="id" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="编码" code="code" width="150"/>
+    </query-scheme>
+
+    <!-- 查询项目 -->
+    <query-scheme name="mdProjectSelect" desc="选择项目">
+        <sql>
+            SELECT PROJECT_ID,
+            NAME,
+            CODE,
+            PARENT_ID,
+            BRANCH_ORG_ID,
+            PROJECT_ORG_ID,
+            FULL_ID,
+            SEQUENCE
+            FROM MD_PROJECT
+            WHERE RESOURCE_KIND_ID = 'project'
+        </sql>
+        <orderby>SEQUENCE asc</orderby>
+        <field name="PROJECT_ORG_ID" code="projectOrgId" type='hidden'/>
+        <field name="BRANCH_ORG_ID" code="branchOrgId" type='hidden'/>
+        <field name="PROJECT_ID" code="projectId" type='hidden'/>
+        <field name="PROJECT_ORG_ID" code="projectOrgId" type='hidden'/>
+        <field name="FULL_ID" code="fullId" type='hidden'/>
+        <field name="PARENT_ID" code="parentId" type='hidden'/>
+        <field name="名称" code="name" width="200"/>
+        <field name="编码" code="code" width="150"/>
+    </query-scheme>
+    
+    <!-- 查询项目 -->
+    <query-scheme name="mdProjectSelectByBranchOrgId" desc="选择某个公司下的项目">
+        <sql>
+            SELECT PROJECT_ID,
+            NAME,
+            CODE,
+            PARENT_ID,
+            BRANCH_ORG_ID,
+            PROJECT_ORG_ID,
+            FULL_ID,
+            SEQUENCE
+            FROM MD_PROJECT
+            WHERE RESOURCE_KIND_ID = 'project' 
+            and BRANCH_ORG_ID = :branchOrgId 
+        </sql>
+        <orderby>SEQUENCE asc</orderby>
+        <field name="PROJECT_ORG_ID" code="projectOrgId" type='hidden'/>
+        <field name="BRANCH_ORG_ID" code="branchOrgId" type='hidden'/>
+        <field name="PROJECT_ID" code="projectId" type='hidden'/>
+        <field name="PROJECT_ORG_ID" code="projectOrgId" type='hidden'/>
+        <field name="FULL_ID" code="fullId" type='hidden'/>
+        <field name="PARENT_ID" code="parentId" type='hidden'/>
+        <field name="名称" code="name" width="200"/>
+        <field name="编码" code="code" width="150"/>
+    </query-scheme>
+    <!-- 查询项目 -->
+    <query-scheme name="mdProjectStageSelect" desc="选择项目分期">
+        <sql>
+            SELECT PROJECT_ID,
+            NAME,
+            CODE,
+            PARENT_ID,
+            BRANCH_ORG_ID,
+            PROJECT_ORG_ID,
+            FULL_ID,
+            SEQUENCE
+            FROM MD_PROJECT
+            WHERE PARENT_ID = :projectId
+        </sql>
+        <orderby>SEQUENCE asc</orderby>
+        <field name="PROJECT_ORG_ID" code="projectOrgId" type='hidden'/>
+        <field name="BRANCH_ORG_ID" code="branchOrgId" type='hidden'/>
+        <field name="PROJECT_ID" code="projectId" type='hidden'/>
+        <field name="FULL_ID" code="fullId" type='hidden'/>
+        <field name="PARENT_ID" code="parentId" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="编码" code="code" width="150"/>
+    </query-scheme>
+    <!-- 查询机构项目  -->
+
+    <query-scheme name="mdNewProjectOrganSelect" desc="选择机构项目分期">
+        <sql>
+      select ID,
+       PROJECT_ID,
+       STAGE_ID,
+        PARENT_ID,
+        NAME,
+        CODE,
+        ORG_ID,
+        IS_MAIN_ORG,
+        ORG_KIND_ID,
+        FULL_ID,
+        MD_FULL_NAME,
+        RESOURCE_KIND_ID,
+         PROJECT_ORG_ID,
+         BRANCH_ORG_ID,
+         project_phase_id,
+         scheme_id,
+         area,
+         organ_md_full_name,
+         stage_logo_id
+      from V_MD_PROJECT_ORGAN_NEW
+     where 1=1
+     and  (RESOURCE_KIND_ID is null or   RESOURCE_KIND_ID = :resourceKindId)
+      and (IS_MAIN_ORG is null or IS_MAIN_ORG=:isMainOrg) 
+      and (IS_PUBLIC is null or IS_PUBLIC=0 or IS_PUBLIC=:isPublic)
+      order by NAME ASC
+
+        </sql>
+        <field name="ID" code="id" type='hidden'/>
+        <field name="PROJECT_ID" code="projectId" type='hidden'/>
+        <field name="STAGE_ID" code="stageId" type='hidden'/>
+        <field name="PARENT_ID" code="parentId" type='hidden'/>
+        <field name="ORG_ID" code="orgId" type='hidden'/>
+        <field name="CODE" code="code" type='hidden'/>
+        <field name="FULL_ID" code="fullId" type='hidden'/>
+        <field name="IS_MAIN_ORG" code="isMainOrg" type='hidden'/>
+        <field name="ORG_KIND_ID" code="orgKindId" type='hidden'/>
+        <field name="RESOURCE_KIND_ID" code="resourceKindId" type='hidden'/>
+        <field name="PROJECT_ORG_ID" code="projectOrgId" type='hidden'/>
+        <field name="BRANCH_ORG_ID" code="branchOrgId" type='hidden'/>
+        <field name="project_phase_id" code="projectPhaseId" type='hidden'/>
+        <field name="scheme_id" code="schemeId" type='hidden'/>
+        <field name="area" code="area" type='hidden'/>
+        <field name="MD_FULL_NAME" code="mdFullName" type='hidden'/>
+        <field name="stage_logo_id" code="stageLogoId" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="路径" code="organMdFullName" width="250"/>
+    </query-scheme>
+
+
+    <!-- 查询项目资源 -->
+    <query-scheme name="mdProjectResourceSelect" desc="选择项目资源">
+        <sql>
+            SELECT ID,
+            NAME,
+            CODE,
+            RESOURCE_KIND_ID,
+            BEGIN_STATUS,
+            MD_FULL_NAME,
+            PROJECT_ORG_ID,
+            BRANCH_ORG_ID,
+            FULL_ID,
+            SEQUENCE
+            FROM V_MD_PROJECT_RESOURCES where 1=1
+        </sql>
+        <orderby>SEQUENCE asc</orderby>
+        <field name="ID" code="id" type='hidden'/>
+        <field name="PROJECT_ORG_ID" code="projectOrgId" type='hidden'/>
+        <field name="BRANCH_ORG_ID" code="branchOrgId" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="编码" code="code" width="150"/>
+        <field name="资源路径" code="mdFullName" width="300"/>
+    </query-scheme>
+
+    <query-scheme name="mdResourceOrgQuery" desc="项目对应公司查询">
+        <sql>
+            select v.id, v.project_id, v.name, v.full_id, v.full_sequence, v.kind_name
+			  from (select o.id,
+			               null as project_id,
+			               o.name,
+			               o.full_id,
+			               o.full_sequence,
+			               '公司' as kind_name
+			          from sa_oporg o
+			         where exists (select 0
+			                  from md_project p
+			                 where p.resource_kind_id = 'project'
+			                   and p.branch_org_id = o.id)
+			           and o.org_kind_id = 'ogn'
+			           and o.status = 1
+			        union all
+			        select o.id,
+			               t.project_id,
+			               t.name,
+			               o.full_id,
+			               o.full_sequence || '/' || lpad(t.sequence, 4, '0') as full_sequence,
+			               '项目' as kind_name
+			          from MD_PROJECT t, sa_oporg o
+			         where t.resource_kind_id = 'project'
+			           and t.branch_org_id = o.id) v
+			 where 1 = 1
+        </sql>
+        <orderby>full_sequence asc</orderby>
+        <field name="ID" code="id" type='hidden'/>
+        <field name="projectId" code="projectId" type='hidden'/>
+        <field name="类型" code="kindName" width="40"/>
+        <field name="名称" code="name" width="160"/>
+    </query-scheme>
+
+    <query-scheme name="mdResourceSelectByTree" desc="选择项目资源" folderKindId="mdProjectResource" sqlBeanName="projectResourcesChooseService">
+        <sql>
+            select id,
+            name,
+            code,
+            parent_id,
+            resource_kind_id,
+            begin_status,
+            md_full_name,
+            project_org_id,
+            branch_org_id,
+            full_id,
+            customer_name,
+            decode(resource_kind_id,
+            'project',
+            10000,
+            'stage',
+            100000,
+            'building',
+            1000000,
+            'floor',
+            10000000,
+            'room',
+            100000000,
+            0) + nvl(sequence, 1000) as sequence,
+            md_full_name as cascadeField
+            from v_md_project_resources
+            where 1 = 1
+        </sql>
+        <orderby>sequence asc</orderby>
+        <field name="ID" code="id" type='hidden'/>
+        <field name="PROJECT_ORG_ID" code="projectOrgId" type='hidden'/>
+        <field name="BRANCH_ORG_ID" code="branchOrgId" type='hidden'/>
+        <field name="customer_name" code="customerName" type='hidden'/>
+        <field name="类型" code="resourceKindId" width="50" align="center"/>
+        <field name="名称" code="name" width="150"/>
+        <field name="资源路径" code="mdFullName" width="440"/>
+    </query-scheme>
+
+    <!-- 查询材料信息-->
+    <query-scheme name="mdMaterialSelect" desc="选择材料">
+        <sql>
+            select material_id,
+            node_kind_id,
+            create_by_id,
+            create_by_name,
+            create_by_time,
+            update_by_id,
+            update_by_name,
+            update_by_time,
+            remark,
+            sequence,
+            name,
+            code,
+            specification,
+            effective_days,
+            remind_days,
+            parent_id
+            from md_material
+            where 1 = 1
+        </sql>
+        <orderby>sequence asc</orderby>
+        <field name="MATERIAL_ID" code="materialId" type='hidden'/>
+        <field name="PARENT_ID" code="parentId" type='hidden'/>
+        <field name="NODE_KIND_ID" code="nodeKindId" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="编码" code="code" width="100"/>
+        <field name="创建人" code="createByName" width="100"/>
+    </query-scheme>
+
+    <query-scheme name="mdRealMaterialSelect" desc="选择材料">
+        <sql>
+            select material_id,
+            node_kind_id,
+            create_by_id,
+            create_by_name,
+            create_by_time,
+            update_by_id,
+            update_by_name,
+            update_by_time,
+            remark,
+            sequence,
+            name,
+            code,
+            specification,
+            effective_days,
+            remind_days,
+            parent_id
+            from md_material
+            WHERE NODE_KIND_ID = 2
+        </sql>
+        <orderby>sequence asc</orderby>
+        <field name="MATERIAL_ID" code="materialId" type='hidden'/>
+        <field name="PARENT_ID" code="parentId" type='hidden'/>
+        <field name="NODE_KIND_ID" code="nodeKindId" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="编码" code="code" width="100"/>
+        <field name="创建人" code="createByName" width="100"/>
+    </query-scheme>
+
+    <!-- 查询项目资源 -->
+    <query-scheme name="mdStageSchemeSelect" desc="分期规划信息选择">
+        <sql>
+            SELECT STAGE_ID, NAME STAGE_NAME, CODE,sequence
+            FROM MD_STAGE_SCHEME
+            WHERE PROJECT_ID = :projectId
+            AND SCHEME_ID = :schemeId
+        </sql>
+        <orderby>sequence asc</orderby>
+        <field name="STAGE_ID" code="stageId" type='hidden'/>
+        <field name="名称" code="stageName" width="150"/>
+        <field name="编码" code="code" width="150"/>
+    </query-scheme>
+
+    <!-- 查询项目资源 -->
+    <query-scheme name="mdApartmentSelect" desc="分期规划信息选择">
+        <sql>
+            SELECT ROOM_CODE, ROOM_MODEL,SEQUENCE
+            FROM MD_APARTMENT_SCHEME
+            WHERE PROJECT_ID = :projectId
+            AND SCHEME_ID = :schemeId
+            AND STAGE_ID = :stageId
+        </sql>
+        <orderby>sequence asc</orderby>
+        <field name="户型编码" code="roomCode" width="150"/>
+        <field name="房间套型" code="roomModel" width="150"/>
+    </query-scheme>
+
+    <!-- 选择已通过审核的合同 -->
+    <query-scheme name="mdApprovedSingleProjectContractSelect" desc="选择已通过审核的单项目合同">
+        <sql>
+            SELECT mdContract.CONTRACT_ID,
+            mdContract.NAME,
+            mdContract.CODE,
+            mdContract.Party_B_Name,
+            mdContract.Party_B_Id,
+            mdContract.ORGAN_ID,
+            mdContract.MANAGE_ORGAN_ID,
+            mdContract.FULL_ID,
+            (SELECT string_agg(stage_id)
+            FROM Md_Contract_Project
+            WHERE CONTRACT_ID = mdContract.CONTRACT_ID) stage_ids,
+            (SELECT DISTINCT string_agg(DISTINCT project_id)
+            FROM Md_Contract_Project
+            WHERE CONTRACT_ID = mdContract.CONTRACT_ID) project_ids,
+            (SELECT DISTINCT string_agg(DISTINCT p.Name)
+            FROM Md_Contract_Project c,MD_PROJECT p
+            WHERE c.CONTRACT_ID = mdContract.CONTRACT_ID AND p.project_id=c.project_id) project_names
+            FROM MD_CONTRACT mdContract
+            WHERE STATUS = 3 AND 1= (SELECT DISTINCT NVL(COUNT(DISTINCT project_id),0) FROM Md_Contract_Project WHERE CONTRACT_ID = mdContract.CONTRACT_ID)
+        </sql>
+        <orderby>CONTRACT_ID DESC</orderby>
+        <field name="ID" code="contractId" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="编码" code="code" width="150"/>
+        <field name="乙方单位" code="partyBName" width="150"/>
+        <field name="乙方单位ID" code="partyBId" type='hidden'/>
+        <field name="ORGAN_ID" code="organId" type='hidden'/>
+        <field name="MANAGE_ORGAN_ID" code="manageOrganId" type='hidden'/>
+        <field name="FULL_ID" code="fullId" type='hidden'/>
+        <field name="项目分期" code="stageIds" type='hidden'/>
+        <field name="项目" code="projectIds" type='hidden'/>
+        <field name="项目名称" code="projectNames" type='hidden'/>
+    </query-scheme>
+
+    <!-- 选择已通过审核的合同 -->
+    <query-scheme name="mdApprovedContractSelect" desc="选择已通过审核的合同">
+        <sql>
+            SELECT mdContract.CONTRACT_ID,
+            mdContract.NAME,
+            mdContract.CODE,
+            mdContract.Party_B_Name,
+            mdContract.Party_B_Id,
+            mdContract.ORGAN_ID,
+            mdContract.MANAGE_ORGAN_ID,
+            mdContract.FULL_ID,
+            (SELECT string_agg(stage_id)
+            FROM Md_Contract_Project
+            WHERE CONTRACT_ID = mdContract.CONTRACT_ID) stage_ids
+            FROM MD_CONTRACT mdContract
+            WHERE STATUS = 3
+        </sql>
+        <orderby>CONTRACT_ID DESC</orderby>
+        <field name="ID" code="contractId" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="编码" code="code" width="150"/>
+        <field name="乙方单位" code="partyBName" width="150"/>
+        <field name="乙方单位ID" code="partyBId" type='hidden'/>
+        <field name="ORGAN_ID" code="organId" type='hidden'/>
+        <field name="MANAGE_ORGAN_ID" code="manageOrganId" type='hidden'/>
+        <field name="FULL_ID" code="fullId" type='hidden'/>
+        <field name="项目分期" code="stageIds" type='hidden'/>
+    </query-scheme>
+
+    <query-scheme name="mdPlanApprovedContractSelect" desc="选择是合约规划的已通过审核的合同">
+        <sql>
+            SELECT
+            mdContract.CONTRACT_ID,
+            mdContract.NAME,
+            mdContract.CODE,
+            mdContract.Party_B_Name,
+            mdContract.Party_B_Id,
+            mdContract.ORGAN_ID,
+            mdContract.MANAGE_ORGAN_ID,
+            mdContract.FULL_ID,
+            (SELECT string_agg(stage_id) FROM Md_Contract_Project WHERE CONTRACT_ID=mdContract.CONTRACT_ID) stage_ids
+            FROM
+            MD_CONTRACT mdContract
+            WHERE
+            STATUS=3 AND EXISTS (SELECT * FROM CM_PROJECT_CONTRACT_PLAN WHERE contract_id= mdContract.CONTRACT_ID)
+            ORDER BY mdContract.CONTRACT_ID DESC
+        </sql>
+        <field name="ID" code="contractId" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="编码" code="code" width="150"/>
+        <field name="乙方单位" code="partyBName" width="150"/>
+        <field name="乙方单位ID" code="partyBId" type='hidden'/>
+        <field name="ORGAN_ID" code="organId" type='hidden'/>
+        <field name="MANAGE_ORGAN_ID" code="manageOrganId" type='hidden'/>
+        <field name="FULL_ID" code="fullId" type='hidden'/>
+        <field name="项目分期" code="stageIds" type='hidden'/>
+    </query-scheme>
+
+    <query-scheme name="mdMetricApprovedContractSelect" desc="选择是指标的已通过审核的合同">
+        <sql>
+            SELECT
+            mdContract.CONTRACT_ID,
+            mdContract.NAME,
+            mdContract.CODE,
+            mdContract.Party_B_Name,
+            mdContract.Party_B_Id,
+            mdContract.ORGAN_ID,
+            mdContract.MANAGE_ORGAN_ID,
+            mdContract.FULL_ID,
+            (SELECT string_agg(stage_id) FROM Md_Contract_Project WHERE CONTRACT_ID=mdContract.CONTRACT_ID) stage_ids
+            FROM
+            MD_CONTRACT mdContract
+            WHERE
+            STATUS=3 AND EXISTS (SELECT * FROM CM_STOCK_SUBJECT_METRIC WHERE contract_id= mdContract.CONTRACT_ID)
+            ORDER BY mdContract.CONTRACT_ID DESC
+        </sql>
+        <field name="ID" code="contractId" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="编码" code="code" width="150"/>
+        <field name="乙方单位" code="partyBName" width="150"/>
+        <field name="乙方单位ID" code="partyBId" type='hidden'/>
+        <field name="ORGAN_ID" code="organId" type='hidden'/>
+        <field name="MANAGE_ORGAN_ID" code="manageOrganId" type='hidden'/>
+        <field name="FULL_ID" code="fullId" type='hidden'/>
+        <field name="项目分期" code="stageIds" type='hidden'/>
+    </query-scheme>
+
+    <!-- 选择已通过审核的合同 -->
+    <query-scheme name="mdOnlyApprovedContractSelect" desc="选择已通过审核的合同(不包括补充协议)">
+        <sql>
+            SELECT CONTRACT_ID,
+            NAME,
+            CODE,
+            Party_A_NAME,
+            Party_A_Id,
+            MANAGE_ORGAN_ID,
+            Party_A_Siger,
+            Party_B_NAME,
+            Party_B_Id,
+            Party_B_Siger,
+            Party_C,
+            Party_C_Id,
+            Party_C_Siger,
+            purchase_plan_id,
+            total_amount
+            FROM MD_CONTRACT
+            WHERE STATUS = 3
+            and property_id in (1, 2)
+        </sql>
+        <orderby>CONTRACT_ID DESC</orderby>
+        <field name="ID" code="contractId" type='hidden'/>
+        <field name="total_amount" code="totalAmount" type='hidden'/>
+        <field name="purchase_plan_id" code="purchasePlanId" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="编码" code="code" width="150"/>
+        <field name="甲方单位" code="partyAName" width="150"/>
+        <field name="甲方单位ID" code="partyAId" type='hidden'/>
+        <field name="MANAGE_ORGAN_ID" code="manageOrganId" type='hidden'/>
+        <field name="甲方单位签字人" code="partyASiger" width="150"/>
+        <field name="乙方单位" code="partyBName" width="150"/>
+        <field name="乙方单位ID" code="partyBId" type='hidden'/>
+        <field name="乙方单位签字人" code="partyBSiger" width="150"/>
+        <field name="丙方单位" code="partyC" width="150"/>
+        <field name="丙方单位ID" code="partyCId" type='hidden'/>
+        <field name="丙方单位签字人" code="partyCSiger" width="150"/>
+    </query-scheme>
+
+    <!-- 清单表单，选择合同的限制(目的是，合同台帐关联的 造价清单(标底，供应商报价，总价形成) 都只会有一个有效的，不会找出多个) -->
+    <query-scheme name="costBillContractSelect" desc="造价清单中能够选择的合同列表">
+        <sql>
+            SELECT CONTRACT_ID, NAME, CODE, Party_B_NAME, Party_B_Id
+            FROM MD_CONTRACT a
+            WHERE STATUS = 3
+            and property_id in (1, 2)
+            and not exists (select 1
+            from cm_contract_cost_bill_inst b
+            where is_valid = 1
+            and kind_id = :kindId
+            and a.contract_id = b.contract_id)
+        </sql>
+        <orderby>CONTRACT_ID DESC</orderby>
+        <field name="ID" code="contractId" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="编码" code="code" width="150"/>
+        <field name="乙方单位" code="partyB" width="150"/>
+        <field name="乙方单位ID" code="partyBId" type='hidden'/>
+    </query-scheme>
+
+    <query-scheme name="totalPriceCostBillContractSelect" desc="总价形成造价清单中能够选择的合同列表">
+        <sql>
+            SELECT CONTRACT_ID, NAME, CODE, Party_B_NAME, Party_B_Id
+            FROM MD_CONTRACT a
+            WHERE STATUS = 3
+            and property_id in (1, 2)
+            and not exists (select 1
+            from cm_contract_cost_bill_inst b
+            where is_valid = 1
+            and version_type = :versionType
+            and kind_id = '3'
+            and a.contract_id = b.contract_id)
+        </sql>
+        <orderby>CONTRACT_ID DESC</orderby>
+        <field name="ID" code="contractId" type='hidden'/>
+        <field name="名称" code="name" width="150"/>
+        <field name="编码" code="code" width="150"/>
+        <field name="乙方单位" code="partyB" width="150"/>
+        <field name="乙方单位ID" code="partyBId" type='hidden'/>
+    </query-scheme>
+
+    <query-scheme name="mdContractKindSelect" desc="选择合同类别">
+        <sql>
+            SELECT CONTRACT_KIND_ID,
+            NAME,
+            CODE,
+            CHANGE_WARNING_RATIO,
+            PAYMENT_WARNING_RADIO,
+            PARENT_ID,
+            KIND,
+            SEQUENCE
+            FROM MD_CONTRACT_KIND T
+            WHERE T.STATUS = 1
+            AND T.PARENT_ID IN (SELECT CONTRACT_KIND_ID
+            FROM MD_CONTRACT_KIND T
+            WHERE T.CODE = :parentCode)
+        </sql>
+        <orderby>SEQUENCE ASC</orderby>
+        <field name="ID" code="CONTRACT_KIND_ID" type='hidden'/>
+        <field name="contractKindId" code="contractKindId" type='hidden'/>
+        <field name="名称" code="name" width="200"/>
+        <field name="编码" code="code" type='hidden'/>
+        <field name="changeWarningRatio" code="CHANGE_WARNING_RATIO" type='hidden'/>
+        <field name="paymentWarningRadio" code="PAYMENT_WARNING_RADIO" type='hidden'/>
+
+    </query-scheme>
+
+    <!-- 选择最新项目分期 -->
+    <query-scheme name="mdNewStageSelect" desc="选择最新项目分期">
+        <sql>
+            select ID,
+            name,
+            CODE,
+            RESOURCE_KIND_ID,
+            PARENT_ID,
+            STAGE_ID,
+            PROJECT_ID,
+            STAGE_LOGO_ID,
+            MD_FULL_NAME,
+            BRANCH_ORG_ID,
+            PROJECT_ORG_ID,
+            FULL_ID,
+            SCHEME_ID,
+            PROJECT_PHASE_ID,
+            SEQUENCE
+            from V_MD_NEW_STAGE_RESOURCES V
+            where v.RESOURCE_KIND_ID = 'stage'
+            order by PROJECT_ID, V.SEQUENCE
+        </sql>
+        <field name="ID" code="id" type='hidden'/>
+        <field name="NAME" code="name" type='hidden'/>
+        <field name="PARENT_ID" code="parentId" type='hidden'/>
+        <field name="项目ID" code="projectId" type='hidden'/>
+        <field name="项目组织ID" code="projectOrgId" type='hidden'/>
+        <field name="机构ID" code="branchOrgId" type='hidden'/>
+        <field name="项目阶段ID" code="projectPhaseId" type='hidden'/>
+        <field name="项目方案ID" code="schemeId" type='hidden'/>
+        <field name="分期标识ID" code="stageLogoId" type='hidden'/>
+        <field name="分期ID" code="stageId" type='hidden'/>
+        <field name="FULL_ID" code="fullId" type='hidden'/>
+        <field name="名称" code="mdFullName" width="200"/>
+        <field name="编码" code="code" width="150"/>
+
+    </query-scheme>
+
+    <query-scheme name="mdNewStageSelectLimit" desc="选择最新项目分期">
+        <sql>
+            select ID,
+            name,
+            CODE,
+            RESOURCE_KIND_ID,
+            PARENT_ID,
+            STAGE_ID,
+            PROJECT_ID,
+            STAGE_LOGO_ID,
+            MD_FULL_NAME,
+            BRANCH_ORG_ID,
+            PROJECT_ORG_ID,
+            FULL_ID,
+            SCHEME_ID,
+            PROJECT_PHASE_ID,
+            SEQUENCE
+            from V_MD_NEW_STAGE_RESOURCES V
+            where v.RESOURCE_KIND_ID = 'stage' AND STAGE_ID IN (SELECT (REGEXP_SUBSTR(:stageIds,'[^,]+',1,rownum)) FROM DUAL CONNECT BY ROWNUM &lt;=
+            LENGTH(:stageIds) - LENGTH(REPLACE(:stageIds,',','')) + 1) order by PROJECT_ID, V.SEQUENCE
+        </sql>
+        <field name="ID" code="id" type='hidden'/>
+        <field name="NAME" code="name" type='hidden'/>
+        <field name="PARENT_ID" code="parentId" type='hidden'/>
+        <field name="项目ID" code="projectId" type='hidden'/>
+        <field name="机构ID" code="branchOrgId" type='hidden'/>
+        <field name="项目阶段ID" code="projectPhaseId" type='hidden'/>
+        <field name="项目方案ID" code="schemeId" type='hidden'/>
+        <field name="分期标识ID" code="stageLogoId" type='hidden'/>
+        <field name="分期ID" code="stageId" type='hidden'/>
+        <field name="FULL_ID" code="fullId" type='hidden'/>
+        <field name="名称" code="mdFullName" width="200"/>
+        <field name="编码" code="code" width="150"/>
+
+    </query-scheme>
+
+</easy-search-mapping>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="paymentMain" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="5" bottomMargin="5" uuid="28b9a7e4-af2f-439f-b5f6-916f43b3c478">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\huangzp\\Documents\\pm\\"]]></defaultValueExpression>
+	</parameter>
+	<field name="createDate" class="java.lang.String"/>
+	<field name="projectName" class="java.lang.String"/>
+	<field name="resourceName" class="java.lang.String"/>
+	<field name="sublist" class="java.util.List"/>
+	<field name="totalFeeChinese" class="java.lang.String"/>
+	<field name="totalFee" class="java.lang.String"/>
+	<field name="remark" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="555" height="125" uuid="c03ebe4c-7866-4d52-954a-b8b51885b2c7"/>
+				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="totalFee">
+					<subreportParameterExpression><![CDATA[$F{totalFee}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="remark">
+					<subreportParameterExpression><![CDATA[$F{remark}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="createDate">
+					<subreportParameterExpression><![CDATA[$F{createDate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="projectName">
+					<subreportParameterExpression><![CDATA[$F{projectName}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="resourceName">
+					<subreportParameterExpression><![CDATA[$F{resourceName}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="totalFeeChinese">
+					<subreportParameterExpression><![CDATA[$F{totalFeeChinese}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new  net.sf.jasperreports.engine.data.JRMapCollectionDataSource($F{sublist})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "payment.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

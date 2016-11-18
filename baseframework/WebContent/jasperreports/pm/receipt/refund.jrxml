@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="refund" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f49e26b6-f6cc-4e24-a817-e20e71dfe8c2">
+	<property name="ireport.zoom" value="1.210000000000003"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="ada85a39-d07f-4cb1-8a17-53a2f55517d1"/>
+	<subDataset name="dataset1" uuid="89340770-2f2d-4abe-a16f-9863e27875ee"/>
+	<subDataset name="Table Dataset 2" uuid="f017906c-fe91-4ee5-a38d-faa157eaa43d"/>
+	<subDataset name="dataset2" uuid="b7549494-e39c-4f75-bbcf-ea44c9476525"/>
+	<subDataset name="Table Dataset 3" uuid="280bc62c-d35e-43fc-90ed-a1571b4d1930"/>
+	<parameter name="projectName" class="java.lang.String"/>
+	<parameter name="resourceName" class="java.lang.String"/>
+	<parameter name="customerName" class="java.lang.String"/>
+	<parameter name="refundNumber" class="java.lang.String"/>
+	<parameter name="receviceDate" class="java.lang.String"/>
+	<parameter name="refundFeeChinese" class="java.lang.String"/>
+	<parameter name="remark" class="java.lang.String"/>
+	<parameter name="receviceByName" class="java.lang.String"/>
+	<parameter name="refundDate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="accountName" class="java.lang.String"/>
+	<field name="paymentModeTextView" class="java.lang.String"/>
+	<field name="refundFee" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="103" splitType="Stretch">
+			<staticText>
+				<reportElement x="213" y="52" width="60" height="20" uuid="70455d4e-cf18-4c9d-a157-c7d84681281e"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[客户名称:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="52" width="32" height="22" uuid="6db08bf1-a2c9-483c-b4cf-e2279c25def9"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[时间:]]></text>
+			</staticText>
+			<textField pattern="yyyy-MM-dd">
+				<reportElement x="432" y="52" width="120" height="22" uuid="3e5999dc-a06d-4331-88f2-775460a7bec9"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{receviceDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="273" y="52" width="111" height="20" uuid="c00e9f5c-b393-4f20-add7-723c68dd838e"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="383" y="72" width="172" height="31" uuid="29a8ce7a-1157-40fb-8f21-842602f2737a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="1" y="52" width="48" height="20" uuid="09b1b49a-63cc-4158-b5ac-6da0861afc31"/>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<text><![CDATA[房号：]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="49" y="52" width="132" height="20" uuid="fe1477ab-64d8-4aef-9077-de734eff9158"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{resourceName}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="272" y="72" width="111" height="31" uuid="a29531d8-8f5f-40a0-9ad1-cbba66527281"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="272" y="72" width="111" height="31" uuid="544a3e2f-a2dc-43a6-91c5-375d7976b1cf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[退款方式]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="30" uuid="363721c0-ce87-4cca-b3c8-978a0cd9d219"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="20" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[退 款 凭 证]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="30" width="22" height="20" uuid="293104a1-b003-4474-a991-9062347584f9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[NO.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="422" y="30" width="130" height="20" uuid="3434b44e-3e72-4161-b516-72e97b9720cc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{refundNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="73" height="22" uuid="c358f7aa-7d7f-4bf9-b641-6d4b1fe1fd28"/>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<text><![CDATA[项目名称:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="73" y="30" width="278" height="22" uuid="a3b24296-3c12-4754-8632-653cddc8ba7b"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{projectName}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="1" y="72" width="271" height="31" uuid="b8da241d-f7e9-4496-bc5e-f21e5a02cb03"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="1" y="72" width="272" height="31" uuid="b96e7157-878f-42b7-9367-e766370a26e3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[计费项目]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="72" width="172" height="31" uuid="dd6c3d8d-f09c-4375-b329-06814ae1218a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[金额]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="140">
+			<rectangle>
+				<reportElement x="1" y="0" width="271" height="33" uuid="27ac5a8a-2926-4dde-9da5-d5ca879ef6e7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="272" y="0" width="111" height="33" uuid="7077975a-aefa-421c-9f76-7a66a27885e3"/>
+			</rectangle>
+			<textField>
+				<reportElement x="273" y="0" width="110" height="33" uuid="d848390a-d894-4f2a-8e8c-512e191b8632"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paymentModeTextView}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="1" y="65" width="554" height="45" uuid="2229b865-22e9-4604-8eb8-4eb942654bae"/>
+			</rectangle>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="316" y="110" width="116" height="30" uuid="ab9a70ea-7252-4664-929a-ff6db43e2eb7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{receviceByName}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd">
+				<reportElement isPrintRepeatedValues="false" x="478" y="110" width="74" height="30" uuid="9d0eb464-3ac4-4006-afe4-68ed4ac42abf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{refundDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="131" y="65" width="424" height="45" uuid="993773fa-5016-4119-818a-034869d71b06"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{remark}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="1" y="33" width="554" height="32" uuid="1cf1215a-a9aa-47a8-83cd-d96d9c3428c4"/>
+			</rectangle>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="131" y="33" width="421" height="32" uuid="b58b047d-e4c4-44aa-b32b-aa8972d3c1ff"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{refundFeeChinese}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="0" width="270" height="33" uuid="1442ff3a-3cab-45a6-a72f-05d44ec5ade7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph leftIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{accountName}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="383" y="0" width="172" height="33" uuid="64291f2b-fffa-4c29-ae0a-614e90beb05e"/>
+			</rectangle>
+			<textField pattern="###0.0">
+				<reportElement x="384" y="0" width="170" height="33" uuid="a0ee2252-d5bd-49d2-90c5-4bd5c9e85c7a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{refundFee}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="33" width="129" height="32" uuid="442e7906-0925-40a8-bf79-03d06d9e17ff"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph leftIndent="20"/>
+				</textElement>
+				<text><![CDATA[合计金额(大写):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="65" width="129" height="45" uuid="af542a16-a6e3-4799-9aee-c7bf738c62a1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph leftIndent="20"/>
+				</textElement>
+				<text><![CDATA[备注:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="273" y="110" width="43" height="30" uuid="3f9baec6-c2ab-444d-8448-1ecabc7df486"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[退款人:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="422" y="110" width="56" height="30" uuid="1422f3b5-2f13-4f51-a486-0d5f4a4dfb11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[打印时间:]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

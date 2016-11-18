@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="das" extends="default" namespace="/das">
+        <result-types>
+            <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"></result-type>
+        </result-types>
+        <action name="saleAction" class="saleAction" method="querySaleReport">
+            <result name="group" type="jasper">
+                <param name="location">/biz/das/sale/GroupReport.jasper</param>
+                <param name="dataSource">indexList</param>
+                <param name="format">HTML</param>
+            </result>
+            <result name="company" type="jasper">
+                <param name="location">/biz/das/sale/CompanyReport.jasper</param>
+                <param name="dataSource">indexList</param>
+                <param name="format">HTML</param>
+            </result>
+            <result name="project" type="jasper">
+                <param name="location">/biz/das/sale/ProjectReport.jasper</param>
+                <param name="dataSource">indexList</param>
+                <param name="format">HTML</param>
+            </result>
+        </action>
+    </package>
+</struts>

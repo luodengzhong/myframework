@@ -1,0 +1,111 @@
+{
+    "textTags": [
+        {
+            "x": 100,
+            "background_color": "#065A85,#3EB1ED",
+            "font_size": "14px",
+            "uuid": "0BAD82A1-BB33-1486-7251-7012E3A4991C",
+            "eclipse": 6,
+            "color": "#0B333C",
+            "y": 100,
+            "border": "2 #67BABC",
+            "text": "投资机会分析",
+            "width": 140,
+            "height": 40
+        },
+        {
+            "x": 356,
+            "background_color": "#ffffff",
+            "font_size": "14px",
+            "uuid": "43FEE4FE-BF9D-7840-F039-7012E3A44FC2",
+            "eclipse": 16,
+            "color": "#000000",
+            "y": 348,
+            "border": "2 #000000",
+            "text": "招标拍卖取得土地\n使用权"
+        },
+        {
+            "x": 572,
+            "background_color": "#ffffff",
+            "font_size": "14px",
+            "uuid": "E9664783-CD26-F670-E9F4-7012E3A40FBB",
+            "eclipse": 16,
+            "color": "#000000",
+            "y": 316,
+            "border": "2 #000000",
+            "text": "申领项目建议书"
+        },
+        {
+            "x": 668,
+            "background_color": "#ffffff",
+            "font_size": "14px",
+            "uuid": "E92A8077-77AD-EEB5-BDDE-7012E3A44FA7",
+            "eclipse": 16,
+            "color": "#000000",
+            "y": 124,
+            "border": "2 #000000",
+            "text": "向规划局申领建设项\n目选址意见书"
+        }
+    ],
+    "lines": [
+        {
+            "from": "CD0A0DE0-E3B1-BE69-2F13-70130611B218",
+            "to_type": "fold",
+            "from_type": "fold",
+            "type": "standard",
+            "to": "FA7E47F6-D9D2-CF37-6ED3-70130D74DF5F"
+        },
+        {
+            "from": "CD0A0DE0-E3B1-BE69-2F13-70130611B218",
+            "to_type": "text",
+            "from_type": "fold",
+            "type": "standard",
+            "to": "E92A8077-77AD-EEB5-BDDE-7012E3A44FA7"
+        },
+        {
+            "from": "E9664783-CD26-F670-E9F4-7012E3A40FBB",
+            "to_type": "fold",
+            "from_type": "text",
+            "type": "standard",
+            "to": "FA7E47F6-D9D2-CF37-6ED3-70130D74DF5F"
+        },
+        {
+            "from": "E9664783-CD26-F670-E9F4-7012E3A40FBB",
+            "to_type": "text",
+            "from_type": "text",
+            "type": "dashed",
+            "to": "43FEE4FE-BF9D-7840-F039-7012E3A44FC2"
+        },
+        {
+            "from": "43FEE4FE-BF9D-7840-F039-7012E3A44FC2",
+            "to_type": "text",
+            "from_type": "text",
+            "type": "bold",
+            "to": "0BAD82A1-BB33-1486-7251-7012E3A4991C"
+        }
+    ],
+    "foldPoints": [
+        {
+            "x": 460,
+            "y": 136,
+            "uuid": "CD0A0DE0-E3B1-BE69-2F13-70130611B218"
+        },
+        {
+            "x": 432,
+            "y": 240,
+            "uuid": "FA7E47F6-D9D2-CF37-6ED3-70130D74DF5F"
+        }
+    ],
+    "routes": [
+        {
+            "from": "43FEE4FE-BF9D-7840-F039-7012E3A44FC2",
+            "type": "bold",
+            "to": "0BAD82A1-BB33-1486-7251-7012E3A4991C"
+        },
+        {
+            "from": "E9664783-CD26-F670-E9F4-7012E3A40FBB",
+            "type": "dashed",
+            "to": "43FEE4FE-BF9D-7840-F039-7012E3A44FC2"
+        }
+    ]
+}

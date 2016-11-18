@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+	<entity name="dictionary" label="系统字典" table="SYS_DICTIONARY">
+		<id column="DICT_ID" name="dictId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="CODE" name="code" type="java.lang.String" length="50" required="true" label="编码"/>
+		<property column="NAME" name="name" type="java.lang.String" length="50" required="true" label="名称"/>
+		<property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="true" label="父编码"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" length="22" required="true" label="状态" default-expr="0" fill-kind="insert"/>
+		<property column="REMARK" name="remark" type="java.lang.String" length="500" required="false" label="备注"/>
+		<property column="KIND" name="kind" type="java.lang.Integer" length="22" required="true" label="类别"/>
+		<version column="VERSION" name="version" type="java.lang.Long"/>
+		<condition column="CODE" name="code" symbol="like"/>
+		<condition column="NAME" name="name" symbol="like"/>
+		<condition column="PARENT_ID" name="parentId" symbol="="/>
+		<condition column="KIND" name="kind" symbol="="/>
+		<condition column="STATUS" name="status" symbol="="/>
+		<sql name="getStatus">
+			select status,name from SYS_DICTIONARY where DICT_ID=?
+		</sql>
+		<sql name="plugInLoad">
+			SELECT c.code, d.value, d.name, d.remark, d.type
+			  FROM sys_dictionary c, sys_dictionary_detail d
+			 where c.dict_id = d.dict_id
+			   and c.status = 1
+			   and d.status = 1
+			 order by d.sequence asc
+		</sql>
+	</entity>
+	<entity name="dictionaryDetail" label="系统字典成员" table="SYS_DICTIONARY_DETAIL">
+		<id column="DETAIL_ID" name="detailId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="DICT_ID" name="dictId" type="java.lang.Long" length="22" required="true" label="dict_ID"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="排序号"/>
+		<property column="VALUE" name="value" type="java.lang.String" length="128" required="true" label="成员值"/>
+		<property column="NAME" name="name" type="java.lang.String" length="256" required="true" label="成员名称"/>
+		<property column="REMARK" name="remark" type="java.lang.String" length="256" required="false" label="备注"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" length="22" required="true" label="状态" default-expr="0" fill-kind="insert"/>
+		<property column="TYPE" name="type" type="java.lang.String" length="20" required="true" label="分类"/>
+		<version column="VERSION" name="version" type="java.lang.Long"/>
+		<condition column="DICT_ID" name="dictId" symbol="="/>
+		<sql name="getStatus">
+			select status,name from SYS_DICTIONARY_DETAIL where DETAIL_ID=?
+		</sql>
+	</entity>
+</domain>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+	<entity name="agent" label="代理" table="SA_OPAGENT" >
+		<id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="ORG_ID" name="orgId" type="java.lang.String" length="65" required="false" label="组织机构ID" />
+		<property column="ORG_NAME" name="orgName" type="java.lang.String" length="128" required="false" label="组织机构名称" />
+		<property column="ORG_FULL_ID" name="orgFullId" type="java.lang.String" length="1024" required="false" label="组织机构ID全路径" />
+		<property column="ORG_FULL_NAME" name="orgFullName" type="java.lang.String" length="1024" required="false" label="组织机构名称全路径" />
+		<property column="AGENT_ID" name="agentId" type="java.lang.String" length="65" required="false" label="代理人ID" />
+		<property column="AGENT_NAME" name="agentName" type="java.lang.String" length="32" required="false" label="代理人" />
+	    <property column="PROC_AGENT_KIND_ID" name="procAgentKindId" type="java.lang.Integer" required="false" label="代理方式id" />	
+		<property column="START_DATE" name="startDate" type="java.util.Date" length="7" required="false" label="开始时间" />
+		<property column="FINISH_DATE" name="finishDate" type="java.util.Date" length="7" required="false" label="结束时间" />
+		<property column="CREATOR_ID" name="creatorId" type="java.lang.String" length="65" required="false" label="创建人ID" />
+		<property column="CREATOR_NAME" name="creatorName" type="java.lang.String" length="128" required="false" label="创建人" />
+		<property column="CREATE_DATE" name="createDate" type="java.util.Date"  required="false" label="创建时间" />
+		<property column="CAN_TRAN_AGENT" name="canTranAgent" type="java.math.BigDecimal" length="22" required="false" label="是否允许把代理工作转交给其他人" />
+		<property column="STATUS" name="status" type="java.lang.Integer" length="22" required="false" label="1 启用 0 禁用" />
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" />
+		<sql name="selectAgent">
+			select *
+			  from sa_opagent agent
+			 where (agent.org_id like :personId
+			    or agent.agent_id like :agentPersonId)
+		</sql>	
+		<!-- 加载有效的代 -->
+		<sql name="loadValidAgent">
+				select *
+				  from sa_opagent t
+				 where t.org_id = :orgId
+				   and t.status = 1
+				   and sysdate between t.start_date and t.finish_date
+		</sql>
+		
+		<condition column="ID" name="id" symbol="=" alias="" />
+		<condition column="CREATOR_ID" name="creatorId" symbol="=" alias="" />
+		 <condition column="START_DATE" name="beginDate" type="java.util.Date" symbol="&gt;="/>
+		<condition column="START_DATE" name="endDate" type="java.util.Date" symbol="&lt;="/>
+	</entity>
+	
+	<entity name="agentProc" label="代理流程" table="SA_OPAGENTPROC" >
+		<id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="AGENT_ID" name="agentId" type="java.lang.Long" length="22" required="false" label="代理Id" />
+		<property column="PROC_ID" name="procId" type="java.lang.String" length="64" required="false" label="流程ID" />
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" />
+		<sql-query>
+			select agentProc.*, proc.full_name, proc.key proc_name
+			  from sa_opagentproc agentProc, act_re_procdef_tree proc
+			 where agentProc.Proc_Id = proc.re_procdef_tree_id
+		</sql-query>
+		<condition column="AGENT_ID" name="agentId" symbol="=" alias="" />
+	</entity>
+
+</domain>

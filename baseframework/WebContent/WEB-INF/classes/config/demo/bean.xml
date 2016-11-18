@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+   <bean id="customEventHandler" 
+      class="com.brc.demo.event.CustomEventHandler"/>
+    <bean id="customEventHandler1" 
+      class="com.brc.demo.event.CustomEventHandler1"/>   
+   <bean id="customEventPublisher" 
+      class="com.brc.demo.event.CustomEventPublisher"/>
+</beans>

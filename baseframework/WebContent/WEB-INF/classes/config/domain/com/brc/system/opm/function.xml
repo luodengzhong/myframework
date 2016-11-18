@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+
+	<entity name="baseFunctionType" label="基础职能角色" table="SA_OPBASEFUNCTIONTYPE" >
+		<id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="FOLDER_ID" name="folderId" type="java.lang.Long" length="22" required="false" label="文件夹ID" />
+		<property column="CODE" name="code" type="java.lang.String" length="32" required="false" label="编码" />
+		<property column="NAME" name="name" type="java.lang.String" length="64" required="false" label="名称" />
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="排序号" />
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" />
+		
+		<sql name = "selectBaseFunctionType">
+			<![CDATA[
+			select * from SA_OPBaseFunctionType where id = ?
+			]]>
+		</sql>
+		
+		<sql name ="checkBaseFunctionTypeExistSql">
+			<![CDATA[
+			select code, name from SA_OPBaseFunctionType where Id <> ? and (upper(code) = ? or upper(name) = ?) and rownum = 1
+			]]>
+		</sql>
+		<sql name="checkBaseFunctionTypeReferencedByBizFunctionSql">
+			<![CDATA[
+				select *
+				  from SA_OPBizFunction t
+				 where t.id in (select bob.biz_function_id
+				                  from SA_OPBizFunctionOwnBase bob
+				                 where bob.base_function_type_id = ?)
+				   and rownum = 1
+			]]>
+		</sql>
+		<!-- 选择授权的项目组织业务岗类型 -->
+		<sql name="selectAuthorisedBaseFunctionType">
+		   <![CDATA[
+				select 'BaseFunType' node_kind_id, b.id, b.folder_id parent_id, b.code,
+				       b.name, b.sequence
+				  from SA_OPBaseFunctionType B 
+				union all 
+				select 'Folder' node_kind_id, t.id, t.parent_id, t.code, t.name, t.sequence
+				  from SYS_CommonTree t
+				 where t.kind_id = 33
+			]]>	 
+		</sql>
+		
+		<condition column="CODE" name="code" symbol="like" alias=""/>
+		<condition column="NAME" name="name" symbol="like" alias=""/>
+		<condition column="FOLDER_ID" name="folderId" symbol="=" alias=""/>
+	</entity>
+	
+	<entity name="bizFunction" label="业务职能角色" table="SA_OPBIZFUNCTION" >
+		<id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="ORG_ID" name="orgId" type="java.lang.String" length="32" required="false" label="组织ID" />
+		<property column="CODE" name="code" type="java.lang.String" length="32" required="false" label="编码" />
+		<property column="NAME" name="name" type="java.lang.String" length="64" required="false" label="名称" />
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="排序号" />
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" />
+		
+		<sql name = "selectBizFunction">
+			<![CDATA[
+			select * from SA_OPBizFunction where id = ?
+			]]>
+		</sql>
+		
+		<sql name ="checkBizFunctionExistSql">
+			<![CDATA[
+			select code, name from SA_OPBizFunction where Id <> ? and (upper(code) = ? or upper(name) = ?)  and rownum = 1
+			]]>
+		</sql>
+		<sql name="checkBizFunctionReferencedByOrgSql">
+			<![CDATA[
+				select * from SA_OPOrg where Type_id = ? and rownum = 1 
+			]]>
+		</sql>
+		<condition column="CODE" name="code" symbol="like" alias=""/>
+		<condition column="NAME" name="name" symbol="like" alias=""/>
+		<condition column="ORG_ID" name="orgId" symbol="=" alias=""/>
+	</entity>
+
+	<entity name="bizFunctionOwnBase" label="业务职能角色对应基础职能" table="SA_OPBIZFUNCTIONOWNBASE" >
+		<id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="BIZ_FUNCTION_ID" name="bizFunctionId" type="java.lang.Long" length="22" required="false" label="BizFunctionTypeId" />
+		<property column="BASE_FUNCTION_TYPE_ID" name="baseFunctionTypeId" type="java.lang.Long" length="22" required="false" label="BaseFunctionTypeID" />
+		<property column="CODE" name="code" type="java.lang.String" length="32" required="false" label="编码" insert="false" update="false"  />
+		<property column="NAME" name="name" type="java.lang.String" length="64" required="false" label="名称" insert="false" update="false" />
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" />
+		<sql-query>
+			select o.*, t.code, t.name
+			  from SA_OPBizFunctionOwnBase o, SA_OPBaseFunctionType t
+			 where o.base_function_type_id = t.id
+		</sql-query>
+		<sql name="selectByBaseFunctionTypeIdSql">
+			select * from SA_OPBizFunctionOwnBase where biz_function_id = ? and base_function_type_id = ?			
+		</sql>
+		<condition column="BIZ_FUNCTION_ID" name="bizFunctionId" symbol="=" alias="o"/>
+	</entity>
+
+</domain>

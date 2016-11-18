@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+	<entity name="userScreen" label="用户桌面分屏设置" table="SYS_PERSON_SCREEN">
+		<id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="PERSON_MEMBER_ID" name="personMemberId" type="java.lang.String" length="65" required="true" label=""/>
+		<property column="PERSON_ID" name="personId" type="java.lang.String" length="32" required="true" label=""/>
+		<sql-query><![CDATA[
+			select f.id as function_id,
+			       f.icon,
+			       nvl(f.description, f.name) as title,
+			       f.url as location,
+			       s.id as screen_id,
+			       s.person_member_id
+			  from SA_OPFunction f, sys_person_screen s, sys_person_screen_function uf
+			 where s.id = uf.screen_id
+			   and f.id = uf.function_id
+			   and f.status = 1
+			   and f.id in
+			       (select p.function_id
+			          from SA_OPOrg o, SA_OPAuthorize a, SA_OPRole r, SA_OPPermission p
+			         where o.person_id = :personId
+			           and o.status = 1
+			           and o.org_kind_id = 'psm'
+			           and o.full_id like a.org_full_id || '%'
+			           and r.status = 1
+			           and p.permission_kind='fun'
+			           and a.role_id = r.id
+			           and p.role_id = r.id)
+			   and s.person_id = :personId
+			 order by s.id, uf.sequence asc
+		 ]]></sql-query>
+		<sql name="getUserScreen">select id,person_member_id,person_id from sys_person_screen where person_id = ? order by id asc</sql>
+	</entity>
+	<entity name="userScreenFunction" label="用户分屏应用记录表" table="SYS_PERSON_SCREEN_FUNCTION">
+		<id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="SCREEN_ID" name="screenId" type="java.lang.Long" length="22" required="true" label="分屏ID"/>
+		<property column="FUNCTION_ID" name="functionId" type="java.lang.Long" length="22" required="false" label="功能ID"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="排序号"/>
+		<condition column="SCREEN_ID" name="screenId" symbol="="/>
+		<sql name="rootFunction">
+			select f.id as function_id, f.icon,nvl(f.description,f.name) as title, f.url as location
+			  from SA_OPFunction f
+			 where f.status = 1
+			   and f.id in
+			       (select p.function_id
+			          from SA_OPOrg o, SA_OPAuthorize a, SA_OPRole r, SA_OPPermission p
+			         where o.person_id = :personId
+			           and o.status = 1
+			           and o.org_kind_id = 'psm'
+			           and p.permission_kind='fun'
+			           and o.full_id like a.org_full_id || '%'
+			           and r.status = 1
+			           and a.role_id = r.id
+			           and p.role_id = r.id)
+			   and f.status = 1
+			   and f.parent_id = :parentId
+			 order by sequence asc
+		</sql>
+		<sql name="rootFunctionForJob">
+		 select f.id as function_id,
+			       f.icon,
+			       nvl(f.description, f.name) as title,
+			       f.url as location
+			  from sa_opfunction f
+			 where f.status = 1
+			   and f.parent_id = :parentId 
+			   and f.id in
+			       (select p.function_id
+			          from sa_oporg o, sa_opauthorize a, sa_oprole r, sa_oppermission p
+			         where o.person_id = :personId
+			           and o.status = 1
+			           and o.org_kind_id = 'psm'
+			           and p.permission_kind = 'fun'
+			           and o.full_id like a.org_full_id || '%'
+			           and r.status = 1
+			           and a.role_id = r.id
+			           and p.role_id = r.id)
+			   and exists (select 0
+			          from sa_opfunction t
+			         where t.url like '%.job%'
+			         start with t.parent_id = f.id
+			        connect by prior t.id = t.parent_id)
+			 order by sequence asc
+		</sql>
+		<sql name="leafFunction">
+			select f.id as function_id,
+			       f.icon,
+			       nvl(f.description, f.name) as title,
+			       f.url as location
+			  from SA_OPFunction f
+			 where f.id in
+			       (select p.function_id
+			          from SA_OPOrg o, SA_OPAuthorize a, SA_OPRole r, SA_OPPermission p
+			         where o.person_id = :personId
+			           and o.status = 1
+			           and o.org_kind_id = 'psm'
+			           and p.permission_kind='fun'
+			           and o.full_id like a.org_full_id || '%'
+			           and r.status = 1
+			           and a.role_id = r.id
+			           and p.role_id = r.id)
+			   and f.status = 1
+			   and f.url is not null
+			 start with f.parent_id = :parentId 
+			connect by prior f.id = f.parent_id
+			 order by pkg_com.f_get_function_full_sequence( f.id) asc
+		</sql>
+		<sql name="leafFunctionForJob">
+			 select f.id as function_id,
+			       f.icon,
+			       nvl(f.description, f.name) as title,
+			       f.full_name,
+			       f.url as location
+			  from SA_OPFunction f, sa_opfunction_usage_amount u
+			 where f.status = 1
+			   and f.url like '%.job%'
+			   and f.id = u.function_id(+)
+			   and f.id in
+			       (select p.function_id
+			          from SA_OPOrg o, SA_OPAuthorize a, SA_OPRole r, SA_OPPermission p
+			         where o.person_id = :personId
+			           and o.status = 1
+			           and o.org_kind_id = 'psm'
+			           and p.permission_kind = 'fun'
+			           and o.full_id like a.org_full_id || '%'
+			           and r.status = 1
+			           and a.role_id = r.id
+			           and p.role_id = r.id)
+			 start with f.parent_id = :parentId 
+			connect by prior f.id = f.parent_id
+			 order by nvl(u.usage_amount, 0) desc,
+			          pkg_com.f_get_function_full_sequence(f.id) asc
+		</sql>
+		<sql name="queryOftenUseFunction">
+			select f.id as function_id,
+			       f.icon,
+			       f.code,
+			       nvl(u.view_name,f.name) as title,
+			       f.full_name,
+			       f.url as location
+			  from SA_OPFunction f, sa_often_use_function u
+			 where f.status = 1
+			   and f.id = u.function_id
+			   and f.id in
+			       (select p.function_id
+			          from SA_OPOrg o, SA_OPAuthorize a, SA_OPRole r, SA_OPPermission p
+			         where o.person_id = :personId
+			           and o.status = 1
+			           and o.org_kind_id = 'psm'
+			           and p.permission_kind = 'fun'
+			           and o.full_id like a.org_full_id || '%'
+			           and r.status = 1
+			           and a.role_id = r.id
+			           and p.role_id = r.id)
+			 order by u.sequence
+		</sql>
+	</entity>
+</domain>

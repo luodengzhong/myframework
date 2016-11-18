@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brc.pa.projectdata.mapper.TransactionHandleMapper">
+	<insert id="insert" parameterType="transactionHandle">
+		INSERT INTO PA_TRANSACTION_HANDLE(TRANSACTION_HANDLE_ID, PROJECT_ID, PROJECT_NODE_ID, TRANSACTION_DEFINE_ID, NAME, TIME_LIMIT, CONTENT, STATUS, START_CREATOR_ID,
+		START_CREATION_TIME, END_CREATOR_ID, END_CREATION_TIME, SEQUENCE, VERSION)
+		VALUES(PA_ID_SEQ.nextval,#{projectId, jdbcType=CHAR}, ${projectNodeId}, ${transactionDefineId}, #{name, jdbcType=VARCHAR}, ${timeLimit}, #{content, jdbcType=VARCHAR}, ${status}, #{startCreatorId,
+		jdbcType=VARCHAR}, #{startCreationTime, jdbcType=TIMESTAMP}, #{endCreatorId, jdbcType=VARCHAR}, #{endCreationTime, jdbcType=TIMESTAMP}, ${sequence},
+		PA_VERSION_SEQ.nextval)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO PA_TRANSACTION_HANDLE(TRANSACTION_HANDLE_ID, PROJECT_ID, PROJECT_NODE_ID, TRANSACTION_DEFINE_ID,
+		NAME, TIME_LIMIT, CONTENT, STATUS, START_CREATOR_ID, START_CREATION_TIME, END_CREATOR_ID, END_CREATION_TIME,
+		SEQUENCE, VERSION)
+		SELECT PA_ID_SEQ.nextval,t.*,PA_VERSION_SEQ.nextval FROM (
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			SELECT #{item.projectId, jdbcType=CHAR} as PROJECT_ID, ${item.projectNodeId} as PROJECT_NODE_ID,
+			${item.transactionDefineId} as TRANSACTION_DEFINE_ID, #{item.name, jdbcType=VARCHAR} as NAME,
+			${item.timeLimit} as TIME_LIMIT, #{item.content, jdbcType=VARCHAR} as CONTENT, ${item.status} as STATUS,
+			#{item.startCreatorId, jdbcType=VARCHAR} as START_CREATOR_ID, #{item.startCreationTime, jdbcType=TIMESTAMP} as
+			START_CREATION_TIME, #{item.endCreatorId, jdbcType=VARCHAR} as END_CREATOR_ID,
+			#{item.endCreationTime, jdbcType=TIMESTAMP} as END_CREATION_TIME, ${item.sequence} as SEQUENCE FROM DUAL
+		</foreach>
+		) t
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long" statementType="CALLABLE">
+		{call p_pa_delete_Transaction_Handle(#{id})}
+	</delete>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		DELETE FROM PA_TRANSACTION_HANDLE WHERE TRANSACTION_HANDLE_ID IN
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<update id="update" parameterType="transactionHandle">
+		UPDATE PA_TRANSACTION_HANDLE
+		<set>
+			<if test="projectId != null and projectId > 0">
+				PROJECT_ID=#{projectId, jdbcType=CHAR},
+			</if>
+			<if test="projectNodeId != null">
+				PROJECT_NODE_ID=${projectNodeId},
+			</if>
+			<if test="transactionDefineId != null">
+				TRANSACTION_DEFINE_ID=${transactionDefineId},
+			</if>
+			<if test="name != null">
+				NAME=#{name, jdbcType=VARCHAR},
+			</if>
+			<if test="timeLimit != null">
+				TIME_LIMIT=${timeLimit},
+			</if>
+			<if test="content != null">
+				CONTENT=#{content, jdbcType=VARCHAR},
+			</if>
+			<if test="status != null and status > -1">
+				STATUS=${status},
+			</if>
+			<if test="startCreatorId != null">
+				START_CREATOR_ID=#{startCreatorId, jdbcType=VARCHAR},
+			</if>
+			<if test="startCreationTime != null">
+				START_CREATION_TIME=#{startCreationTime, jdbcType=TIMESTAMP},
+			</if>
+			<if test="endCreatorId != null">
+				END_CREATOR_ID=#{endCreatorId, jdbcType=VARCHAR},
+			</if>
+			<if test="endCreationTime != null">
+				END_CREATION_TIME=#{endCreationTime, jdbcType=TIMESTAMP},
+			</if>
+			<if test="sequence != null">
+				SEQUENCE=${sequence},
+			</if>
+		</set>
+		WHERE TRANSACTION_HANDLE_ID = #{transactionHandleId}
+	</update>
+
+
+	<update id="updateSequence" parameterType="transactionHandle">
+		UPDATE PA_TRANSACTION_HANDLE SET SEQUENCE = #{sequence}
+		WHERE TRANSACTION_HANDLE_ID = #{transactionHandleId}
+	</update>
+
+	<select id="load" parameterType="java.lang.Long" resultType="transactionHandle">
+		SELECT TRANSACTION_HANDLE_ID as transactionHandleId, PROJECT_ID as projectId, PROJECT_NODE_ID as projectNodeId,
+		TRANSACTION_DEFINE_ID as transactionDefineId, NAME as name, TIME_LIMIT as timeLimit, CONTENT as content,STATUS as status， START_CREATOR_ID as startCreatorId,
+		START_CREATION_TIME as startCreationTime,END_CREATOR_ID as endCreatorId,END_CREATION_TIME as endCreationTime, SEQUENCE as sequence, VERSION as version FROM PA_TRANSACTION_HANDLE
+		WHERE TRANSACTION_HANDLE_ID=#{id}
+	</select>
+
+	<select id="queryAll" parameterType="java.util.Map" resultType="transactionHandle">
+		SELECT t.TRANSACTION_HANDLE_ID as transactionHandleId, t.PROJECT_ID as projectId,
+		t.PROJECT_NODE_ID as projectNodeId,t.TRANSACTION_DEFINE_ID as transactionDefineId,
+		t.NAME as name, t.TIME_LIMIT as timeLimit, t.CONTENT as content,t.STATUS
+		as status， t.START_CREATOR_ID as startCreatorId,
+		(SELECT t1.NAME FROM SA_OPPERSON t1 where t.START_CREATOR_ID=t1.ID) as startCreatorName,
+		t.START_CREATION_TIME as startCreationTime,t.END_CREATOR_ID as endCreatorId,
+		(SELECT t2.NAME FROM SA_OPPERSON t2 where t.END_CREATOR_ID=t2.ID) as endCreatorName,
+		t.END_CREATION_TIME as endCreationTime,
+		t.SEQUENCE as sequence, t.VERSION as version FROM PA_TRANSACTION_HANDLE t
+		<where>
+			<if test="projectId != null and projectId > 0">
+				AND t.PROJECT_ID=${projectId}
+			</if>
+			<if test="projectNodeId != null and projectNodeId > 0">
+				AND t.PROJECT_NODE_ID=${projectNodeId}
+			</if>
+			<if test="transactionDefineId != null and transactionDefineId > 0">
+				AND t.TRANSACTION_DEFINE_ID=${transactionDefineId}
+			</if>
+			<if test="name != null and name != ''">
+				AND t.NAME like concat(concat('%',#{name}),'%')
+			</if>
+			<if test="timeLimit != null and timeLimit > 0">
+				AND t.TIME_LIMIT=${timeLimit}
+			</if>
+			<if test="content != null and content != ''">
+				AND t.CONTENT like concat(concat('%',#{content}),'%')
+			</if>
+			<if test="status != null and status > 0">
+				AND t.STATUS = ${status}
+			</if>
+			<if test="startCreatorId != null and startCreatorId > 0">
+				AND t.START_CREATOR_ID=#{startCreatorId}
+			</if>
+			<if test="endCreatorId != null and endCreatorId > 0">
+				AND t.CREATOR_ID=#{endCreatorId}
+			</if>
+			<if test="sequence != null">
+				AND t.SEQUENCE=${sequence}
+			</if>
+		</where>
+		ORDER BY SEQUENCE ASC
+	</select>
+
+	<select id="slicedQuery" parameterType="java.util.Map" resultType="transactionHandle">
+		<!-- SELECT t.TRANSACTION_HANDLE_ID as transactionHandleId, t.PROJECT_ID as projectId, t.PROJECT_NODE_ID as projectNodeId,t.TRANSACTION_DEFINE_ID as transactionDefineId, 
+			t.NAME as name, t.TIME_LIMIT as timeLimit, t.CONTENT as content,t.STATUS as status， t.START_CREATOR_ID as startCreatorId, (SELECT t1.NAME FROM SA_OPPERSON t1 where 
+			t.START_CREATOR_ID=t1.ID) as startCreatorName, t.START_CREATION_TIME as startCreationTime,t.END_CREATOR_ID as endCreatorId, (SELECT t2.NAME FROM SA_OPPERSON t2 where 
+			t.END_CREATOR_ID=t2.ID) as endCreatorName, t.END_CREATION_TIME as endCreationTime, t.SEQUENCE as sequence, t.VERSION as version FROM PA_TRANSACTION_HANDLE t <where> 
+			<if test="projectId != null and projectId > 0"> AND t.PROJECT_ID=${projectId} </if> <if test="projectNodeId != null and projectNodeId > 0"> AND t.PROJECT_NODE_ID=${projectNodeId} 
+			</if> <if test="transactionDefineId != null and transactionDefineId > 0"> AND t.TRANSACTION_DEFINE_ID=${transactionDefineId} </if> <if test="name != null and name 
+			!= ''"> AND t.NAME like concat(concat('%',#{name}),'%') </if> <if test="timeLimit != null and timeLimit > 0"> AND t.TIME_LIMIT=${timeLimit} </if> <if test="content 
+			!= null and content != ''"> AND t.CONTENT like concat(concat('%',#{content}),'%') </if> <if test="status != null and status > 0"> AND t.STATUS = ${status} </if> 
+			<if test="startCreatorId != null and startCreatorId > 0"> AND t.START_CREATOR_ID=#{startCreatorId} </if> <if test="endCreatorId != null and endCreatorId > 0"> AND 
+			t.CREATOR_ID=#{endCreatorId} </if> <if test="sequence != null"> AND t.SEQUENCE=${sequence} </if> </where> ORDER BY ${sortname} ${sortorder} OFFSET (${page}-1)*${pagesize} 
+			ROWS FETCH NEXT ${pagesize} ROWS ONLY -->
+
+		SELECT TRANSACTION_HANDLE_ID as transactionHandleId, PROJECT_ID as projectId, PROJECT_NODE_ID as projectNodeId, TRANSACTION_DEFINE_ID as transactionDefineId,
+		NAME as name, TIME_LIMIT as timeLimit, CONTENT as content, STATUS as status, START_CREATOR_ID as startCreatorId,
+		(SELECT t1.NAME FROM SA_OPPERSON t1 where t.START_CREATOR_ID=t1.ID) as startCreatorName, START_CREATION_TIME as startCreationTime, END_CREATOR_ID as endCreatorId,
+		(SELECT t2.NAME FROM SA_OPPERSON t2 where t.END_CREATOR_ID=t2.ID) as endCreatorName, END_CREATION_TIME as endCreationTime, SEQUENCE as sequence, VERSION as
+		version FROM (select t.TRANSACTION_HANDLE_ID, t.PROJECT_ID, t.PROJECT_NODE_ID, t.TRANSACTION_DEFINE_ID, t.NAME, t.TIME_LIMIT, t.CONTENT, t.STATUS, t.START_CREATOR_ID, t.START_CREATION_TIME, t.END_CREATOR_ID, t.END_CREATION_TIME, t.SEQUENCE, t.VERSION,ROWNUM RN FROM PA_TRANSACTION_HANDLE t
+		<where>
+			<if test="projectId != null and projectId > 0">
+				AND t.PROJECT_ID=${projectId}
+			</if>
+			<if test="projectNodeId != null and projectNodeId > 0">
+				AND t.PROJECT_NODE_ID=${projectNodeId}
+			</if>
+			<if test="transactionDefineId != null and transactionDefineId > 0">
+				AND t.TRANSACTION_DEFINE_ID=${transactionDefineId}
+			</if>
+			<if test="name != null and name != ''">
+				AND t.NAME like concat(concat('%',#{name}),'%')
+			</if>
+			<if test="timeLimit != null and timeLimit > 0">
+				AND t.TIME_LIMIT=${timeLimit}
+			</if>
+			<if test="content != null and content != ''">
+				AND t.CONTENT like concat(concat('%',#{content}),'%')
+			</if>
+			<if test="status != null and status > 0">
+				AND t.STATUS = ${status}
+			</if>
+			<if test="startCreatorId != null and startCreatorId > 0">
+				AND t.START_CREATOR_ID=#{startCreatorId}
+			</if>
+			<if test="endCreatorId != null and endCreatorId > 0">
+				AND t.CREATOR_ID=#{endCreatorId}
+			</if>
+			<if test="sequence != null">
+				AND t.SEQUENCE=${sequence}
+			</if>
+		</where>
+		ORDER BY ${sortname} ${sortorder}
+		) t
+		WHERE RN > (${page}-1)*${pagesize} AND RN &lt;= ${page}*${pagesize}
+
+	</select>
+
+	<select id="getRecordCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT COUNT(0) FROM PA_TRANSACTION_HANDLE t
+		<where>
+			<if test="projectId != null and projectId > 0">
+				AND t.PROJECT_ID=${projectId}
+			</if>
+			<if test="projectNodeId != null and projectNodeId > 0">
+				AND t.PROJECT_NODE_ID=${projectNodeId}
+			</if>
+			<if test="transactionDefineId != null and transactionDefineId > 0">
+				AND t.TRANSACTION_DEFINE_ID=${transactionDefineId}
+			</if>
+			<if test="name != null and name != ''">
+				AND t.NAME like concat(concat('%',#{name}),'%')
+			</if>
+			<if test="timeLimit != null and timeLimit > 0">
+				AND t.TIME_LIMIT=${timeLimit}
+			</if>
+			<if test="content != null and content != ''">
+				AND t.CONTENT like concat(concat('%',#{content}),'%')
+			</if>
+			<if test="status != null and status > 0">
+				AND t.STATUS = ${status}
+			</if>
+			<if test="startCreatorId != null and startCreatorId > 0">
+				AND t.START_CREATOR_ID=#{startCreatorId}
+			</if>
+			<if test="endCreatorId != null and endCreatorId > 0">
+				AND t.CREATOR_ID=#{endCreatorId}
+			</if>
+			<if test="sequence != null">
+				AND t.SEQUENCE=${sequence}
+			</if>
+			<if test="completeStatus != null and completeStatus > 0">
+				AND t.STATUS != ${completeStatus}
+			</if>
+		</where>
+	</select>
+
+	<select id="getNextSequence" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT NVL(MAX(SEQUENCE),0) + 1 FROM PA_TRANSACTION_HANDLE WHERE PROJECT_ID=${projectId} and PROJECT_NODE_ID=${projectNodeId}
+	</select>
+</mapper>

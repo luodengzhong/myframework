@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+	<entity name="baseManagementType" label="基础管理权限类别" table="SA_OPBASEMANAGEMENTTYPE">
+		<id column="ID" name="id" type="java.lang.Long" sequence="SEQ_ID"/>
+		<property column="CODE" name="code" type="java.lang.String" length="64" required="false" label="编码"/>
+		<property column="NAME" name="name" type="java.lang.String" length="128" required="false" label="名称"/>
+		<property column="BIZ_MANAGEMENT_TYPE_ID" name="bizManagementTypeId" type="java.lang.Long" required="false" label="业务权限ID"/>
+		<property column="biz_management_type_name" name="bizManagementTypeName" type="java.lang.String" length="128" required="false" label="业务权限ID" update="false" insert="false"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Integer" required="false" label="排序号"/>
+		<property column="REMARK" name="remark" type="java.lang.String" length="128" required="false" label="备注"/>	
+		<version column="VERSION" name="version" type="java.lang.Long" required="false" label="版本号"/>
+		<property column="FOLDER_ID" name="folderId" type="java.lang.Long" required="false" label="目录ID"/>
+		<sql-query>
+			select a.id, a.code, a.name, a.biz_management_type_id, a.sequence, a.remark,
+			       a.version, b.Name as biz_management_type_name
+			  from SA_OPBaseManagementType a, SA_OPBizManagementType b
+			 where a.biz_management_type_id = b.id(+)
+		</sql-query>
+		<sql-detail>
+		   select a.*, b.Name as biz_management_type_name from SA_OPBaseManagementType a, SA_OPBizManagementType b where a.biz_management_type_id = b.id(+) and a.id = :id
+		</sql-detail>
+		<sql name="checkBaseManagementTypeExistSql">
+			<![CDATA[
+			select code, name from SA_OPBaseManagementType where id <> ? and (upper(code) = ? or upper(name) = ?)
+			]]>
+		</sql>
+		<condition column="CODE" name="code" symbol="like" alias="a"/>
+		<condition column="NAME" name="name" symbol="like" alias="a"/>
+		<condition column="FOLDER_ID" name="folderId" symbol="=" alias="a"/>		
+		
+	</entity>
+	<entity name="bizManagementType" label="业务管理权限类别" table="SA_OPBIZMANAGEMENTTYPE">
+		<id column="ID" name="id" type="java.lang.Long" sequence="SEQ_ID"/>
+		<property column="PARENT_ID" name="parentId" type="java.lang.Long" required="false" label="父节点ID"/>
+		<property column="FULL_ID" name="fullId" type="java.lang.String" required="512" label="ID全路径"/>
+		<property column="CODE" name="code" type="java.lang.String" length="64" required="false" label="编码"/>
+		<property column="NAME" name="name" type="java.lang.String" length="128" required="false" label="名称"/>
+  	    <property column="KIND_ID" name="kindId" type="java.lang.String" length="6" required="false" label="sys 系统  def 自定义"/>
+		<property column="NODE_KIND_ID" name="nodeKindId" type="java.lang.Integer" required="false" label="节点类别"/>
+       <property column="REMARK" name="remark" type="java.lang.String" length="128" required="false" label="备注"/>	
+       <property column="SEQUENCE" name="sequence" type="java.lang.Integer" required="false" label="排序号"/>
+		<version column="VERSION" name="version" type="java.lang.Long" required="false" label="版本号"/>
+		<property column="Has_Children" name="hasChildren" type="java.lang.Integer" update="false" insert="false">
+			SELECT count(0) FROM SA_OPBIZMANAGEMENTTYPE c where c.Parent_Id = bizManagementType.id
+		</property>
+		<sql name="referenceByBizManagementSql">
+			select count(0) from sa_opbizmanagement t where t.manage_type_id=?
+		</sql>
+		<!-- 选择查询组织管理者的已分配的业务权限类别 -->
+		<sql name="selectOrgAllocatedBizManagementTypeForManager">
+			<![CDATA[
+			select *
+			  from sa_opbizmanagementtype bizManagementType
+			 where id in
+			       (select manage_type_id from sa_opbizmanagement b where :selectedFullId like manage_org_full_Id || '%')	 	
+			       ]]>
+		</sql>
+		<!-- 选择查询组织下属的已分配的业务权限类别 -->
+		<sql name="selectOrgAllocatedBizManagementTypeForSubordination">
+			<![CDATA[
+			select *
+			  from sa_opbizmanagementtype bizManagementType
+			 where id in
+			       (select manage_type_id from sa_opbizmanagement b where :selectedFullId like org_full_Id || '%')	 
+			       ]]>	
+		</sql>
+		<sql name="checkBizManagementTypeExistSql">
+			<![CDATA[
+       	   select code, name from SA_OPBizManagementType where id <> ? and (upper(code) = ? or upper(name) = ?)
+       	   ]]>
+		</sql>
+		<sql name="selectChildrenCountSql">
+			select count(*) from SA_OPBizmanagementType where parent_id = ?
+		</sql>
+		<sql name="selectObjectSql">
+			select * from SA_OPBizManagementType where id = ?
+		</sql>
+		<sql name="moveSql">
+			update SA_OPBizManagementType set parent_id = ?, full_id = ? , full_name = ? where id = ?
+		</sql>
+		
+		<condition column="CODE" name="code" symbol="like" alias=""/>
+		<condition column="NAME" name="name" symbol="like" alias=""/>
+		<condition column="PARENT_ID" name="parentId" symbol="=" alias=""/>
+		<condition column="NODE_KIND_ID" name="nodeKindId" symbol="=" alias=""/>
+		<condition column="param" name="param" symbol="like">
+		   and (bizManagementType.code like :param or bizManagementType.name like :param)
+		</condition>
+	</entity>
+	<entity name="bizManagement" label="管理权限" table="SA_OPBIZMANAGEMENT">
+		<id column="ID" name="id" type="java.lang.Long" sequence="SEQ_ID"/>
+		<property column="KIND_ID" name="kindId" type="java.lang.Integer" required="false" label="类别"/>
+		<property column="ORG_ID" name="orgId" type="java.lang.String" length="65" required="false" label="组织机构ID"/>
+		<property column="ORG_NAME" name="orgName" type="java.lang.String" length="128" required="false" label="组织机构名称"/>
+		<property column="ORG_FULL_ID" name="orgFullId" type="java.lang.String" length="1024" required="false" label="组织机构ID全路径"/>
+		<property column="ORG_FULL_NAME" name="orgFullName" type="java.lang.String" length="1024" required="false" label="组织机构名称全路径"/>
+		<property column="MANAGE_TYPE_ID" name="manageTypeId" type="java.lang.Long" length="22" required="false" label="业务权限类型ID"/>
+		<property column="MANAGE_ORG_ID" name="manageOrgId" type="java.lang.String" length="65" required="false" label="管理组织ID"/>
+		<property column="MANAGE_ORG_NAME" name="manageOrgName" type="java.lang.String" length="128" required="false" label="管理组织"/>
+		<property column="MANAGE_ORG_FULL_ID" name="manageOrgFullId" type="java.lang.String" length="1024" required="false" label="管理组织全路径ID"/>
+		<property column="MANAGE_ORG_FULL_NAME" name="manageOrgFullName" type="java.lang.String" length="1024" required="false" label="管理组织全名"/>
+		<property column="CREATOR_ID" name="creatorId" type="java.lang.String" length="65" required="false" label="授权人ID"/>
+		<property column="CREATE_DATE" name="createDate" type="java.util.Date" length="7" required="false" label="创建时间"/>
+		<property column="CREATOR_NAME" name="creatorName" type="java.lang.String" length="32" required="false" label="授权人名称"/>
+		<version column="VERSION" name="version" type="java.lang.Long" required="false" label="版本号"/>
+		<property column="ROLE_ID" name="roleId" type="java.lang.Long" required="false" label="角色id"/>
+		<property column="ROLE_NAME" name="roleName" type="java.lang.String" required="false" label="角色名称"/>
+		<sql-query>
+			select a.id, o.full_name as name, o.status, a.kind_id,
+			       b.Name as manage_type_name, b.code as manage_type_code, a.creator_id, a.creator_name, a.create_date
+			  from SA_OPBizManagement a, SA_OPBizManagementType b, sa_oporg o
+			 where a.manage_type_id = b.id
+			   and a.org_id = o.id
+		</sql-query>
+		
+		<sql name="selectSubordination">
+			select a.id, o.full_name as name, o.status, a.kind_id,
+			       b.Name as manage_type_name, b.code as manage_type_code
+			  from SA_OPBizManagement a, SA_OPBizManagementType b, sa_oporg o
+			 where a.manage_type_id = b.id
+			   and a.manage_org_id = o.id
+		</sql>
+		
+		<sql name="checkAllocateByOrgSql">
+		   SELECT count(0) FROM sa_opbizmanagement t where t.org_id=? and t.manage_type_id=? and t.manage_org_id=?
+		</sql>
+		<!-- 
+		<sql name="checkAllocateByRoleSql">
+		SELECT count(0) FROM sa_opbizmanagement t where t.role_id=? and t.manage_type_id=? and t.manage_org_id=?
+		</sql>
+		-->
+		<!-- 选择管理者 -->
+		<sql name="selectBizManagementForManager">
+			select distinct a.org_id, a.org_name, a.org_full_id, a.org_full_name as name,
+			                a.kind_id, o.status
+			  from sa_opbizmanagement a, sa_oporg o
+			 where :selectedFullId like a.manage_org_full_id || '%'
+			   and a.org_id = o.id	
+		</sql>
+		<!-- 选择下属 -->
+		<sql name="selectBizManagementForSubordination">
+			select distinct a.manage_org_id, a.manage_org_name, a.manage_org_full_id,
+			                a.manage_org_full_name as name, a.kind_id, o.status
+			  from sa_opbizmanagement a, sa_oporg o
+			 where :selectedFullId like a.org_full_id || '%'
+			   and a.manage_org_id = o.id		
+		</sql>
+		<!-- 引用业务管理权限 -->
+		<sql name="selectBizManagementByOrgId">
+			select * from SA_OPBizmanagement where org_id = ?
+		</sql>
+		<!-- 查询业务管理权限 -->
+		<sql name="selectDelegationBizManagement">
+			select d.* 
+			  from SA_OPOrgFunctionAuthorize a, SA_OPOrgFunBizmantypeAuthorize b,  
+			     SA_OPBizmanagementType c, SA_OPBizmanagementType d
+			 where c.id = b.biz_management_type_id
+			   and b.org_function_id = a.org_function_id
+			   and d.full_id like c.full_id || '%'
+		</sql>
+		<sql name="selectBizManagementOrg">
+			select o.id, o.code, o.name, o.person_id, o.org_kind_id, o.full_id,
+			       o.full_name, o.status
+			  from sa_opbizmanagement t, sa_oporg o
+			 where o.id = t.org_id
+			   and t.manage_org_id = ?
+			   and t.manage_type_id = ?
+		</sql>
+		<sql name="deleteByOrgAndManageTypeId">
+			delete from sa_opbizmanagement t where t.manage_org_id = ? and t.manage_type_id = ?
+		</sql>
+		<condition column="Org_Id" name="orgId" symbol="=" alias="a"/>
+		<condition column="MANAGE_ORG_ID" name="manageOrgId" symbol="=" alias="a"/>
+		<condition column="MANAGE_TYPE_ID" name="manageTypeId" symbol="=" alias="a"/>
+		<condition column="CODE" name="code" symbol="like" alias="b"/>
+		<condition column="NAME" name="name" symbol="like" alias="b"/>
+		<condition column="ORGAN_KIND_ID" name="organKindId" symbol="in" alias="b"/>
+	</entity>
+</domain>

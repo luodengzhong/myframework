@@ -1,0 +1,224 @@
+body {
+	background: url(images/login/bg.png) repeat-x scroll 100% top #FFFFFF;
+	color: #000000;
+	font-family: simsun, arial;
+	font-size: 14px;
+	margin: 0;
+	padding: 0; 
+}
+
+a {
+	color: #000000;
+	outline: none;
+	text-decoration:none;
+}
+a:hover {
+	text-decoration: underline;
+}
+div,ul,ol,li,dl,dt,dd,form,img,p {
+	border: 0 none;
+	margin: 0;
+	padding: 0;
+}
+
+h1,h2,h3,h4,h5,input {
+	letter-spacing: 1px;
+	margin: 0;
+	padding: 0;
+}
+
+.main {
+	background: url(images/login/vein.png) no-repeat scroll -13px top;
+	margin: auto;
+	width: 1004px;
+}
+.header {
+	margin: auto;
+	height: 69px;
+	overflow: hidden;
+	padding-top: 13px;
+	width: 950px;
+}
+
+.logo {
+/* 	background: url(images/head_logo.png) no-repeat scroll 0 0; */
+	display: inline;
+	float: left;
+	height: 70px;
+	margin-left: 10px;
+	overflow: hidden;
+	width: 150px;
+}
+
+.logo a {
+	float: left;
+	height: 70px;
+	width: 150px;
+}
+
+.loginCon {
+	margin: auto;
+	overflow: hidden;
+	padding-top: 35px;
+	width: 950px;
+}
+
+.loginLeft {
+/* 	background: url(images/login/loginLeftBg.jpg) no-repeat scroll 0 0; */
+	float: left;
+	height: 335px;
+	width: 500px;
+}
+
+.loginRight {
+	float: right;
+	width: 435px;
+}
+
+.loginMod {
+	line-height: 28px;
+	text-align: left;
+}
+
+.borderTit {
+	height: 46px;
+	text-align: left;
+}
+
+.borderTit,.borderBottom{
+	background: url(images/login/borderTit.png) no-repeat scroll 0 0;
+}
+
+.borderTit strong {
+	color: #FF0000;
+	float: left;
+	font: bold 18px/32px Microsoft YaHei, simsun, Arial;
+	padding: 10px 0 0 40px;
+}
+
+.borderCon{
+	background: url(images/login/borderBg.png) repeat-y scroll left 100%;
+}
+
+.login {
+	margin: auto;
+	padding: 17px 0;
+	width: 370px;
+}
+
+.loginRight {
+	float: right;
+	width: 435px;
+}
+
+.login p {
+	clear: both;
+	overflow: hidden;
+	padding: 5px 0;
+}
+
+.loginText em {
+	float: left;
+	font-size: 14px;
+	font-style: normal;
+	width: 70px;
+}
+
+.loginText label {
+	float: left;
+	width: 222px;
+}
+
+.loginText img{
+	position: relative;
+	top:5px;
+	_top:0px;
+	*top:0px;
+}
+.loginText input {
+	background: none repeat scroll 0 0 #F4F4F4;
+	border: 1px solid #878787;
+	line-height: 16px;
+	padding: 5px;
+	width: 210px;
+	color:#999;
+}
+
+#securityCode{
+	width: 140px;
+}
+
+.loginText span {
+	font-size: 12px;
+	padding-left: 10px;
+}
+
+h1,h2,h3,h4,h5,input {
+	letter-spacing: 1px;
+	margin: 0;
+	padding: 0;
+}
+
+.loginState label {
+	padding: 0 40px 0 60px;
+}
+
+.loginState {
+	font-size: 12px;
+}
+
+.login .submitBut {
+	padding-left: 80px;
+}
+
+.submitBut input {
+	background: url(images/login/but.png) no-repeat scroll 0 0;
+	border: 0 none;
+	cursor: pointer;
+	height: 28px;
+	width: 70px;
+}
+
+#btnLogin{
+	width: 85px;
+	background-position: -370px 0px;
+}
+
+#btnClose{
+	background-position: -190px 0px;
+}
+
+.borderBottom {
+	background-position: left -46px;
+	font-size: 0;
+	height: 8px;
+	line-height: 8px;
+}
+
+.footer {
+	clear: both;
+	color: #9B9B9B;
+	font-size: 12px;
+	line-height: 21px;
+	padding: 20px 0;
+	text-align: center;
+}
+
+
+.footer a {
+    color: #9B9B9B;
+}
+
+.footLink a {
+    padding: 0 5px;
+}
+
+.JBbody {
+	background: #FFFFFF;
+}
+.JBbody .main{
+	background: url(images/login/vein.jpg) no-repeat scroll -13px top;s
+}
+.JBbody .loginLeft{
+	background:none;
+}

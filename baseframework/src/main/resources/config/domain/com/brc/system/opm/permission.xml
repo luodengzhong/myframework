@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+	<entity name="function" table="SA_OPFunction">
+		<id column="ID" name="id" type="java.lang.Long" sequence="SEQ_ID"/>
+		<property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="false" label="父节点"/>
+		<property column="CODE" name="code" type="java.lang.String" length="64" required="false" label="编码"/>
+		<property column="NAME" name="name" type="java.lang.String" length="128" required="false" label="名称"/>
+		<property column="DESCRIPTION" name="description" type="java.lang.String" length="128" required="false" label="描述"/>
+		<property column="FULL_NAME" name="fullName" type="java.lang.String" length="128" required="false" label="全名称"/>
+		<property column="NODE_KIND_ID" name="nodeKindId" type="java.lang.String" length="6" required="false" label="节点类型"/>
+		<property column="KEY_CODE" name="keyCode" type="java.math.BigDecimal" length="22" required="false" label="快捷键码"/>
+		<property column="URL" name="url" type="java.lang.String" length="128" required="false" label="路径"/>
+		<property column="ICON" name="icon" type="java.lang.String" length="150" required="false" label="图标"/>
+		<property column="REMARK" name="remark" type="java.lang.String" length="256" required="false" label="备注"/>
+		<property column="DEPTH" name="depth" type="java.math.BigDecimal" length="22" required="false" label="深度"/>
+		<property column="STATUS" name="status" type="java.math.BigDecimal" length="22" required="false" label="1 启用 0 禁用"/>
+		<property column="SEQUENCE" name="sequence" type="java.math.BigDecimal" length="22" required="false" label="排序号"/>
+		<version column="VERSION" name="version" type="java.math.BigDecimal" length="22" required="false" label="版本号"/>
+		<property column="Has_Children" name="hasChildren" type="java.lang.Integer" update="false" insert="false"/>
+		<property column="isexpand" name="isexpand" type="String" update="false" insert="false"/>
+		<property column="OPERATION_MAP_ID" name="operationMapId" type="java.lang.Long" length="22" required="false" label="业务导图ID"/>
+		<sql-query><![CDATA[
+				select t.id, t.parent_id, t.code, t.name, t.description, t.full_name,
+				       t.node_kind_id, t.key_code, t.url, t.icon, t.remark, t.depth,
+				       t.status, t.sequence, t.version,
+				       (select count(*) from SA_OPFunction i where i.parent_id = t.id) as Has_Children,
+				       0 as isexpand, m.map_name as operation_map_name
+				  from SA_OPFunction t, sys_operation_map m
+				 where t.operation_map_id = m.operation_map_id(+)			
+			]]></sql-query>
+		<sql-detail>
+			select t.*, m.map_name as operation_map_name
+			  from SA_OPFunction t, sys_operation_map m
+			 where t.operation_map_id = m.operation_map_id(+)
+			   and t.id = :id
+		</sql-detail>
+		<sql name="selectFunctionById">
+		    select * from SA_OPFunction where id= :id
+		</sql>
+		<sql name="queryFunctionsForAssign">
+			select t.id, t. parent_id, t.name, t.icon, t.sequence, t.type,
+			       (select count(*) from v_sa_op_functions i where i.parent_id = t.id) as has_children,
+			       0 as isexpand
+			  from v_sa_op_functions t
+			 where t.parent_id = ?
+			 order by t.sequence asc
+		</sql>
+		<condition column="ID" name="id" symbol="in" alias="t"/>
+		<condition column="PARENT_ID" name="parentId" symbol="=" alias="t"/>
+		<condition column="Code" name="code" symbol="like" alias="t"/>
+		<condition column="FULL_NAME" name="name" symbol="like" alias="t"/>
+		<condition column="Status" name="status" symbol="=" alias="t"/>
+	</entity>
+	<entity name="role" table="SA_OPRole">
+		<id column="ID" name="id" type="java.lang.Long" sequence="SEQ_ID"/>
+		<property column="Folder_Id" name="folderId" type="java.lang.Long" required="true" label="父节点"/>
+		<property column="CODE" name="code" type="java.lang.String" length="64" required="false" label="编码"/>
+		<property column="NAME" name="name" type="java.lang.String" length="128" required="false" label="名称"/>
+		<property column="ROLE_KIND_ID" name="roleKindId" type="java.lang.String" length="6" required="false" label="角色类型"/>
+		<property column="DESCRIPTION" name="description" type="java.lang.String" length="256" required="false" label="描述"/>
+		<property column="PARENT_ROLE_NAMES" name="parentRoleNames" type="java.lang.String" length="512" required="false" label="父角色"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" required="false" label="1 启用 0 禁用"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Integer" required="false" label="排序号"/>
+		<version column="VERSION" name="version" type="java.lang.Long" required="false" label="版本号"/>
+		
+		<condition column="Folder_Id" name="folderId" symbol="=" />
+		<condition column="Code" name="code" symbol="like"/>
+		<condition column="Name" name="name" symbol="like" />
+		<condition column="Status" name="status" symbol="="/>
+		<condition column="param" name="param" symbol="like">
+		  and (role.code like :param or role.name like :param)
+		</condition>
+		
+	</entity>
+	<entity name="permission" table="SA_OPPermission">
+		<id column="ID" name="id" type="java.lang.Long" sequence="SEQ_ID"/>
+		
+		<property column="CREATOR_ID" name="creatorId" type="java.lang.String" length="65" required="false" label="创建人ID"/>
+		<property column="CREATOR_NAME" name="creatorName" type="java.lang.String" length="32" required="false" label="创建人"/>
+		<property column="CREATE_DATE" name="createDate" type="java.util.Date" length="7" required="false" label="创建时间"/>
+		<version column="VERSION" name="version" type="java.lang.Long" required="false" label="版本号"/>
+		
+		<property column="permission_id" name="permissionId" type="java.lang.Long" required="true" label="权限id" update="false" insert="false"/>
+		<property column="Parent_Id" name="parentId" type="java.lang.Long" required="false" label="父节点" update="false" insert="false"/>
+		<property column="CODE" name="code" type="java.lang.String" length="64" required="false" label="编码" update="false" insert="false"/>
+		<property column="NAME" name="name" type="java.lang.String" length="128" required="false" label="名称" update="false" insert="false"/>
+		<property column="full_name" name="fullName" type="java.lang.String" length="128" required="false" label="全名称" update="false" insert="false"/>
+		<property column="ICON" name="icon" type="java.lang.String" length="150" required="false" label="图标" update="false" insert="false"/>
+		<property column="Role_Id" name="roleId" type="java.lang.Long" required="true" label="角色id"/>
+		<property column="function_Id" name="functionId" type="java.lang.Long" required="true" label="功能id"/>
+		<property column="PERMISSION_KIND" name="permissionKind" type="java.lang.String" length="16" required="true" label="授权类别"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Integer" required="false" label="排序号" update="false" insert="false"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" required="false" label="1 启用 0 禁用" update="false" insert="false"/>
+		<property column="Has_Children" name="hasChildren" type="java.lang.Integer" update="false" insert="false"/>
+		<property column="isexpand" name="isexpand" type="String" update="false" insert="false"/>
+		<sql-query><![CDATA[
+			select a.id as permission_id, b.id, b.parent_id, b.code, b.name, b.full_name,
+			       b.icon, b.type, a.role_id, b.sequence, a.creator_id, creator_name, a.create_date
+			  from sa_oppermission a, v_sa_op_functions b
+			 where a.function_id = b.id
+		]]></sql-query>
+		<condition column="Role_Id" name="roleId" symbol="=" alias="a"/>
+		<condition column="param" name="param" symbol="like">
+		  and (b.code like :param or b.full_name like :param)
+		</condition>
+		<sql-detail>
+			select * from SA_OPPermission where id = :id
+		</sql-detail>
+		<sql name="queryFunctionsForAssign">
+			select b.id,
+			       b.parent_id,
+			       b.name,
+			       b.icon,
+			       b.sequence,
+			       b.type,
+			       (select count(*) from sa_opfunction i where i.parent_id = b.id) as has_children
+			  from sa_oppermission a, v_sa_op_functions b
+			 where a.function_id = b.id
+			   and a.role_id = ?
+			   and b.id in (select t.id
+			                  from v_sa_op_functions t 　start with t.parent_id = ?
+			                connect by prior t.id = t.parent_id)
+			 order by b.sequence asc
+		</sql>
+		<sql name="deletePermissionByRoleAndParentFunction">
+			delete from SA_OPPermission
+				 where role_id = ?
+				   and function_id in (select t.id
+				                         from v_sa_op_functions t 　start with t.id = ?
+				                       connect by prior t.id = t.parent_id)
+		</sql>
+	</entity>
+	<entity name="opremind" label="角色提醒授权" table="SA_OPREMIND">
+		<id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="ROLE_ID" name="roleId" type="java.lang.Long" length="22" required="true" label=""/>
+		<property column="REMIND_ID" name="remindId" type="java.lang.Long" length="22" required="true" label=""/>
+		<sql-query><![CDATA[
+			select t.id as permission_id,t.remind_id, r.code, r.name as full_name,t.id as sequence
+			  from sa_opremind t, sys_message_remind r
+			 where t.remind_id = r.remind_id
+		]]></sql-query>
+		<condition column="Role_Id" name="roleId" symbol="=" alias="t"/>
+		<condition column="param" name="param" symbol="like">
+		  and (r.code like :param or r.name like :param)
+		</condition>
+	</entity>	
+	
+	<entity name="permissionQuery"   label="权限查询" update="false" insert="false">
+	    <sql name="selectRolesByFunctionIdSql">
+			select distinct r.id, r.name role_name, r.sequence
+			  from sa_oprole r, sa_oppermission p, sa_opfunction f
+			 where p.function_id = f.id
+			   and f.id = ?
+			   and r.id = p.role_id
+			 order by r.sequence
+	    </sql>
+	    <sql name="selectRolesByOrgFullIdSql">
+			select o.full_name, r.id, r.name role_name, o.full_id
+			  from sa_oporg o, sa_opauthorize a, sa_oprole r
+			 where o.id = a.org_id
+			   and a.role_id = r.id
+			   and ? like o.full_id || '%'  
+			 order by o.full_name, r.sequence
+	    </sql>	    
+	    <sql name="selectOrgsByFunctionIdSql">
+				select distinct o.full_name, o.status
+				  from sa_oporg o, sa_opauthorize a, sa_oprole r, sa_oppermission p,
+				       sa_opfunction f
+				 where p.function_id = f.id
+				   %s
+				   and f.id = ?
+				   and r.id = p.role_id
+				   and o.id = a.org_id
+				   and a.role_id = r.id
+				   %s
+				   %s
+				   and o.status = 1
+				 order by o.full_name 
+	    </sql>
+	    <sql name="selectFunctionsByOrgFullIdSql">
+			select distinct f.id, f.full_name, f.status
+			  from sa_oporg o, sa_opauthorize a, sa_oprole r, sa_oppermission p,
+			       v_sa_op_functions f
+			 where o.id = a.org_id
+			    %s
+			   and a.role_id = r.id
+			   and r.id = p.role_id
+			   and p.function_id = f.id
+			   and o.full_id like ?
+			   and f.id > 1
+			   and f.url is not null
+			   %s %s			  
+			 order by f.full_name	    
+	    </sql>
+	    <sql name="selectRoleSql">
+	           select * from (
+				select 'Role' node_kind_id, R.id, R.folder_id parent_id, R.code, R.name,
+				       R.sequence, 0 has_children
+				  from Sa_Oprole R
+				 union all 
+				select 'Folder' node_kind_id, t.id, t.parent_id, t.code, t.name, t.sequence,
+				       (select count(*) from SYS_CommonTree i where i.parent_id = t.id) +
+				        (select count(*) from Sa_Oprole ri where ri.folder_id = t.id) has_children
+				  from SYS_CommonTree t
+				 where t.kind_id = 4	 
+				 ) a   where 1 = 1
+	    </sql>
+	    <sql name="selectOrgsByRoleIdSql">
+			select  distinct o.full_name, o.status
+			  from sa_oporg o, sa_opauthorize a, sa_oprole r
+			 where o.id = a.org_id
+			   and a.role_id = r.id
+			   and r.id = ?
+			   and o.status = 1
+			 order by r.sequence
+	    </sql>	
+	    <sql name="selectFunctionsByRoleIdSql">
+			select f.full_name, f.status
+			  from sa_oprole r, sa_oppermission p, v_sa_op_functions f
+			 where r.id = p.role_id
+			   and p.function_id = f.id
+			   and r.id = ?
+			   and f.id > 1
+			   and f.url is not null
+			   order by f.full_name
+	    </sql>	
+	    <condition column="parent_id" name="parentId" symbol="=" alias="a"/>
+	</entity>
+	
+	<entity name="permissionCheck" label="功能权限检查" table="SA_OPPermissionCheck">
+		<id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="FILLIN_DATE" name="fillinDate" type="java.util.Date" length="7" label="填表日期" default-expr="currentDateTime()"/>
+		<property column="BILL_CODE" name="billCode" type="java.lang.String" length="32" label="单据号码" default-expr="getSerialNumber('PermissionCheck')"/>
+		<property column="FULL_ID" name="fullId" type="java.lang.String" length="1024" label="ID全路径" default-expr="currentOrgFullId()" />
+		<property column="ORGAN_ID" name="organId" type="java.lang.String" length="32" label="机构ID" default-expr="currentOrgId()"/>
+		<property column="ORGAN_NAME" name="organName" type="java.lang.String" length="64" label="机构名称" default-expr="currentOrgName()"/>
+		<property column="CENTER_ID" name="centerId" type="java.lang.String" length="32" label="中心ID" default-expr="currentCenterId()"/>
+		<property column="CENTER_NAME" name="centerName" type="java.lang.String" length="64" label="中心名称" default-expr="currentCenterName()"/>
+		<property column="DEPT_ID" name="deptId" type="java.lang.String" length="32" label="部门ID" default-expr="currentDeptId()"/>
+		<property column="DEPT_NAME" name="deptName" type="java.lang.String" length="64" label="部门名称" default-expr="currentDeptName()"/>
+		<property column="POSITION_ID" name="positionId" type="java.lang.String" length="32" label="岗位ID" default-expr="currentPositionId()"/>
+		<property column="POSITION_NAME" name="positionName" type="java.lang.String" length="64" label="岗位名称" default-expr="currentPositionName()"/>
+		<property column="PERSON_MEMBER_ID" name="personMemberId" type="java.lang.String" length="65" label="人员ID" default-expr="currentPersonMemberId()"/>
+		<property column="PERSON_MEMBER_NAME" name="personMemberName" type="java.lang.String" length="64" label="人员名称" default-expr="currentPersonMemberName()"/>
+		<property column="FUNCTION_ID" name="functionId" type="java.lang.Long" length="22" label="功能ID"/>
+		<property column="FUNCTION_NAME" name="functionName" type="java.lang.String" length="128" label="功能名称"/>
+		<property column="SCOPE_ORG_FULL_ID" name="scopeOrgFullId" type="java.lang.String" length="2048" label="检查组织ID全路径范围"/>
+		<property column="SCOPE_ORG_FULL_NAME" name="scopeOrgFullName" type="java.lang.String" length="2048" label="检查组织名称全路径范围"/>
+		<property column="DESCRIPTION" name="description" type="java.lang.String" length="1024" label="描述"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" length="22" label="状态" default-expr="0" />
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" label="版本号"/>
+	</entity>
+	
+	<entity name="oftenUseFunction" label="常用系统功能配置" table="SA_OFTEN_USE_FUNCTION">
+		<id column="OFTEN_USE_FUNCTION_ID" name="oftenUseFunctionId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="FUNCTION_ID" name="functionId" type="java.lang.Long" length="22" label="功能ID"/>
+		<property column="SEQUENCE" name="sequence" type="java.math.BigDecimal" length="22" required="false" label="排序号"/>
+		<sql name="checkCountSql">select count(0) from sa_often_use_function where function_id=?</sql>
+		<sql-query>
+			select t.*,o.often_use_function_id,o.sequence as often_use_sequence
+		  from sa_opfunction t, sa_often_use_function o
+		 where t.id = o.function_id
+		</sql-query>
+	</entity>
+	
+</domain>

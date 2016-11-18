@@ -1,0 +1,341 @@
+.left-top-background{
+    background: url("img/file_folder_pub.jpg") no-repeat scroll 4px center;
+    height: 40px !important;
+    padding-top: 0;
+    float: left;
+    margin: 5px 0px 0px 10px;
+    width:220px;
+    display: inline-block;
+}
+
+#showDocumentFileDiv{
+	position: absolute;
+	top:0px;
+	left:0px;
+	display: none;
+	width: 100%;
+	z-index: 10000;
+	background-color: #f6f7f9;
+	overflow-x: hidden; 
+  	overflow-y: auto; 
+}
+
+.document-isprite{
+  background-image: url(img/icon.png);
+  background-repeat: none;
+}
+a.document-library-link{
+	font-family: "Microsoft Yahei","Î¢ÈíÑÅºÚ",Arial,STHeiti,Tahoma,Helvetica;
+	 font-size: 12px;
+}
+a.document-library-link:link {
+    color: #333333;
+    text-decoration: none;
+}
+a.document-library-link:visited {
+    color: #333333;
+    font-size: 12px;
+    text-decoration: none;
+}
+a.document-library-link:hover {
+    color: #BD0A01;
+    font-size: 12px;
+    text-decoration: underline;
+}
+a.document-library-link:active {
+    color: #333333;
+    font-size: 12px;
+    text-decoration: none;
+}
+.loading{
+	position:absolute;
+	top:35%;
+	left: 40%;
+	background-color: #ffffff;
+    border: 1px solid #cccccc;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 4px;
+    color: #555555;
+    display: inline-block;
+    font-size: 13px;
+    margin: 10px;
+    padding: 4px 6px;
+}
+.view-handle-select{
+	width: 140px;
+	background-color: #ffffff;
+    border: 1px solid #cccccc;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 4px;
+    color: #555555;
+    display: inline-block;
+    font-size: 13px;
+    margin: 10px;
+    padding: 4px 6px;
+    vertical-align: middle;
+}
+.document-file-list{
+  padding: 20px 0 ;
+  overflow-x: hidden; 
+  overflow-y: auto; 
+  width: 100%;
+}
+.document-file-list .file-item-wrapper{
+  padding: 10px 10px 5px;
+  float: left;
+  cursor: pointer;
+  border:2px solid #f6f7f9;
+  border-radius: 2px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  *display:inline-block;
+  *width:83px;
+  _filter: chroma(color = #f6f7f9);
+  *zoom: 1;
+}
+.document-file-list .file-item-wrapper:hover{
+  background-color: #ebeff5;
+  border-color:#c3d9fc;
+}
+.document-file-list .file-item-wrapper.hover .item-opts{
+  top: 89px;
+}
+.document-file-list .file-item-wrapper.hover .item-folder .item-name{
+  top: 33px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.document-file-list .file-item-wrapper.selected{
+  background-color: #ebeff5;
+  border-color: #4889f0;
+}
+.document-file-list .file-item-wrapper a{
+  display: block;
+  margin: 0 auto;
+  height: 71px;
+  width: 83px;
+}
+.document-file-list .file-item-wrapper .item-folder{
+  height: 71px;
+  width: 83px;
+  background-position: 0 -56px;
+  position: relative;
+  border: 0px;
+}
+.document-file-list .file-item-wrapper .item-file{
+  border: 0px;
+}
+.document-file-list .file-item-wrapper .item-folder .item-sign-statu{
+  position: absolute;
+  left: 4px;
+  top:-4px;
+  height: 24px;
+  width: 24px;
+  background-position: 0 -134px;
+}
+
+.document-file-list .file-item-wrapper .item-folder .item-file-type{
+  position: absolute;
+  left:26px;
+  top:20px;
+  height: 32px;
+  width: 32px;
+}
+
+.document-file-list .file-item-wrapper  .item-name{
+  display: block;
+  font-size: 12px;
+  width: 120px;
+  *width:83px;
+  margin: 0 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  margin-top: 5px;
+}
+
+.MessageBox {
+    margin: 0 auto;
+    margin-top:50px;
+}
+.MessageBox .head td {
+    height: 32px;
+    overflow: hidden;
+}
+.MessageBox .head .left {
+    background: rgba(0, 0, 0, 0) url("img/message_bg.png") no-repeat scroll left 0;
+    width: 20px;
+}
+.MessageBox .head .center {
+    background: rgba(0, 0, 0, 0) url("img/message_bg.png") repeat-x scroll 0 -32px;
+    padding: 0;
+}
+.MessageBox .head .center .title {
+    color: #fff;
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+}
+.MessageBox .head .right {
+    background: rgba(0, 0, 0, 0) url("img/message_bg.png") no-repeat scroll right 0;
+    width: 20px;
+}
+.MessageBox .head-no-title td {
+    height: 16px;
+}
+.MessageBox .head-no-title .left {
+    background: rgba(0, 0, 0, 0) url("img/message_bg.png") no-repeat scroll left -96px;
+    width: 20px;
+}
+.MessageBox .head-no-title .center {
+    background: rgba(0, 0, 0, 0) url("img/message_bg.png") repeat-x scroll 0 -112px;
+}
+.MessageBox .head-no-title .right {
+    background: rgba(0, 0, 0, 0) url("img/message_bg.png") no-repeat scroll right -96px;
+    width: 20px;
+}
+.MessageBox .control td {
+    height: 40px;
+    vertical-align: top;
+}
+.MessageBox .control .left {
+    background: rgba(0, 0, 0, 0) url("img/message_center_bg.png") repeat-y scroll left top;
+    width: 20px;
+}
+.MessageBox .control .center {
+    background-color: #357ece;
+    text-align: center;
+}
+.MessageBox .control .right {
+    background: rgba(0, 0, 0, 0) url("img/message_center_bg.png") repeat-y scroll right top;
+    width: 20px;
+}
+.MessageBox .foot td {
+    height: 16px;
+}
+.MessageBox .foot .left {
+    background: rgba(0, 0, 0, 0) url("img/message_bg.png") no-repeat scroll left -64px;
+    width: 20px;
+}
+.MessageBox .foot .center {
+    background: rgba(0, 0, 0, 0) url("img/message_bg.png") repeat-x scroll 0 -80px;
+    position: relative;
+}
+.MessageBox .foot .center b {
+    background: #357ece none repeat scroll 0 0;
+    height: 1px;
+    position: absolute;
+    top: -1px;
+    width: 100%;
+}
+.MessageBox .foot .right {
+    background: rgba(0, 0, 0, 0) url("img/message_bg.png") no-repeat scroll right -64px;
+    width: 20px;
+}
+.MessageBox .msg td {
+    height: 90px;
+}
+.MessageBox .msg .left {
+    background: rgba(0, 0, 0, 0) url("img/message_center_bg.png") repeat-y scroll left top;
+    width: 20px;
+}
+.MessageBox .msg .center {
+    background-color: #357ece;
+    font-size: 16px;
+    padding-left: 90px;
+}
+.MessageBox .msg .center .msg-content {
+    color: #fff;
+    font-size: 16px;
+    margin: 20px 12px 20px 6px;
+}
+.MessageBox .msg .center .msg-content a {
+    color: #fff;
+    text-decoration: underline;
+}
+.MessageBox .msg .right {
+    background: rgba(0, 0, 0, 0) url("img/message_center_bg.png") repeat-y scroll right top;
+    width: 20px;
+}
+.MessageBox .msg .error {
+    background-image: url("img/icon64_error.png");
+    background-position: 0 10px;
+    background-repeat: no-repeat;
+}
+.MessageBox .msg .info {
+    background-image: url("img/icon64_info.png");
+    background-position: 0 10px;
+    background-repeat: no-repeat;
+}
+.MessageBox .msg .warning {
+    background-image: url("img/icon64_warning.png");
+    background-position: 0 10px;
+    background-repeat: no-repeat;
+}
+.MessageBox .msg .forbidden {
+    background-image: url("img/icon64_forbidden.png");
+    background-position: 0 10px;
+    background-repeat: no-repeat;
+}
+.MessageBox .msg .stop {
+    background-image: url("img/icon64_stop.png");
+    background-position: 0 10px;
+    background-repeat: no-repeat;
+}
+.MessageBox .msg .blank {
+    height: 40px;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.document-postil {
+	overflow-x: hidden; 
+	overflow-y: auto; 
+	line-height:22px;
+	text-align:left;
+	background-color: #f6f7f9;
+	border: 1px solid #cccccc;
+}
+.document-postil .scroll-load-data{
+	margin: 3px;
+	border-bottom: 1px dashed #7bd6f6;
+}
+.document-postil .scroll-load-data span.left{
+	float: left;
+}
+.document-postil .scroll-load-data span.right{
+	float: right;
+}
+.document-postil .scroll-load-data div.title{
+	outline:none;
+	text-decoration:none;
+	width:100%;
+	display:inline-block;
+	color: #000;
+	margin-top:3px;
+	margin-bottom:3px;
+}
+.document-postil .scroll-load-data div.content{
+	outline:none;
+	text-decoration:none;
+	width:100%;
+	display:inline-block;
+	color: #000;
+	margin-top:3px;
+	margin-bottom:3px;
+	color: #333333;
+}
+
+.webuploader-pick {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	text-align: center;
+	overflow: hidden;
+}

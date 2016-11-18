@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brc.pa.projectdata.mapper.NodeEventMapper">
+	<insert id="insert" parameterType="nodeEvent">
+		<selectKey order="BEFORE" keyProperty="nodeEventId" resultType="java.lang.Long">
+			SELECT PA_ID_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO PA_NODE_EVENT(NODE_EVENT_ID, EVENT_DEFINE_ID, SEQUENCE, EXECUTION_NODE, BIZ_KIND_ID, BIZ_ID, VERSION)
+		VALUES(${nodeEventId}, ${eventDefineId}, ${sequence}, #{executionNode, jdbcType=VARCHAR}, ${bizKindId}, ${bizId}, PA_VERSION_SEQ.nextval)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO PA_NODE_EVENT(NODE_EVENT_ID, EVENT_DEFINE_ID, SEQUENCE, EXECUTION_NODE, BIZ_KIND_ID, BIZ_ID, VERSION)
+		SELECT PA_ID_SEQ.nextval,t.*,PA_VERSION_SEQ.nextval FROM (
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			SELECT ${item.eventDefineId} as EVENT_DEFINE_ID, ${item.sequence} as SEQUENCE, #{item.executionNode, jdbcType=VARCHAR} as EXECUTION_NODE, ${item.bizKindId} as
+			BIZ_KIND_ID, ${item.bizId} as BIZ_ID FROM DUAL
+		</foreach>
+		) t
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM PA_NODE_EVENT WHERE NODE_EVENT_ID = #{nodeEventId}
+	</delete>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		DELETE FROM PA_NODE_EVENT WHERE NODE_EVENT_ID IN
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<update id="update" parameterType="nodeEvent">
+		UPDATE PA_NODE_EVENT
+		<set>
+			<if test="eventDefineId != null">
+				EVENT_DEFINE_ID=${eventDefineId},
+			</if>
+			<if test="sequence != null">
+				SEQUENCE=${sequence},
+			</if>
+			<if test="executionNode != null">
+				EXECUTION_NODE=#{executionNode, jdbcType=VARCHAR},
+			</if>
+			<if test="bizKindId != null">
+				BIZ_KIND_ID=${bizKindId},
+			</if>
+			<if test="bizId != null">
+				BIZ_ID=${bizId},
+			</if>
+		</set>
+		WHERE NODE_EVENT_ID = #{nodeEventId}
+	</update>
+
+	<update id="updateSequence" parameterType="nodeEvent">
+		UPDATE PA_NODE_EVENT SET SEQUENCE = ${sequence} WHERE NODE_EVENT_ID = ${nodeEventId}
+	</update>
+
+	<update id="updateExecutionNode" parameterType="nodeEvent">
+		UPDATE PA_NODE_EVENT SET EXECUTION_NODE = #{executionNode, jdbcType=VARCHAR} WHERE NODE_EVENT_ID =
+		${nodeEventId}
+	</update>
+
+	<select id="load" parameterType="java.lang.Long" resultType="nodeEvent">
+		SELECT NODE_EVENT_ID as nodeEventId, EVENT_DEFINE_ID as eventDefineId, SEQUENCE as sequence, EXECUTION_NODE as executionNode, BIZ_KIND_ID as bizKindId, BIZ_ID as
+		bizId, VERSION as version FROM PA_NODE_EVENT WHERE NODE_EVENT_ID=#{nodeEventId}
+	</select>
+
+	<select id="queryAll" parameterType="java.util.Map" resultType="nodeEvent">
+		SELECT t.NODE_EVENT_ID as nodeEventId,t.EVENT_DEFINE_ID as eventDefineId ,t.SEQUENCE as
+		sequence, t.EXECUTION_NODE as executionNode, t.BIZ_KIND_ID as
+		bizKindId,t.BIZ_ID as bizId,t1.name as eventName,t1.CODE as eventCode,t1.URL as url FROM
+		PA_NODE_EVENT t,PA_EVENT_DEFINE t1
+		<where>
+			t1.event_define_id=t.event_define_id
+			<if test="eventDefineId != null and eventDefineId > 0">
+				AND t.EVENT_DEFINE_ID = ${eventDefineId}
+			</if>
+			<if test="bizKindId != null and bizKindId > 0">
+				AND t.BIZ_KIND_ID = ${bizKindId}
+			</if>
+			<if test="bizId != null and bizId > 0">
+				AND t.BIZ_ID=${bizId}
+			</if>
+			<if test="eventName != null">
+				AND t1.NAME like concat(concat('%',#{eventName}),'%')
+			</if>
+			<if test="executionNode != null">
+				AND t.EXECUTION_NODE=#{executionNode}
+			</if>
+			<if test="eventCode != null">
+				AND t1.CODE like concat(concat('%',#{eventCode}),'%')
+			</if>
+		</where>
+		ORDER BY SEQUENCE ASC
+	</select>
+
+	<select id="slicedQuery" parameterType="java.util.Map" resultType="nodeEvent">
+		<!-- SELECT t.NODE_EVENT_ID as nodeEventId,t.EVENT_DEFINE_ID as eventDefineId ,t.SEQUENCE as sequence, t.EXECUTION_NODE as executionNode, t.BIZ_KIND_ID as bizKindId,t.BIZ_ID 
+			as bizId,t1.name as eventName,t1.CODE as eventCode,t1.URL as url FROM PA_NODE_EVENT t,PA_EVENT_DEFINE t1 ORDER BY ${sortname} ${sortorder} OFFSET (${page}-1)*${pagesize} 
+			ROWS FETCH NEXT ${pagesize} ROWS ONLY -->
+		SELECT NODE_EVENT_ID as nodeEventId, EVENT_DEFINE_ID as eventDefineId, SEQUENCE as sequence,executionNode, BIZ_KIND_ID as bizKindId, BIZ_ID
+		as bizId, VERSION as version,eventName,eventCode,URL as url
+		FROM (select t.NODE_EVENT_ID, t.EVENT_DEFINE_ID, t.SEQUENCE, t.EXECUTION_NODE as executionNode, t.BIZ_KIND_ID, t.BIZ_ID, t.VERSION,t1.NAME as eventName,t1.CODE as eventCode ,t1.URL,ROWNUM RN FROM PA_NODE_EVENT t,PA_EVENT_DEFINE t1
+		<where>
+			t1.EVENT_DEFINE_ID = t.EVENT_DEFINE_ID
+			<if test="eventDefineId != null and eventDefineId > 0">
+				AND t.EVENT_DEFINE_ID = ${eventDefineId}
+			</if>
+			<if test="bizKindId != null and bizKindId > 0">
+				AND t.BIZ_KIND_ID = ${bizKindId}
+			</if>
+			<if test="bizId != null and bizId > 0">
+				AND t.BIZ_ID=${bizId}
+			</if>
+			<if test="eventName != null">
+				AND t1.NAME like concat(concat('%',#{eventName}),'%')
+			</if>
+			<if test="executionNode != null">
+				AND t.EXECUTION_NODE=#{executionNode}
+			</if>
+			<if test="eventCode != null">
+				AND t1.CODE like concat(concat('%',#{eventCode}),'%')
+			</if>
+		</where>
+		ORDER BY ${sortname} ${sortorder}
+		)
+		WHERE RN > (${page}-1)*${pagesize} AND RN &lt;= ${page}*${pagesize}
+
+	</select>
+
+	<select id="getRecordCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT COUNT(0) FROM PA_NODE_EVENT t,PA_EVENT_DEFINE t1
+		<where>
+			t1.EVENT_DEFINE_ID = t.EVENT_DEFINE_ID
+			<if test="eventDefineId != null and eventDefineId > 0">
+				AND t.EVENT_DEFINE_ID = ${eventDefineId}
+			</if>
+			<if test="bizKindId != null and bizKindId > 0">
+				AND t.BIZ_KIND_ID = ${bizKindId}
+			</if>
+			<if test="bizId != null and bizId > 0">
+				AND t.BIZ_ID=${bizId}
+			</if>
+			<if test="executionNode != null">
+				AND t.EXECUTION_NODE=#{executionNode}
+			</if>
+			<if test="eventName != null">
+				AND t1.NAME like concat(concat('%',#{eventName}),'%')
+			</if>
+			<if test="eventCode != null">
+				AND t1.CODE like concat(concat('%',#{eventCode}),'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="getNextSequence" resultType="java.lang.Long">
+		SELECT NVL(MAX(SEQUENCE),0) + 1 FROM PA_NODE_EVENT WHERE BIZ_ID = ${bizId} AND BIZ_KIND_ID=${bizKindId}
+	</select>
+
+</mapper>

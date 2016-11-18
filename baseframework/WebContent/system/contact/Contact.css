@@ -1,0 +1,62 @@
+.ui-contact-list {
+    text-align: left;
+    height: auto;
+    line-height: 23px;
+    width: 99%;
+}
+
+.ui-contact-list a {
+    color: #000000;
+    font-size: 12px;
+    height: 21px;
+    line-height: 21px;
+    outline: none;
+    text-decoration: none;
+}
+
+.ui-contact-list a:hover {
+    color: #ff0000;
+}
+
+.ui-contact-list div.contact {
+    position: relative;
+    float: left;
+    padding: 1px 5px 1px 5px;
+    margin: 1px 12px 1px 0px;
+    display: block;
+    white-space: nowrap;
+}
+
+.ui-contact-list div.groupContact div.contact {
+    position: static;
+    float: none;
+    padding: 0px;
+    margin: 0px;
+    white-space: normal;
+}
+
+.ui-contact-list div.groupContact div.contact span {
+    padding: 0px;
+    padding-left: 12px;
+    padding-right: 2px;
+    white-space: normal;
+}
+
+.ui-contact-list div.groupContact div.contact span.manContact {
+    background: url(../../themes/default/images/icons/edit.png) no-repeat;
+    background-position: 0px 3px;
+    padding: 0;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    display: inline-block;
+    clear: both;
+    float: right;
+}
+
+.ui-contact-list div.groupContact div.contact span.manContact:hover {
+    background: url(../../themes/default/images/icons/edit.png) no-repeat center left;
+    /*background-position: 0px -19px;*/
+    background-position: 0px 0px;
+}

@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="app_base" extends="json-default" namespace="/app">
+		<interceptors>
+			<interceptor name="tokenInterceptor" class="tokenInterceptor" />
+			<interceptor name="tokenInUrlInterceptor" class="tokenInUrlInterceptor" />
+			<interceptor name="appExceptionInterceptor" class="appExceptionInterceptor" />
+		</interceptors>
+		<global-results>
+			<result name="noLogin" >
+				/errorPermissionJSON/noLoginJSON
+			</result>
+			<result name="exception" >
+				/errorPermissionJSON/exception
+			</result>
+		</global-results>
+		<action name="modifyPassword" class="appAuthticationAction" method="modifyPassword" >
+			<interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="resetPassword" class="appAuthticationAction" method="resetPassword">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="query" class="appAuthticationAction" method="query">
+			<interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="queryGridData" class="appAuthticationAction" method="queryGridData">
+			<interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="fetch" class="appAuthticationAction" method="fetch">
+			<interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="submit" class="appAuthticationAction" method="submit">
+			<interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="upload" class="appAuthticationAction" method="upload">
+			<interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="completeTask" class="appAuthticationAction" method="completeTask">
+			<interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="fetchDataItemValue" class="appAuthticationAction" method="fetchDataItemValue">
+			<interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="attachmentList" class="appAuthticationAction" method="attachmentList">
+			<interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="download" class="appAuthticationAction" method="download">
+			<interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="fetchValidateCode" class="appAuthticationAction" method="fetchValidateCode">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="register" class="appAuthticationAction" method="register">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="getRegistersByObjId" class="appAuthticationAction" method="getRegistersByObjId">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+			<action name="getAreaInfo" class="appAuthticationAction" method="getAreaInfo">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="getProjectByCity" class="appAuthticationAction" method="getProjectByCity">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="getObjectByProject" class="appAuthticationAction" method="getObjectByProject">
+			<interceptor-ref name="defaultStack" />
+		</action>
+	   <action name="getRelation" class="appAuthticationAction" method="getRelation">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="qurRenUser" class="appAuthticationAction" method="qurRenUser">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="qurRenUserByPhone" class="appAuthticationAction" method="qurRenUserByPhone">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="qurRenUserByID" class="appAuthticationAction" method="qurRenUserByID">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="getUserInfoByObjId" class="appAuthticationAction" method="getUserInfoByObjId">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		 <action name="validateCode" class="appAuthticationAction" method="validateCode">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		 <action name="getUserRecourceByContactId" class="appAuthticationAction" method="getUserRecourceByContactId">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		 <action name="saveUserInfo" class="appAuthticationAction" method="saveUserInfo">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		 <action name="updateUserRelation" class="appAuthticationAction" method="updateUserRelation">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		 <action name="getJobDuty" class="appAuthticationAction" method="getJobDuty">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="login" class="appAuthticationAction" method="login">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="logout" class="appAuthticationAction" method="logout">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="postRequestProxy" class="appAuthticationAction" method="postRequestProxy">
+			<interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="testAttachmentAction" class="attachmentAction">
+			<result name="success" type="stream">
+				<!-- 指定下载文件的内容类型，application/unknown是默认类型 -->
+				<param name="contentType">$(contentType)</param>
+				<!--动态获取文件名，从Action中的取得filename -->
+				<param name="contentDisposition">
+					attachment;filename="${fileName}"
+				</param>
+				<param name="contentLength">${fileLength}</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="redirect" type="redirect">${backurl}</result>
+		</action>
+		<action name="showUpdate" class="appLandInfoAction" method="showUpdate">
+			<result name="success">/app/modelDetail.jsp</result>
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<!-- 正式环境要使用的action，不能删 -->
+		<action name="landReport" class="appLandInfoAction" method="showReport">
+			<result name="success">/app/landReport.jsp</result>
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="fetchBankParam" class="appPaymentAction" method="fetchBankParam">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<!-- 财付通提交参数 -->
+		<action name="fetchTenpayParam" class="appTenpayAction" method="fetchTenpayParam">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<!-- 支付宝提交参数 -->
+		<action name="fetchAlipayParam" class="appAlipayAction" method="fetchAlipayParam">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		
+		<action name="returnResult" class="appTenpayAction" method="returnResult">
+		</action>
+		
+		<!-- 查询欠费记录 -->
+		<action name="arrearList" class="appPaymentAction" method="arrearList">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<!-- 查询缴费记录 -->
+		<action name="paymentList" class="appPaymentAction" method="paymentList">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<!-- 查询缴费记录明细 -->
+		<action name="paymentDetailList" class="appPaymentAction" method="paymentDetailList">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<!-- 网上支付接收银联服务器通知接口 -->
+		<action name="acceptBankResult" class="appPaymentAction" method="acceptBankResult">
+		    <interceptor-ref name="appExceptionInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<!-- 网上支付接收财付通服务器通知接口 -->
+		<action name="acceptTenpayResult" class="appTenpayAction" method="acceptTenpayResult">
+		    <interceptor-ref name="appExceptionInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<!-- 网上支付接收支付宝服务器通知接口 -->
+		<action name="acceptAlipayResult" class="appAlipayAction" method="acceptAlipayResult">
+		    <interceptor-ref name="appExceptionInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="acceptBankResultManual" class="appPaymentAction" method="acceptBankResultManual">
+		    <interceptor-ref name="appExceptionInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="showOpenContent" class="appContentAction" method="showOpenContent">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="showRichContent" class="appContentAction" method="showRichContent">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="listContent" class="appContentAction" method="listContent">
+		    <interceptor-ref name="appExceptionInterceptor" />
+		    <interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="detailContent" class="appContentAction" method="detailContent">
+		    <interceptor-ref name="appExceptionInterceptor" />
+		    <interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="userComment" class="appContentAction" method="userComment">
+		    <interceptor-ref name="appExceptionInterceptor" />
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="collectContent" class="appContentAction" method="collectContent">
+		    <interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="cancelCollectContent" class="appContentAction" method="cancelCollectContent">
+		    <interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="userBuy" class="appContentAction" method="userBuy">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="userLottery" class="appContentAction" method="userLottery">
+		    <interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="switchResource" class="appContentAction" method="switchResource">
+		    <interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="leaveMessage" class="appContentAction" method="leaveMessage">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="replyMessage" class="appContentAction" method="replyMessage">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="leaveMessageUserList" class="appContentAction" method="leaveMessageUserList">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="leaveMessageList" class="appContentAction" method="leaveMessageList">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="customerServiceList" class="appContentAction" method="customerServiceList">
+		    <interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="queryAllContentIds" class="appContentAction" method="queryAllContentIds">
+		    <interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="waitingTaskList" class="oaContentAction" method="waitingTaskList">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="queryProcUnitHandlersByBizId" class="oaContentAction" method="queryProcUnitHandlersByBizId">
+		    <interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="getMenu" class="oaContentAction" method="getMenu">
+		    <interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="queryDeltaOrg" class="oaContentAction" method="queryDeltaOrg">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="slicedQueryDeltaOrg" class="oaContentAction" method="slicedQueryDeltaOrg">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="queryDeltaPerson" class="oaContentAction" method="queryDeltaPerson">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="slicedQueryDeltaPerson" class="oaContentAction" method="slicedQueryDeltaPerson">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="updatePersonContactInfo" class="oaContentAction" method="updatePersonContactInfo">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="assetListByTaskId" class="oaContentAction" method="assetListByTaskId">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="batchUpdateAssetAccountStatus" class="oaContentAction" method="batchUpdateAssetAccountStatus">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="updateAssetAccount" class="oaContentAction" method="updateAssetAccount">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="insertAssetAccount" class="oaContentAction" method="insertAssetAccount">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="insertStocktakingLog" class="oaContentAction" method="insertStocktakingLog">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="savePersonSetting" class="oaContentAction" method="savePersonSetting">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="loadPersonSetting" class="oaContentAction" method="loadPersonSetting">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="slicedQueryInfo" class="oaContentAction" method="slicedQueryInfo">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="loadInfo" class="oaContentAction" method="loadInfo">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="slicedQueryPosition" class="oaContentAction" method="slicedQueryPosition">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="queryPersonMenu" class="oaContentAction" method="queryPersonMenu">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="startUsingMenu" class="oaContentAction" method="startUsingMenu">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="stopUsingMenu" class="oaContentAction" method="stopUsingMenu">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="loadPosition" class="oaContentAction" method="loadPosition">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="slicedQueryOperationPeriod" class="hrContentAction" method="slicedQueryOperationPeriod">
+		    <interceptor-ref name="tokenInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="newLotteryTops" class="appContentAction" method="newLotteryTops">
+		    <interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="openDoors" class="appContentAction" method="openDoors">
+		    <interceptor-ref name="tokenInUrlInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="createPayInfo" class="yiRuanController" method="createPayInfo">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="createPayInfoBank" class="yiRuanController" method="createPayInfoBank">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="createPayInfoBank" class="yiRuanController" method="createPayInfoBank">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="updatePayInfo" class="yiRuanController" method="updatePayInfo">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="updatePayInfoBank" class="yiRuanController" method="updatePayInfoBank">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="searchPayInfoBank" class="yiRuanController" method="searchPayInfoBank">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="searchBalanceMoney" class="yiRuanController" method="searchBalanceMoney">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="queryArrayList" class="appAuthticationAction" method="queryArrayList">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="arrearListByResourceId" class="appPaymentAction" method="arrearListByResourceId">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="searchPayLine" class="yiRuanController" method="searchPayLine">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="queryZsCustomer" class="appAuthticationAction" method="queryZsCustomer">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+	   <!-- 查询缴费记录 -->
+		<action name="paymentListNew" class="appPaymentAction" method="paymentListNew">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="paymentDetailListByResourceId" class="appPaymentAction" method="paymentDetailListByResourceId">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="setCurrentRecource" class="appAuthticationAction" method="setCurrentRecource">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="loginUser" class="appAuthticationAction" method="loginUser">
+			<interceptor-ref name="defaultStack" />
+		</action>
+	   <action name="loginUserR" class="appAuthticationAction" method="loginUserR">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		 <action name="getContactInfoById" class="appAuthticationAction" method="getContactInfoById">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		 <action name="getContactInfoPhoneNum" class="appAuthticationAction" method="getContactInfoPhoneNum">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<!-- 报修支付和回调接口 -->
+		<action name="createAliPayInfo" class="appProPaymentAction" method="createAliPayInfo">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		
+		<action name="createBankPayInfo" class="appProPaymentAction" method="createBankPayInfo">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		
+		<action name="updateProPayInfo" class="appProPaymentAction" method="updateProPayInfo">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		
+		<action name="updateProPayInfoBank" class="appProPaymentAction" method="updateProPayInfoBank">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		
+		
+		<action name="queryInspection" class="appInspectionAction" method="queryInspection">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		
+		<action name="queryInspectionItems" class="appInspectionAction" method="queryInspectionItems">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		
+		<action name="execInspection" class="appInspectionAction" method="execInspection">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		
+		<action name="employeeSync" class="appInspectionAction" method="employeeSync">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		
+		<action name="employeePushInfo" class="appInspectionAction" method="employeePushInfo">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="listHeart" class="appInspectionAction" method="listHeart">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="systemPush" class="appInspectionAction" method="systemPush">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="listHeartCount" class="appInspectionAction" method="listHeartCount">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="deletePushInfo" class="appInspectionAction" method="deletePushInfo">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		
+		<action name="cloudInspectionToRepire" class="appInspectionAction" method="cloudInspectionToRepire">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		
+		<action name="getMembersByResourceId" class="appAuthticationAction" method="getMembersByResourceId">
+		    <!-- <interceptor-ref name="tokenInterceptor" /> -->
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="insertFactMoney" class="yiRuanController" method="insertFactMoney">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+		<action name="getRequirementByContactInfo" class="appAuthticationAction" method="getRequirementByContactInfo">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="getProjects" class="appAuthticationAction" method="getProjects">
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="getUserInfoCount" class="appAuthticationAction" method="getUserInfoCount">
+			<interceptor-ref name="defaultStack" />
+		</action>
+			
+		<action name="getAlltanentBySysId" class="appAuthticationAction" method="getAlltanentBySysId">
+		   <interceptor-ref name="tokenInterceptor" /> 
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="getProjectsBySysIdAndTanentId" class="appAuthticationAction" method="getProjectsBySysIdAndTanentId">
+		 <interceptor-ref name="tokenInterceptor" /> 
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="getTanentByUserIdAndSysId" class="appAuthticationAction" method="getTanentByUserIdAndSysId">
+		 <interceptor-ref name="tokenInterceptor" /> 
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="checkUserByUserIdAndSysId" class="appAuthticationAction" method="checkUserByUserIdAndSysId">
+		 <interceptor-ref name="tokenInterceptor" /> 
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="getUsersBySysId" class="appAuthticationAction" method="getUsersBySysId">
+		    <interceptor-ref name="tokenInterceptor" /> 
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="getTanentByProjectIdAndSysId" class="appAuthticationAction" method="getTanentByProjectIdAndSysId">
+		 <interceptor-ref name="tokenInterceptor" /> 
+			<interceptor-ref name="defaultStack" />
+		</action>
+	   <action name="pushHouseInfo" class="appAuthticationAction" method="pushHouseInfo">
+			<interceptor-ref name="defaultStack" /> 
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<easy-search-mapping>
+	<query-scheme name="selectPersonOwnPsm" desc="选择人员拥有的人员成员" >
+		<sql>
+		  select t.id, t.name, t.full_name from sa_oporg t where t.person_id = :personId
+		</sql>
+		<field name="id" code="id" type='hidden'/>
+		<field name="姓名" code="name"  width="120"/>
+		<field name="全路径" code="fullName"  width="300"/>
+	</query-scheme>
+	<query-scheme name="selectBaseFunctonType" desc="选择基础职能角色" >
+		<sql>
+		    select * from SA_OPBaseFunctionType order by sequence
+		</sql>
+		<field name="id" code="id" type='hidden'/>
+		<field name="编码" code="code"  width="120"/>
+		<field name="名称" code="name"  width="300"/>
+	</query-scheme> 
+	<query-scheme name="selectBizFunction" desc="选择业务岗位" >
+		<sql>
+			select * from SA_OPBaseFunctionType t order by sequence
+		</sql>
+		<field name="id" code="id" type='hidden'/>
+		<field name="编码" code="code"  width="120"/>
+		<field name="名称" code="name"  width="300"/>
+	</query-scheme> 
+</easy-search-mapping>

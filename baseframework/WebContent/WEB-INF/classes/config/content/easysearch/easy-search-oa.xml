@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<easy-search-mapping>
+	<query-scheme name="choosePlanCalendar" desc="计划日历选择">
+		<sql>
+		  select t.calendar_id, t.calendar_code, t.calendar_name
+		  from oa_plan_calendar t
+		 where t.status = 1
+		 order by t.sequence asc
+		</sql>
+		<field name="calendarId" code="calendarId" type='hidden'/>
+		<field name="编码" code="calendarCode"  width="80"/>
+		<field name="名称" code="calendarName"  width="140"/>
+    </query-scheme>
+    <query-scheme name="feedbackTemplate" desc="反馈模板选择" folderKindId="26" folderIdName="folder_id">
+		<sql>
+		  select t.info_feedback_template_id, t.code, t.name, t.remark, t.folder_id
+			  from oa_info_feedback_template t
+			 where t.status = 1
+			 order by t.status
+		</sql>
+		<field name="infoFeedbackTemplateId" code="infoFeedbackTemplateId" type='hidden'/>
+		<field name="编码" code="code"  width="80"/>
+		<field name="名称" code="name"  width="130"/>
+		<field name="备注" code="remark"  width="200"/>
+    </query-scheme>
+    <query-scheme name="instProcRuleElement" desc="选择制度审批要素" >
+		<sql>
+		 select id,code,name,kind_id,data_source_id,data_source_config,sequence 
+          from wf_approvalelement a 
+         where a.id in ( 
+                        select e.element_code 
+                          from oa_inst_revise_element e 
+                         where e.institution_revise_id in 
+                               (select r.institution_revise_id 
+                                  from oa_institution_revise r 
+                                 start with r.institution_revise_id = 
+                                            :institutionReviseId 
+                                connect by prior r.parent_id = r.institution_revise_id) 
+                        union all 
+                        select e.element_code 
+                          from oa_inst_revise_element e 
+                         where e.institution_revise_id in 
+                               (select r.institution_revise_id 
+                                  from oa_institution_revise r 
+                                 start with r.institution_revise_id = 
+                                            :institutionReviseId 
+                                connect by prior r.institution_revise_id = r.parent_id) 
+                        union all 
+                        select ee.element_code 
+                          from oa_institution_element ee 
+                         where ee.institution_id in 
+                               (select i.institution_id 
+                                  from oa_institution i 
+                                 where i.institution_id != :rootId 
+                                 start with i.institution_id = :rootId 
+                                connect by prior i.parent_id = i.institution_id)) 
+         order by sequence 
+		</sql>
+		<field name="id" code="id" type='hidden'/>
+		<field name="编码" code="code" width="120"/>
+		<field name="名称" code="name"  width="120"/>
+		<field name="类型" code="kindId"  width="120"/>
+		<field name="数据源配置" code="dataSourceConfig" type="hidden"/>
+	</query-scheme>
+	<query-scheme name="chooseMeetingRoom" desc="会议室选择">
+		<sql>
+		  select t.meeting_room_id,t.code,t.name,t.place,
+		  	decode(t.support_video,1,'是','否') support_video,
+		  	t.description,t.galleryful,t.owner_name,
+		  	decode(t.is_special,1,'是','否') is_special 
+		  from oa_meeting_room t where t.status=1 
+		  order by t.sequence asc 
+		</sql>
+		<field name="meetingRoomId" code="meetingRoomId" type='hidden'/>
+		<field name="编码" code="code"  type='hidden'/>
+		<field name="名称" code="name"  width="200"/>
+		<field name="地点" code="place"  width="70"/>
+		<field name="支持视频" code="supportVideo"  width="50"/>
+		<field name="容纳人数" code="galleryful"  width="50"/>
+		<field name="所属机构" code="ownerName"  width="150"/>
+		<field name="专用" code="isSpecial"  width="30"/>
+    </query-scheme>
+    
+	<query-scheme name="chooseMeeting" desc="会议选择">
+		<sql>
+		<![CDATA[
+		  select t.meeting_id,
+		  		 t.meeting_kind_id,
+		  		 k.name meeting_kind_name,
+		  		 t.subject,
+		  		 t.subject meeting_name,
+			     t.manager_name,
+			     to_char(t.start_time,'yyyy-mm-dd hh24:mi') start_time,
+			     to_char(t.end_time,'yyyy-mm-dd hh24:mi') end_time,
+			     t.duty_name,
+			     t.att_manager_name,
+			     (select listagg(r.name||'('||r.place||')',',') within GROUP (order by r.sequence)  
+				  			from oa_meeting_room r,oa_meeting_use_detail d where   
+									r.meeting_room_id=d.meeting_room_id and  
+									d.meeting_id(+)=t.meeting_id) meeting_place,
+			     t.att_manager_id 
+			  from oa_meeting t,oa_meeting_kind k  
+			 where t.status in (2,3,5) 
+			 	and k.meeting_kind_id=t.meeting_kind_id
+		]]> 
+		</sql>
+		<field name="meetingKindId" code="meetingKindId" type='hidden'/>
+		<field name="meetingPlace" code="meetingPlace" type='hidden'/>
+		<field name="meetingId" code="meetingId" type='hidden'/>
+		<field name="startTime" code="startTime" type='hidden'/>
+		<field name="endTime" code="endTime" type='hidden'/>
+		<field name="attManagerId" code="attManagerId" type='hidden'/>
+		<field name="meetingName" code="meetingName" type='hidden'/>
+		<field name="会议类型" code="meetingKindName"  width="80"/>
+		<field name="主题" code="subject"  width="245"/>
+		<field name="开始时间" code="startTime" width="115"/>
+		<field name="主持人" code="managerName" width="70"/>
+		<field name="负责人" code="dutyName" width="70"/>
+		<orderby>start_time desc</orderby>
+    </query-scheme>
+    
+    <query-scheme name="queryCurrentPlanTask" desc="查询我的计划任务">
+		<sql>
+		select t.task_id, t.task_name, t.start_date, t.finish_date
+		  from v_oa_plan t
+		 where exists (select 0
+		          from oa_task_org o, sa_oporg g
+		         where t.task_id = o.task_id
+		           and o.full_id = g.full_id
+		           and g.org_kind_id = 'psm'
+		           and g.person_id = :currentPersonId)
+		   and t.status = 0
+		 order by t.full_sequence asc
+		</sql>
+		<field name="taskId" code="taskId" type='hidden'/>
+		<field name="任务名称" code="taskName"  width="160"/>
+		<field name="计划开始时间" code="startDate"  width="90" type="date"/>
+		<field name="计划结束时间" code="finishDate"  width="90" type="date"/>
+    </query-scheme>
+    
+    <query-scheme name="queryDataCollectionField" desc="查询信息收集可用字段">
+		<sql>
+		    select t.column_name,
+		       t.data_type,
+		       t.column_id,
+		       nvl(t.data_precision, t.data_length) as  length
+		  from user_tab_columns t, user_col_comments cc
+		 where t.table_name = upper('oa_data_collection')
+		   and t.column_name = cc.column_name
+		   and t.table_name = cc.table_name
+		   and t.nullable = upper('y')
+		   and t.column_name not in
+		       (select f.field_name
+		          from oa_data_collection_field_defin f
+		         where f.data_collection_kind_id = :dataCollectionKindId)
+		</sql>
+		<orderby>column_id asc</orderby>
+		<field name="字段名" code="columnName"  width="160"/>
+		<field name="字段类型" code="dataType"  width="100"/>
+		<field name="字段长度" code="length"  width="60"/>
+    </query-scheme>
+    
+    <query-scheme name="querySpecializedCommitteeMeetingKind" desc="选择专委会会议类型">
+		<sql>
+		  select meeting_kind_id,code,name,sequence from oa_meeting_kind where status=1 and is_specialized_committee=1
+		</sql>
+		<orderby>sequence asc</orderby>
+		<field name="meeting_kind_id" code="meetingKindId" type='hidden'/>
+		<field name="code" code="code" type='hidden'/>
+		<field name="name" code="name"  width="240"/>
+    </query-scheme>
+    
+    <query-scheme name="queryInfoPromulgate" desc="信息弹屏修改关联信息">
+		<sql>
+	    <![CDATA[
+		  select t.info_promulgate_id, t.bill_code, t.subject
+			  from oa_info_promulgate t
+			 where t.status <> -1
+		]]>
+		</sql>
+		<orderby>info_promulgate_id desc</orderby>
+		<field name="info_promulgate_id" code="infoPromulgateId" type='hidden'/>
+		<field name="单据号码" code="billCode" width='100'/>
+		<field name="标题" code="subject"  width="240"/>
+    </query-scheme>
+</easy-search-mapping>

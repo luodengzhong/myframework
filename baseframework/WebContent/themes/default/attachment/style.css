@@ -1,0 +1,397 @@
+.JUploadDialog{
+	position: absolute;
+	border: 1px solid #a9bbd3;
+	background-color: #fff;
+	font-size:12px;font-family:Arial;
+	height:auto;
+	display:none;
+	z-index:1001;
+}
+
+.JUploadDialog .content{
+	padding:5px;
+	text-align:center;
+	font-size: 12px;
+	height:100%;
+	color:#333333;
+	background-color:#fcfcfc;
+}
+.JUploadDialog .text{
+	background-color:#FFFFFF;
+	font-family:tahoma,verdana,helvetica;
+	font-size: 12px;
+	line-height:22px;
+	height: 22px;
+	border-color: #848484 #E0E0E0 #E0E0E0 #848484;
+	border-style: solid;
+	border-width: 1px;
+	display: -moz-inline-stack;
+	display: inline-block;
+	vertical-align: middle;
+	zoom: 1;
+	*display: inline;
+}
+.JUploadDialog .button{
+	background: url(i/btn.gif) no-repeat; width: 69px; cursor: pointer; border-top-style: none; line-height: 22px; border-right-style: none; border-left-style: none; height: 24px; border-bottom-style: none
+}
+.JUploadDialog .title{
+	background:#FECD00 url(i/message.gif) no-repeat center left; 
+	padding: 1px 0 1px 18px; display: block;
+	border-bottom:1px solid #A67901; 
+	border-top:1px solid #FFF; 
+	border-left:1px solid #FFF; 
+	color:#000;height:25px;line-height:25px;  
+	text-indent:5px; 
+	cursor:move;
+}
+.JUploadDialog .title .msg_title{
+    float:left;
+}
+.JUploadDialog .title .icos{
+	float:right;
+	margin-right: 10px
+}
+.JUploadDialog .title .icos a{
+	float:right; 
+	color:#833B02;margin:1px;
+	text-align:center;font-weight:bold;
+	width:14px;height:22px;line-height:22px;padding:1px; 
+	text-decoration:none;
+	outline:none;
+}
+.JUploadDialog .icos a:hover{color:#fff; }
+.JUploadDialog .uploadInput{ font-size:12px; overflow:hidden; position:absolute;cursor:pointer;}   
+.JUploadDialog .file {position: absolute;top:0;right:3px;height:25px;padding:0;margin-left:0;z-index:811212;border: 0 none;opacity:0;filter:alpha(opacity=0);}
+
+.ui-attachment-list{
+  text-align:left;
+  height:auto;
+  line-height:23px;
+  width:99%;
+}
+
+.ui-attachment-list fieldset{
+	padding:5px;
+	border:1px solid #999;
+}
+.ui-attachment-list fieldset.noborder{
+	border-width:0;
+}
+.ui-attachment-list fieldset legend{
+	border:1px solid #999;
+	background-color:#eee;
+	vertical-align:middle;
+	text-align:left;
+	font-weight:bold;
+	height:22px;
+	padding:2px;
+	min-width:80px;
+	line-height: 22px;
+}
+.ui-attachment-list fieldset legend ul,.ui-attachment-list fieldset legend li{
+	list-style: none
+}
+.ui-attachment-list span.addFieldFloat{
+   clear:both;
+   float:right;
+   width:20px;
+   height:20px;
+   display:inline-block;
+}
+.ui-attachment-list fieldset legend span,.ui-attachment-list span.addFieldGroup{
+	padding:0;
+	margin:0;
+	width:20px;
+	height:20px;
+	display:inline-block;
+	background: url(i/togglebar.gif) no-repeat;
+}
+
+.ui-attachment-list fieldset legend .ui-upload-button-span{
+	background-image:none;
+}
+.ui-attachment-list fieldset legend span.toggle{
+	cursor: pointer;
+	background-position: -20px 0px;
+}
+.ui-attachment-list fieldset legend span.toggle:hover{
+	background-position: -20px -20px;
+}
+.ui-attachment-list fieldset legend span.moreList{
+	cursor: pointer;
+	background-position: 0px 0px;
+}
+.ui-attachment-list fieldset legend span.moreList:hover{
+	background-position: 0px -20px;
+}
+.ui-attachment-list fieldset legend span.toggleShow{
+	cursor: pointer;
+	background-position: -20px -40px;
+}
+.ui-attachment-list fieldset legend span.toggleShow:hover{
+	background-position: -20px -60px;
+}
+.ui-attachment-list fieldset legend span.addFile,.ui-attachment-list span.addFieldGroup{
+	cursor: pointer;
+	background-position: 0px -40px;
+}
+
+.ui-attachment-list fieldset legend span.addFileHover,.ui-attachment-list span.addFieldGroupHover{
+	background-position: 0px -60px;
+}
+
+.ui-attachment-list fieldset .fileListMain{
+	display:inline-block;
+	clear:left;
+	width:100%;
+}
+.ui-attachment-list a{
+   color:#000000;
+   font-size:12px;
+   height:21px;
+   line-height:21px;
+   outline:none;
+   text-decoration:none;
+}
+.ui-attachment-list a:hover {
+   color:#ff0000;
+}
+.ui-attachment-list div.file{
+	position:relative;
+	float:left;
+	padding:1px 5px 1px 5px;
+	margin:1px 12px 1px 0px;
+	display:block;
+	white-space:nowrap;
+}
+.ui-attachment-list div.groupFileListMore{
+	background: url(i/select.gif) no-repeat top right;
+	background-color:#fff;
+}
+.ui-attachment-list div.groupFileList div.file{
+	position:static;
+	float:none;
+	padding:0px;
+	margin:0px;
+	white-space:normal;
+}
+
+.ui-attachment-list div.groupFileList div.file span{
+	padding:0px;
+	padding-left: 12px;
+	padding-right: 2px;
+    white-space:normal;
+}
+
+.ui-attachment-list div.file span,.fileKind{
+  list-style: none;
+  padding: 3px;
+  display:inline-block;
+  padding-left: 12px;
+  font-size:12px; 
+  height:21px;
+  line-height:21px;
+  background: url(i/txt.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.bmp,.list_view span.bmp{
+  background: url(i/bmp.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.doc,.list_view span.doc{
+  background: url(i/doc.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.docx,.list_view span.docx{
+  background: url(i/doc.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.ppt,.list_view span.ppt{
+  background: url(i/ppt.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.pptx,.list_view span.pptx{
+  background: url(i/ppt.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.vsd,.list_view span.vsd{
+  background: url(i/project.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.mpp,.list_view span.mpp{
+  background: url(i/project.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.gif,.list_view span.gif{
+  background: url(i/gif.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.jpg,.list_view span.jpg{
+  background: url(i/jpg.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.mp3,.list_view span.mp3{
+  background: url(i/mp3.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.png,.list_view span.png{
+  background: url(i/png.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.rar,.list_view span.rar{
+  background: url(i/rar.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.swf,.list_view span.swf{
+  background: url(i/swf.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.txt,.list_view span.txt{
+  background: url(i/txt.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.xls,.list_view span.xls{
+  background: url(i/xls.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.xlsx,.list_view span.xlsx{
+  background: url(i/xls.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.xlsm,.list_view span.xlsm{
+  background: url(i/xls.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.zip,.list_view span.zip{
+  background: url(i/zip.gif) no-repeat center left;
+}
+.ui-attachment-list div.file span.pdf,.list_view span.pdf{
+  background: url(i/pdf.gif) no-repeat center left;
+  background-position:-5px 0;
+}
+.ui-attachment-list div.file span.error,.list_view span.error{
+  background: url(i/error.gif) no-repeat center left;
+}
+.ui-attachment-list div.groupFileList div.file span.delFile{
+   background: url(i/folder_delete.gif) no-repeat;
+   background-position: 0px 3px;
+   padding:0;
+   margin:0;
+   width:20px;
+   height:20px;
+   cursor:pointer;
+   display:inline-block;
+   clear:both;
+   float:right;
+}
+.ui-attachment-list div.groupFileList div.file span.delFile:hover{
+   background: url(i/folder_delete.gif) no-repeat center left;
+   background-position: 0px -19px;
+}
+.ui-attachment-list div.fileSelected{
+	background-color:#b2b4bf;
+	border: 1px solid #4d4b40;
+	padding:0 4px 0 4px;
+	border-radius: 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+}
+.show-attachment-file-pop-div{
+	position:absolute;
+	border: 1px solid #D0D0D0;
+	border-top:0px;
+	display:none;
+	background-color:#fff;
+	padding-left:3px;
+	padding-right:3px;
+	padding-bottom:5px;
+	z-index:1001;
+}
+.show-attachment-file-pop-div div.file{
+	border-bottom: 1px dotted #D6D6D6;
+}
+.ui-attachment-pop-div .operating{
+	text-align:right;
+	height:20px; 
+}
+.fileListView .text{
+	width:40px;
+}
+.ui-attachment-list div.fileListView{
+	width: 100%;
+	display: inline-block;
+	border-bottom: 1px dotted #D6D6D6;
+}
+.ui-attachment-list .attachmentInTable{
+	width:100%;
+}
+.ui-attachment-list .attachmentInTable td{
+	border: 1px solid #f5f5f5;
+}
+.ui-attachment-list .attachmentInTable td.title,.ui-attachment-list .attachmentInTable td.edit{
+    background-color: #f5f5f5;
+}
+/******************/
+.webuploader-container {
+	position: relative;
+}
+.webuploader-element-invisible {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px,1px,1px,1px);
+}
+.webuploader-pick {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	text-align: left;
+	overflow: hidden;
+}
+
+.ui-attachment-list fieldset legend span.addFile .webuploader-pick,.ui-attachment-list span.addFieldGroup .webuploader-pick{
+	background: url(i/togglebar.gif) no-repeat;
+	background-position: 0px -40px;
+}
+.webuploader-pick-hover {
+	
+}
+.ui-attachment-list fieldset legend span.addFile .webuploader-pick-hover,.ui-attachment-list span.addFieldGroup .webuploader-pick-hover{
+	background-position: 0px -60px;
+}
+.webuploader-pick-disable {
+	opacity: 0.6;
+	pointer-events:none;
+}
+
+.JQWebUploader-loading-div{
+	position:absolute;
+	top:35%;
+	left: 40%;
+	background-color: #ffffff;
+    border: 1px solid #cccccc;
+    line-height: 30px;
+    border-radius: 4px;
+    color: #555555;
+    display: inline-block;
+    font-size: 13px;
+    margin: 10px;
+    padding: 4px 6px;
+    width: 320px;
+    z-index:10001;
+}
+.JQWebUploader-item-upload,.JQWebUploader-item-stop, .JQWebUploader-item-del{
+	margin-left: 10px;
+	color: blue;
+	cursor: pointer;
+	text-decoration: none;
+}
+.JQWebUploader-item-upload{
+	display: none;
+}
+.JQWebUploader-item-upload:hover,.JQWebUploader-item-stop:hover, .JQWebUploader-item-del:hover {
+    color: #BD0A01;
+}
+.webuploader-progress {
+	background: white;
+	height: 20px;
+	padding: 2px;
+	border: 1px solid green;
+	margin: 2px;
+	width: 300px;
+} 
+.webuploader-progress span {
+	background: green; 
+	height: 16px; 
+	line-height:16px;
+	text-align: center; 
+	padding: 1px; 
+	margin: 1px; 
+    display: block; 
+    color: yellow; 
+    font-weight: bold; 
+    font-size: 14px; 
+    width: 0%;
+} 

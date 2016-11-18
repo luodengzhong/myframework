@@ -1,0 +1,69 @@
+#ui_sys_help_dialog{
+	position: absolute;
+	background-color: #fff;
+	font-size:12px;
+	font-family:Arial;
+	display:none;
+	z-index:1001;
+	border: 1px solid #545454;
+}
+
+#ui_sys_help_dialog .help_title_bar{
+	background-color:#6C84B4;
+	padding: 1px 0 1px 10px; display: block;
+	border-bottom:1px solid #405999; 
+	color:#FFFFFF;
+	height:25px;line-height:25px;  
+	text-indent:5px; 
+}
+
+#ui_sys_help_dialog .title{
+	float:left;
+	font-weight: bold;
+	background: url(images/icons/help.png) no-repeat center left;
+	padding-left:16px;
+	height:20px;
+	line-height:20px;
+	margin-top:3px;
+	displya:inline-block;
+}
+
+#ui_sys_help_dialog .help_content{
+	padding:5px;
+	text-align:center;
+	font-size: 12px;
+	color:#333333;
+	background-color:#fcfcfc;
+    overflow-x:hidden;
+    overflow-y:auto;  
+}
+#ui_sys_help_dialog .help_content .helpGroup{
+	cursor: pointer;
+	margin-left:1px;
+	margin-right:1px;
+	margin-top:3px;
+	margin-bottom:3px;
+	border:1px solid #fcfcfc; 
+	padding:3px;
+}
+#ui_sys_help_dialog .help_content .helpGroupHover{
+	border:1px solid #405999;
+}
+#ui_sys_help_dialog .help_content .helpTitle{
+	font-weight: bold;
+	text-align:left;
+}
+#ui_sys_help_dialog .help_content .helpContent{
+	text-align:left;
+	color:#999;
+	font-style: normal;
+    font-weight: normal;
+}
+#ui_sys_help_dialog .help_content .helpOperation{
+	margin-right:10px;
+	text-align:right;
+	color:#999;
+}
+#ui_sys_help_dialog .help_content .ui-state-hover{
+	color:#000;
+}

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+	<entity name="resourceIndex" label="资源指标表" table="MD_RESOURCE_INDEX" update="true" insert="true">
+		<id column="RESOURCE_ID" name="resourceId" type="java.lang.Long" length="22" required="true" label="资源编号" update="true" insert="true"/>
+        <property column="RESOURCE_KIND_ID" name="resourceKindId" type="java.lang.String" length="20" required="false" label="资源类型Id" update="true" insert="true"/>
+        <property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+		<property column="BASE_BLD_AREA" name="baseBldArea" type="java.math.BigDecimal" length="22" required="false" label="基准建筑面积" update="true" insert="true"/>
+		<property column="CONSTRUCTION_BLD_AREA" name="constructionBldArea" type="java.math.BigDecimal" length="22" required="false" label="报建建筑面积" update="true" insert="true"/>
+		<property column="SALE_BLD_AREA" name="saleBldArea" type="java.math.BigDecimal" length="22" required="false" label="预售建筑面积" update="true" insert="true"/>
+		<property column="SALE_TN_AREA" name="saleTnArea" type="java.math.BigDecimal" length="22" required="false" label="预售套内面积" update="true" insert="true"/>
+		<property column="COST_PRICE" name="costPrice" type="java.math.BigDecimal" length="22" required="false" label="成本单价" update="true" insert="true"/>
+		<property column="COST_AMOUNT" name="costAmount" type="java.math.BigDecimal" length="22" required="false" label="成本总价" update="true" insert="true"/>
+		<property column="BUSINESS_PLAN_BLD_PRICE" name="businessPlanBldPrice" type="java.math.BigDecimal" length="22" required="false" label="商业计划书建面单价" update="true" insert="true"/>
+		<property column="BUSINESS_PLAN_TN_PRICE" name="businessPlanTnPrice" type="java.math.BigDecimal" length="22" required="false" label="商业计划书套内单价" update="true" insert="true"/>
+		<property column="BUSINESS_PLAN_AMOUNT" name="businessPlanAmount" type="java.math.BigDecimal" length="22" required="false" label="商业计划书总价" update="true" insert="true"/>
+		<property column="STANDARD_BLD_PRICE" name="standardBldPrice" type="java.math.BigDecimal" length="22" required="false" label="标准建面单价" update="true" insert="true"/>
+		<property column="STANDARD_TN_PRICE" name="standardTnPrice" type="java.math.BigDecimal" length="22" required="false" label="标准套内单价" update="true" insert="true"/>
+		<property column="STANDARD_AMOUNT" name="standardAmount" type="java.math.BigDecimal" length="22" required="false" label="标准总价" update="true" insert="true"/>
+		<property column="BASE_BLD_PRICE" name="baseBldPrice" type="java.math.BigDecimal" length="22" required="false" label="建面底价" update="true" insert="true"/>
+		<property column="BASE_TN_PRICE" name="baseTnPrice" type="java.math.BigDecimal" length="22" required="false" label="套内底价" update="true" insert="true"/>
+		<property column="BASE_AMOUNT" name="baseAmount" type="java.math.BigDecimal" length="22" required="false" label="总底价" update="true" insert="true"/>
+		<property column="SPECIAL_BLD_PRICE" name="specialBldPrice" type="java.math.BigDecimal" length="22" required="false" label="建面特价" update="true" insert="true"/>
+		<property column="SPECIAL_TN_PRICE" name="specialTnPrice" type="java.math.BigDecimal" length="22" required="false" label="套内特价" update="true" insert="true"/>
+		<property column="SPECIAL_AMOUNT" name="specialAmount" type="java.math.BigDecimal" length="22" required="false" label="总特价" update="true" insert="true"/>
+		<property column="ORDER_BLD_PRICE" name="orderBldPrice" type="java.math.BigDecimal" length="22" required="false" label="建面订购价（建面执行总价）" update="true" insert="true"/>
+		<property column="ORDER_TN_PRICE" name="orderTnPrice" type="java.math.BigDecimal" length="22" required="false" label="套内订购价（套内执行总价）" update="true" insert="true"/>
+		<property column="ORDER_AMOUNT" name="orderAmount" type="java.math.BigDecimal" length="22" required="false" label="总订购价（执行总价）" update="true" insert="true"/>
+		<property column="CONTRACT_SIGN_BLD_PRICE" name="contractSignBldPrice" type="java.math.BigDecimal" length="22" required="false" label="建面合同成交单价" update="true" insert="true"/>
+		<property column="CONTRACT_SIGN_TN_PRICE" name="contractSignTnPrice" type="java.math.BigDecimal" length="22" required="false" label="套内合同成交单价" update="true" insert="true"/>
+		<property column="CONTRACT_SIGN_AMOUNT" name="contractSignAmount" type="java.math.BigDecimal" length="22" required="false" label="合同成交总价" update="true" insert="true"/>
+		<property column="PROPERTY_AMOUNT" name="propertyAmount" type="java.math.BigDecimal" length="22" required="false" label="产权合同总价" update="true" insert="true"/>
+		<property column="PROPERTY_BLD_PRICE" name="propertyBldPrice" type="java.math.BigDecimal" length="22" required="false" label="建面产权合同单价" update="true" insert="true"/>
+		<property column="PROPERTY_TN_PRICE" name="propertyTnPrice" type="java.math.BigDecimal" length="22" required="false" label="套内产权合同单价" update="true" insert="true"/>
+		<property column="PROPERTY_AREA" name="propertyArea" type="java.math.BigDecimal" length="22" required="false" label="实测建筑面积" update="true" insert="true"/>
+		<property column="TRANSMISSION_AREA" name="transmissionArea" type="java.math.BigDecimal" length="22" required="false" label="实测套内面积" update="true" insert="true"/>
+        <version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+		<condition column="RESOURCE_ID" name="resourceId" symbol="="/>
+		
+		<sql name="query">
+           <![CDATA[
+			 SELECT * FROM (
+			 	SELECT * FROM MD_RESOURCE_INDEX 
+				UNION ALl
+			 	SELECT * FROM MD_RESOURCE_INDEX_HISTORY 
+			 ) resourceIndex  
+			]]>
+		</sql>
+	</entity>
+	
+	<entity name="resourceIndexHistory" label="资源指标表" table="MD_RESOURCE_INDEX_HISTORY" update="true" insert="true">
+		<id column="RESOURCE_ID" name="resourceId" type="java.lang.Long" length="22" required="true" label="资源编号" update="true" insert="true"/>
+        <property column="RESOURCE_KIND_ID" name="resourceKindId" type="java.lang.String" length="20" required="false" label="资源类型ID" update="true" insert="true"/>
+        <property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+		<property column="BASE_BLD_AREA" name="baseBldArea" type="java.math.BigDecimal" length="22" required="false" label="基准建筑面积" update="true" insert="true"/>
+		<property column="CONSTRUCTION_BLD_AREA" name="constructionBldArea" type="java.math.BigDecimal" length="22" required="false" label="报建建筑面积" update="true" insert="true"/>
+		<property column="SALE_BLD_AREA" name="saleBldArea" type="java.math.BigDecimal" length="22" required="false" label="预售建筑面积" update="true" insert="true"/>
+		<property column="SALE_TN_AREA" name="saleTnArea" type="java.math.BigDecimal" length="22" required="false" label="预售套内面积" update="true" insert="true"/>
+		<property column="COST_PRICE" name="costPrice" type="java.math.BigDecimal" length="22" required="false" label="成本单价" update="true" insert="true"/>
+		<property column="COST_AMOUNT" name="costAmount" type="java.math.BigDecimal" length="22" required="false" label="成本总价" update="true" insert="true"/>
+		<property column="BUSINESS_PLAN_BLD_PRICE" name="businessPlanBldPrice" type="java.math.BigDecimal" length="22" required="false" label="商业计划书建面单价" update="true" insert="true"/>
+		<property column="BUSINESS_PLAN_TN_PRICE" name="businessPlanTnPrice" type="java.math.BigDecimal" length="22" required="false" label="商业计划书套内单价" update="true" insert="true"/>
+		<property column="BUSINESS_PLAN_AMOUNT" name="businessPlanAmount" type="java.math.BigDecimal" length="22" required="false" label="商业计划书总价" update="true" insert="true"/>
+		<property column="STANDARD_BLD_PRICE" name="standardBldPrice" type="java.math.BigDecimal" length="22" required="false" label="标准建面单价" update="true" insert="true"/>
+		<property column="STANDARD_TN_PRICE" name="standardTnPrice" type="java.math.BigDecimal" length="22" required="false" label="标准套内单价" update="true" insert="true"/>
+		<property column="STANDARD_AMOUNT" name="standardAmount" type="java.math.BigDecimal" length="22" required="false" label="标准总价" update="true" insert="true"/>
+		<property column="BASE_BLD_PRICE" name="baseBldPrice" type="java.math.BigDecimal" length="22" required="false" label="建面底价" update="true" insert="true"/>
+		<property column="BASE_TN_PRICE" name="baseTnPrice" type="java.math.BigDecimal" length="22" required="false" label="套内底价" update="true" insert="true"/>
+		<property column="BASE_AMOUNT" name="baseAmount" type="java.math.BigDecimal" length="22" required="false" label="总底价" update="true" insert="true"/>
+		<property column="SPECIAL_BLD_PRICE" name="specialBldPrice" type="java.math.BigDecimal" length="22" required="false" label="建面特价" update="true" insert="true"/>
+		<property column="SPECIAL_TN_PRICE" name="specialTnPrice" type="java.math.BigDecimal" length="22" required="false" label="套内特价" update="true" insert="true"/>
+		<property column="SPECIAL_AMOUNT" name="specialAmount" type="java.math.BigDecimal" length="22" required="false" label="总特价" update="true" insert="true"/>
+		<property column="ORDER_BLD_PRICE" name="orderBldPrice" type="java.math.BigDecimal" length="22" required="false" label="建面订购价（建面执行总价）" update="true" insert="true"/>
+		<property column="ORDER_TN_PRICE" name="orderTnPrice" type="java.math.BigDecimal" length="22" required="false" label="套内订购价（套内执行总价）" update="true" insert="true"/>
+		<property column="ORDER_AMOUNT" name="orderAmount" type="java.math.BigDecimal" length="22" required="false" label="总订购价（执行总价）" update="true" insert="true"/>
+		<property column="CONTRACT_SIGN_BLD_PRICE" name="contractSignBldPrice" type="java.math.BigDecimal" length="22" required="false" label="建面合同成交单价" update="true" insert="true"/>
+		<property column="CONTRACT_SIGN_TN_PRICE" name="contractSignTnPrice" type="java.math.BigDecimal" length="22" required="false" label="套内合同成交单价" update="true" insert="true"/>
+		<property column="CONTRACT_SIGN_AMOUNT" name="contractSignAmount" type="java.math.BigDecimal" length="22" required="false" label="合同成交总价" update="true" insert="true"/>
+		<property column="PROPERTY_AMOUNT" name="propertyAmount" type="java.math.BigDecimal" length="22" required="false" label="产权合同总价" update="true" insert="true"/>
+		<property column="PROPERTY_BLD_PRICE" name="propertyBldPrice" type="java.math.BigDecimal" length="22" required="false" label="建面产权合同单价" update="true" insert="true"/>
+		<property column="PROPERTY_TN_PRICE" name="propertyTnPrice" type="java.math.BigDecimal" length="22" required="false" label="套内产权合同单价" update="true" insert="true"/>
+		<property column="PROPERTY_AREA" name="propertyArea" type="java.math.BigDecimal" length="22" required="false" label="实测建筑面积" update="true" insert="true"/>
+		<property column="TRANSMISSION_AREA" name="transmissionArea" type="java.math.BigDecimal" length="22" required="false" label="实测套内面积" update="true" insert="true"/>
+        <version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+		<condition column="RESOURCE_ID" name="resourceId" symbol="="/>
+	</entity>
+</domain>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+
+	<entity name="orgProperty" label="组织机构属性" table="SA_OPORGPROPERTY" update="true" insert="true">
+
+		<id column="ORG_PROPERTY_ID" name="orgPropertyId" type="java.lang.Long" length="22" sequence="SEQ_ID" />
+
+		<property column="ORG_ID" name="orgId" type="java.lang.String" length="65" required="false" label="机构ID" update="true" insert="true" />
+		<property column="PROPERTY_KEY" name="propertyKey" type="java.lang.String" length="32" required="false" label="类型" update="true" insert="true" />
+		<property column="PROPERTY_VALUE" name="propertyValue" type="java.lang.String" length="32" required="false" label="值" update="true" insert="true" />
+
+		<sql name="queryDetailList">
+			select a.*, sa.*
+			          from (select sdd.*
+			                  from sys_dictionary_detail sdd
+			                 where sdd.dict_id =
+			                       (select dict_id
+			                          from sys_dictionary
+			                         where code = :dictCode)) a
+			          left join (select *
+			                      from sa_oporgproperty
+			                     where org_id = :orgId) sa
+			            on a.detail_id = sa.property_key
+		</sql>
+
+		<sql name="queryOrgId">
+			select so.id
+			  from SA_OPOrg so
+			 where so.code = :code
+			   and so.parent_id = :parentId
+			   and so.name = :name
+			   and so.org_kind_id = :orgKindId
+		</sql>
+		
+		<sql name="queryChildProperties">
+			select org_prop_value_prop_value.*, org_prop_value_prop.code
+			  from sys_dictionary org_prop, sys_dictionary_detail org_prop_value,
+			       sys_dictionary org_prop_value_prop,
+			       sys_dictionary_detail org_prop_value_prop_value
+			 where org_prop.dict_id = org_prop_value.dict_id
+			   and org_prop.code = :dictCode
+			   and org_prop_value.value = org_prop_value_prop.code
+			   and org_prop_value_prop.dict_id = org_prop_value_prop_value.dict_id
+		</sql>
+	</entity>
+
+</domain>

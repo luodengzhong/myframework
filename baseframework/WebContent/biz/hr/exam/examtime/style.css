@@ -1,0 +1,111 @@
+body{background-color:#E6EFFF;overflow-x:hidden} 
+font{color:red;font-size:18px;}
+label{vertical-align:middle,display:inline-block;}
+input{vertical-align:middle;}
+
+.time-item{
+	position: absolute;
+	top:5px;
+	right: 30px;
+	display: none;
+}
+.time-item strong {
+    background:#C71C60;
+    color:#fff;
+    line-height:29px;
+    font-size:20px;
+    font-family:Arial;
+    padding:0 10px;
+    margin-right:6px;
+    border-radius:5px;
+    box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+}
+
+
+.examMainTable{
+	width:55%;
+	margin:auto;
+	border-color: #7fa9ce;
+}
+table.examMainTable td{
+   border-color: #7fa9ce;
+   background-color: #fff;
+   font-size: 16px;
+   padding: 3px;
+}
+table.examMainTable td.title{
+	text-align: center;
+	background-color: #fff;
+	width: 20%;
+}
+table.examMainTable td.content{
+	text-align:left;
+	padding-left:10px;
+	width: 80%;
+}
+
+.questionContent{
+   width:65%;
+   margin:auto;
+   border: 1px solid #7fa9ce;
+   background-color: #fff;
+   text-align:left;
+   padding: 10px;
+   margin-top:20px;
+   font-family: '微软雅黑'
+}
+
+.problem_title{
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 28px;
+    margin-top: 8px;
+}
+.problem_title span{
+	font-size: 12px; 
+}
+.show_question_img{
+	display:none;
+}
+.question_item{
+	margin: 5px; 
+	margin-left: 20px;
+	line-height: 30px;
+	font-size: 16px; 
+}
+.question_item label{
+	margin-bottom: 5px;
+	font-size: 16px; 
+}
+.item_index{
+	display:inline-block;
+	text-align: left;
+	width:20px;
+}
+.questionListContent{
+   width:80%;
+   margin:auto;
+   border: 1px solid #7fa9ce;
+   background-color: #fff;
+   text-align:left;
+   padding: 10px;
+   margin-top:20px;
+   font-family: '微软雅黑';
+}
+.questionListContent .text{
+	width:50px;
+	border-color: #7fa9ce;
+}
+.show_question_img{
+	display:none;
+}
+.line{
+	height: 1px;
+	line-height: 1px;
+	width: 100%;
+	border-bottom: 1px solid #f5f5f5;
+	background-color: #D9D9D9;
+	width: 100%;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}

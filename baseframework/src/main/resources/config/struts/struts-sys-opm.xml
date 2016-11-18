@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="sysOpm" extends="default">
+		<action name="orgTypeAction" class="orgTypeAction"/>
+		<action name="orgTemplateAction" class="orgTemplateAction"/>
+		<action name="permissionAction" class="permissionAction"/>
+		<action name="orgAction" class="orgAction"/>
+		<action name="agentAction" class="agentAction"/>
+		<action name="authorizationAction" class="authorizationAction"/>
+		<action name="managementAction" class="managementAction"/>
+		<action name="permissionFieldAction" class="permissionFieldAction"/>
+		<action name="funAction" class="funAction"/>
+		<action name="projectOrgPersonOnPositionAction" class="projectOrgPersonOnPositionAction"/>		
+		<action name="permissionCheckAction" class="permissionCheckAction"/>		
+	</package>
+</struts>

@@ -1,0 +1,387 @@
+*{margin:0px;padding:0px;}
+html{overflow:hidden;}
+body{
+	/* Setting default text color, background and a font stack */
+	overflow:hidden;
+	color:#444444;
+	font-size:13px;
+	font-family:Arial, Helvetica, sans-serif;
+	/*background: #f2f2f2;
+	background: url(img/bg.jpg) left bottom;*/
+}
+#screenOverDiv{
+	position:absolute;
+	top:-15px;
+	left:0px;
+	width:0;
+	height:0;
+	background:#001;
+	display:none;
+	z-index:1000;
+	filter:alpha(opacity=20);
+	opacity:0.2;
+}
+/* Gallery styles */
+
+#gallery{
+	/* CSS3 Box Shadow */
+	-moz-box-shadow:0 0 3px #AAAAAA;
+	-webkit-box-shadow:0 0 3px #AAAAAA;
+	box-shadow:0 0 3px #AAAAAA;
+	
+	/* CSS3 Rounded Corners */
+	
+	-moz-border-radius-bottomleft:4px;
+	-webkit-border-bottom-left-radius:4px;
+	border-bottom-left-radius:4px;
+	
+	-moz-border-radius-bottomright:4px;
+	-webkit-border-bottom-right-radius:4px;
+	border-bottom-right-radius:4px;border:0;
+	/*background:url(img/portal_bg.jpg) no-repeat left bottom;
+	background-attachment: fixed;*/
+	/*background:url(img/panel.jpg) repeat-x bottom center #ffffff;*/
+
+	/* The width of the gallery */
+	width:100%;
+	overflow:hidden;
+}
+
+#slides{
+	width:100%;
+	overflow:hidden;
+}
+
+#slides .slide{
+	position:relative;
+	overflow-y:auto;
+	overflow-x:hidden;
+	float:left;
+	cursor:pointer;
+	border:0;
+	padding-left:10px;
+	padding-right:10px;
+}
+#menu{
+	/* This is the container for the thumbnails */
+	height:45px;
+}
+
+#menu ul.ulmenu{
+	margin:0px;
+	padding:0px;
+	float:left;
+	margin-left:20px;
+}
+
+#menu li{
+	width:60px;
+	display:inline-block;
+	list-style:none;
+	height:45px;
+	overflow:hidden;
+	float:left;
+}
+
+#menu li.inact:hover{
+	/* The inactive state, highlighted on mouse over */
+	background:url(img/pic_bg.png) repeat;
+}
+
+#menu li.act,#menu li.act:hover{
+	/* The active state of the thumb */
+	background:url(img/active_bg.png) no-repeat;
+}
+
+#menu li.act a{
+	cursor:default;
+}
+
+#menu li.fbar,#menu li.fbar:hover{
+	/* The left-most vertical bar, next to the first thumbnail */
+	width:4px;height:45px;
+	background:url(img/divider.png) no-repeat right;
+}
+
+#menu li a,#menu li a:hover{
+	display:block;
+	background:url(img/divider.png) no-repeat right;
+	height:35px;
+	padding-top:10px;
+	text-decoration:none;
+	outline:none;
+}
+
+#menu li a img{
+	border:none;
+}
+
+#main_div{
+	/* The main container */
+	margin:0px auto;
+	text-align:center;
+	width:100%;
+	display:none;
+	position:relative;
+}
+
+.portlet {
+	position:relative;
+	float:left;
+	margin:10px 20px 10px 0px;
+	width: 88px;
+	height:93px;
+	overflow:hidden; 
+	text-align: center;
+	z-index:100;
+	cursor:pointer;
+}
+.portlet-header{  width:88px;height:68px; }
+.portlet-content { 
+	padding:5px 2px 5px 2px;
+	width:88px;
+	height:25px;
+	white-space:nowrap;overflow:hidden; 
+	-o-text-overflow:ellipsis;text-overflow: ellipsis;
+	clear:both;
+}
+/*img.lazy{background: url(img/img-loading.gif) no-repeat center center;border:0;}*/
+img.lazy{border:0;}
+.portlet img.lazy{width:64px;height:64px;}
+
+.op-state-delete{
+	position:absolute;
+	bottom:5px;
+	display:inline-block;
+	width:128px;
+	height:128px;
+	z-index:10;
+	display:none;
+	right:50px;
+	background:url(img/del.png) no-repeat bottom center;
+}
+.op-state-delete-hover{
+	background:url(img/delhove.png) no-repeat bottom center;
+}
+/***********page manager*****************/
+.manager{
+	margin:5px 0px 5px 20px;
+	padding:0px;
+	float:left;
+	width:32px;
+	height:32px;
+	
+}
+.manager a{
+	width:32px;
+	height:32px;
+	display:inline-block;
+	background:url(img/desktop.png) no-repeat center left;
+	outline:none;
+	text-decoration:none;
+}
+.manager a:hover{
+	background:url(img/desktophove.png) no-repeat center left;
+}
+/***dialog****/
+.manager_dialog{
+    position:absolute;
+	display:none;
+    font-size:12px;
+	border: 1px #4096e6 solid;
+	padding: 0px;
+	margin-bottom:5px;
+	margin-left:5px;
+	z-index:10001;
+	width:770px;
+	background-color:#eeeeee;
+}
+.md-title{
+	background-color:#C1DAD7;
+	height:20px;
+	padding-left:5px;
+    padding-top:5px;
+	font-weight:bold;
+	overflow: hidden; 
+	border-bottom: 1px #C1DAD7 dotted; 
+	background:url(img/d/title_bg.gif) repeat-x bottom; 
+}
+.md-title .title{
+    float:left;
+	color:#FFFFFF;
+	padding-left:20px;
+	background:url(img/d/title.gif) no-repeat center left; 
+}
+.md-title .close {
+	padding-right:8px;
+	float: right;
+	cursor: pointer;
+	padding-bottom :1px;
+}
+.md-title .close a{
+	width:26px;
+	height:20px;
+	display:inline-block;
+	background:url(img/d/close_1.gif) no-repeat center left;
+	outline:none;
+	text-decoration:none;
+}
+.md-title .close a:hover{
+	background:url(img/d/close_2.gif) no-repeat center left;
+}
+.md-buttons{
+	height:20px;
+	padding:5px;
+	display:inline-block;
+	width:760px;
+	border-bottom:1px solid #cccccc;
+}
+.md-buttons a{
+	width:77px;
+	height:21px;
+	line-height:22px;
+	color:#333333;
+	text-align:center;
+	display:inline-block;
+	background:url(img/d/button.gif) no-repeat center left;
+	outline:none;
+	text-decoration:none;
+}
+.md-buttons a:hover{
+	background:url(img/d/button1.gif) no-repeat center left;
+}
+.md-buttons a.selected{
+	background:url(img/d/button1.gif) no-repeat center left;
+}
+.md-buttons span{
+    width:450px;display:inline-block;
+	text-align:center;
+}
+.md-content{
+   overflow:hidden;
+}
+.mg_function{
+	display:none;
+	overflow:auto;
+	height:400px;
+}
+.md-content div.leftDiv{
+	position:relative;
+	width:150px;
+	display:inline;
+	line-height:22px;
+	overflow:hidden;
+	float:left;
+	height:400px;
+	border-right:1px solid #cccccc;
+}
+.md-content div.leftSystems{
+	overflow:hidden;
+	height:355px;
+}
+#op_message{color:blue;}
+.md-content div.leftSystems  a.system{
+    margin:3px;
+	text-align:center;
+	display: block;
+	background:#e4e4e4;
+	border:1px solid black;
+	color: #066;
+	outline:none;
+	z-index:10;
+	text-decoration:none;
+}
+.md-content div.leftSystems a.system:hover {
+	background : #066 url(img/d/linkarrow.gif) no-repeat right center;
+	color: #fff;
+	text-decoration: none;
+}
+.md-content div.leftSystems a.clicked {
+	background : gold url(img/d/linkarrow.gif) no-repeat right center;
+	color: #cd7627;
+	text-decoration: none;
+}
+.md-content div.leftDiv  a.scroll-up{
+	 display: block;
+	 width:100%;
+	 height:20px;
+	 line-height:20px;
+	 border-bottom:1px solid #cccccc;
+	 text-decoration:none;
+	 background : url(img/d/scroll-up.png) no-repeat center center;
+}
+.md-content div.leftDiv a.scroll-up:hover {
+	background :url(img/d/scroll-up1.gif) no-repeat center center;
+}
+.md-content div.leftDiv  a.scroll-down{
+	 display: block;
+	 width:100%;
+	 height:20px;
+	 line-height:20px;
+	 border-top:1px solid #cccccc;
+	 text-decoration:none;
+	 z-index:100;
+	 background:#eeeeee url(img/d/scroll-down.png) no-repeat center center;
+}
+.md-content div.leftDiv a.scroll-down:hover {
+	background:#eeeeee url(img/d/scroll-down1.gif) no-repeat center center;
+}
+.md-content div.rightFunctions{
+	position:relative;
+	padding:3px;
+	width:610px;
+	height:393px;
+	overflow-y:auto;
+	overflow-x:hidden;
+	display:inline;
+	float:right;
+	background:#ffffff;
+}
+.md-content div.rightFunctions .mfun {
+	position:relative;
+	float:left;
+	margin:15px;
+	width: 60px;
+	height:60px;
+	overflow:hidden; 
+	text-align: center;
+	cursor:pointer;
+}
+.md-content div.rightFunctions .mfun-header{  width:60px;height:40px; }
+.md-content div.rightFunctions .mfun-content { 
+	padding:5px 2px 5px 2px;
+	width:60px;
+	height:25px;
+	white-space:nowrap;overflow:hidden; 
+	-o-text-overflow:ellipsis;text-overflow: ellipsis;
+	clear:both;
+}
+.md-content div.rightFunctions .mfun img.lazy{width:43px;height:43px;}
+
+.mg_screen{position:relative;padding:3px;overflow-y:auto;overflow-x:hidden;display:none;height:400px;}
+.mg_screen div{
+	position:relative;
+	float:left;
+	margin:8px 10px 8px 0px;
+	width:238px;
+	height:120px;
+	color:#ffffff;
+	font-size:50px;
+	font-weight:bold;
+	text-align: center;
+	cursor:pointer;
+	line-height:120px;
+	filter:alpha(opacity=60);
+	opacity:0.6;
+}
+.mg_screen div.temp_screen{background : url(img/d/screen_bg.png) no-repeat left center;}
+.mg_screen div.add_screen{background : url(img/d/add_screen_bg.png) no-repeat left center;cursor:pointer;}
+.mg_screen div.temp_screen span.deleteScreen{
+	 position:absolute;
+	 right:10px;
+	 top:10px;
+	 display: block;
+	 width:32px;
+	 height:32px;cursor:pointer;
+	 background : url(img/d/minus.png) no-repeat right center;
+}

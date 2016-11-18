@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+	<entity name="attachment" label="系统附件表" table="SYS_ATTACHMENT" >
+		<id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="BIZ_CODE" name="bizCode" type="java.lang.String" length="30" required="true" label="业务编码" />
+		<property column="BIZ_ID" name="bizId" type="java.lang.String" length="128" required="true" label="业务ID" />
+		<property column="PATH" name="path" type="java.lang.String" length="256" required="false" label="文件路径" />
+		<property column="FILE_NAME" name="fileName" type="java.lang.String" length="64" required="false" label="文件名" />
+		<property column="FILE_SIZE" name="fileSize" type="java.lang.String" length="22" required="false" label="文件大小" />
+		<property column="FILE_KIND" name="fileKind" type="java.lang.String" length="16" required="false" label="文件类别" />
+		<property column="REMARK" name="remark" type="java.lang.String" length="256" required="false" label="备注" />
+		<property column="CREATOR_ID" name="creatorId" type="java.lang.String" length="32" required="false" label="上传人" />
+		<property column="CREATE_DATE" name="createDate" type="java.sql.Timestamp" length="11" required="false" label="上传时间" />
+		<property column="CREATOR_NAME" name="creatorName" type="java.lang.String" length="64" required="false" label="上传人名称" />
+		<property column="ATTACHMENT_CODE" name="attachmentCode" type="java.lang.String" length="16" required="false" label="附件编码"/>
+		<property column="CLEAR_CACHE" name="clearCache" type="java.lang.Integer" length="1" required="false" label="是否清除缓存文件" default-expr="0" fill-kind="insert"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="序号"  default-expr="0" fill-kind="insert"/>
+		<property column="FILE_LENGTH" name="fileLength" type="java.lang.Long" length="22" required="false" label="文件大小"/>
+		<property column="IS_FTP" name="isFtp" type="java.lang.Integer" length="1" required="false" label="是否FTP上传"  default-expr="0" fill-kind="insert"/>
+		<condition column="BIZ_CODE" name="bizCode" symbol="="/>
+		<condition column="BIZ_ID" name="bizId" symbol="="/>
+		<sql name="updateBizCode">update sys_attachment t set t.biz_code=? where t.id=?</sql>
+		<sql name="getAttachmentListByBiz">select t.* from sys_attachment t where t.biz_code=? and t.biz_id=?  order by nvl(t.sequence,0),t.id asc</sql>
+	</entity>
+	
+	<entity name="attachmentConfig" label="系统附件配置" table="SYS_ATTACHMENT_CONFIG">
+		<id column="ATTACHMENT_CONFIG_ID" name="attachmentConfigId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="FOLDER_ID" name="folderId" type="java.lang.Long" length="22" required="false" label="分类ID"/>
+		<property column="BIZ_CODE" name="bizCode" type="java.lang.String" length="16" required="true" label="业务编码"/>
+		<property column="BIZ_NAME" name="bizName" type="java.lang.String" length="32" required="false" label="名称"/>
+		<property column="IS_DEL_AUTHORITY" name="isDelAuthority" type="java.lang.Integer" length="1" required="false" label="是否控制删除权限"/>
+		<property column="REMARK" name="remark" type="java.lang.String" length="256" required="false" label="备注"/>
+		<condition column="FOLDER_ID" name="folderId" symbol="="/>
+		<condition column="BIZ_CODE" name="bizCode" symbol="like"/>
+		<condition column="BIZ_NAME" name="bizName" symbol="like"/>
+	</entity>
+
+	<entity name="attachmentConfigDetail" label="附件配置明细" table="SYS_ATTACHMENT_CONFIG_DETAIL">
+		<id column="CONFIG_DETAIL_ID" name="configDetailId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="ATTACHMENT_CONFIG_ID" name="attachmentConfigId" type="java.lang.Long" length="22" required="true" label="attachment_config_id"/>
+		<property column="ATTACHMENT_CODE" name="attachmentCode" type="java.lang.String" length="16" required="false" label="附件编码"/>
+		<property column="ATTACHMENT_NAME" name="attachmentName" type="java.lang.String" length="32" required="false" label="附件名称"/>
+		<property column="IS_MORE" name="isMore" type="java.lang.Integer" length="1" required="false" label="是否允许多个"/>
+		<property column="FILE_KIND" name="fileKind" type="java.lang.String" length="128" required="false" label="允许文件类型"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="序号"/>
+		<property column="COLSPAN" name="colspan" type="java.lang.Long" length="22" required="false" label="列数"/>
+		<property column="IS_REQUIRED" name="isRequired" type="java.lang.Integer" length="1" required="false" label="是否必须"/>
+		<condition column="ATTACHMENT_CONFIG_ID" name="attachmentConfigId" symbol="="/>
+		<sql name="queryByBizCode">
+			select c.is_del_authority,
+			       d.attachment_code,
+			       d.attachment_name,
+			       d.is_more,
+			       d.file_kind,
+			       d.config_detail_id,
+			       nvl(d.colspan,1) as colspan
+			  from sys_attachment_config c, sys_attachment_config_detail d
+			 where c.attachment_config_id = d.attachment_config_id
+			   and upper(c.biz_code) = ?
+			 order by d.sequence asc
+		</sql>
+		<sql name="checkNeedcMoreFile">
+		SELECT nvl(d.is_more,0)
+		  FROM sys_attachment_config t, sys_attachment_config_detail d
+		 where t.attachment_config_id = d.attachment_config_id
+		   and upper(t.biz_code) = ?
+		   and upper(d.attachment_code) = ?
+		</sql>
+		<sql name="checkAmDataCollectionMoreFile">
+			select nvl(d.is_more, 0)
+			  from am_data_collection_kind t, am_data_attachment_config d
+			 where t.data_collection_kind_id = d.data_collection_kind_id
+			   and upper(t.data_collection_code) = ?
+			   and upper(d.attachment_code) = ?
+		</sql>
+	</entity>
+</domain>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="orgTypeService" class="com.brc.system.opm.service.impl.OrgTypeServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+	</bean>
+	<bean id="orgTemplateService" class="com.brc.system.opm.service.impl.OrgTemplateServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+	</bean>
+	<bean id="orgService" class="com.brc.system.opm.service.impl.OrgServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+		<property name="managementService" ref="managementService"/>
+		<property name="authorizationService" ref="authorizationService"/>
+		<property name="functionService" ref="funService"/>
+		<property name="getPermission" ref="getPermission"/>
+		<!-- 
+		<property name="adService" ref="adService"/>
+		-->
+	</bean>
+	<bean id="agentService" class="com.brc.system.opm.service.impl.AgentServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+	</bean>
+	<bean id="permissionService" class="com.brc.system.opm.service.impl.PermissionServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+		<property name="getPermission" ref="getPermission"/>
+	</bean>
+	<bean id="authorizationService" class="com.brc.system.opm.service.impl.AuthorizationServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+		<property name="orgService" ref="orgService"/>
+		<property name="getPermission" ref="getPermission"/>
+	</bean>
+	<bean id="authenticationService" class="com.brc.system.opm.service.impl.AuthenticationServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+		<property name="getPermission" ref="getPermission"/>
+		<property name="orgService" ref="orgService"/>
+		<property name="orgFun" ref="orgFun"/>
+	</bean>
+	<bean id="managementService" class="com.brc.system.opm.service.impl.ManagementServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+		<property name="orgService" ref="orgService"/>
+		<property name="orgFun" ref="orgFun"/>
+		<property name="getPermission" ref="getPermission"/>
+<!-- 		<property name="wxCpService" ref="wxCpService"/> -->
+	</bean>
+	<bean id="orgPropertyService" class="com.brc.system.opm.service.impl.OrgPropertyServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+	</bean>
+	<bean id="permissionFieldService" class="com.brc.system.opm.service.impl.PermissionFieldServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+		<property name="getPermission" ref="getPermission"/>
+	</bean>
+	<bean id="orgTypeAction" scope="prototype"
+		class="com.brc.system.opm.action.OrgTypeAction">
+		<property name="orgTypeService" ref="orgTypeService"/>
+	</bean>
+	<bean id="orgTemplateAction" scope="prototype"
+		class="com.brc.system.opm.action.OrgTemplateAction">
+		<property name="orgTemplateService" ref="orgTemplateService"/>
+	</bean>
+	<bean id="permissionAction" scope="prototype"
+		class="com.brc.system.opm.action.PermissionAction">
+		<property name="permissionService" ref="permissionService"/>
+	</bean>
+	<bean id="orgAction" scope="prototype" class="com.brc.system.opm.action.OrgAction">
+		<property name="orgService" ref="orgService"/>
+		<property name="orgPropertyService" ref="orgPropertyService"/>
+	</bean>
+	<bean id="agentAction" scope="prototype" class="com.brc.system.opm.action.AgentAction">
+		<property name="agentService" ref="agentService"/>
+	</bean>    
+	<bean id="authorizationAction" scope="prototype"
+		class="com.brc.system.opm.action.AuthorizationAction">
+		<property name="authorizationService" ref="authorizationService"/>
+	</bean>
+	<bean id="authenticationAction" scope="prototype"
+		class="com.brc.system.opm.action.AuthenticationAction">
+		<property name="authenticationService" ref="authenticationService"/>
+		<property name="sysLogService" ref="sysLogService"/>
+<!-- 		<property name="rtxService" ref="rtxService"/> -->
+	</bean>
+	<bean id="managementAction" scope="prototype"
+		class="com.brc.system.opm.action.ManagementAction">
+		<property name="managementService" ref="managementService"/>
+	</bean>
+	<!-- 职能 -->
+	<bean id="funService" class="com.brc.system.opm.service.impl.FunctionServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+	</bean>
+	<bean id="funAction" scope="prototype"
+		class="com.brc.system.opm.action.FunctionAction">
+		<property name="functionService" ref="funService"/>
+	</bean>	
+	<bean id="permissionFieldAction" scope="prototype" class="com.brc.system.opm.action.PermissionFieldAction">
+		<property name="permissionFieldService" ref="permissionFieldService"/>
+	</bean>
+	<bean id="opmWebService" class="com.brc.system.opm.webservice.impl.OpmWebServiceImpl">
+		<property name="orgFun" ref="orgFun"/>
+		<property name="orgService" ref="orgService"/>
+	</bean>
+	<bean id="opmForAppWebService" class="com.brc.system.opm.webservice.impl.OpmForAppWebServiceImpl">
+<!-- 		<property name="tokenManager" ref="tokenManager"/> -->
+		<property name="orgService" ref="orgService"/>
+	</bean>	
+	<!-- 以下为测试和开发环境使用,正式环境请删除 -->
+	<bean id="authenticationForDevAction" scope="prototype"
+		class="com.brc.system.opm.action.AuthenticationForDevAction">
+		<property name="authenticationService" ref="authenticationForDevService"/>
+		<property name="sysLogService" ref="sysLogService"/>
+	</bean>
+	<bean id="authenticationForDevService" class="com.brc.system.opm.service.impl.AuthenticationForDevServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+		<property name="orgService" ref="orgService"/>
+		<property name="getPermission" ref="getPermission"/>
+	</bean>
+
+	<bean id="projectOrgPersonOnPositionService" class="com.brc.system.opm.service.impl.ProjectOrgPersonOnPositionServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+		<property name="orgService" ref="orgService"/>
+		<property name="functionService" ref="funService"/>
+		<property name="configurationService" ref="configurationService"/>
+	</bean>
+	<bean id="projectOrgPersonOnPositionAction" class="com.brc.system.opm.action.ProjectOrgPersonOnPositionAction" scope="prototype">
+		<property name="projectOrgPersonOnPositionService" ref="projectOrgPersonOnPositionService"/>
+	</bean>
+	
+	<bean id="permissionCheckService" class="com.brc.system.opm.service.impl.PermissionCheckServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil"/>
+		<property name="configurationService" ref="configurationService"/>
+	</bean>
+	
+	<bean id="permissionCheckAction" class="com.brc.system.opm.action.PermissionCheckAction" scope="prototype">
+		<property name="permissionCheckService" ref="permissionCheckService"/>
+	</bean>
+		
+	<!-- 以下为测试和开发环境使用,正式环境请删除 -->
+</beans>

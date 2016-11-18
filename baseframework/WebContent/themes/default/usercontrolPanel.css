@@ -1,0 +1,168 @@
+/* CSS Document  */
+body{font-family:"ËÎÌå", Arial,Verdana, sans-serif, Helvetica;font-size:12px;margin:0;background:#f4f5eb;color:#000;overflow:hidden;}
+dl,ul,li{list-style:none;}
+a img{border:0;}
+a{ font-size: 9pt;}
+a:link	{ text-decoration:none; font-size: 9pt; color: #000000}
+a:alink	{ text-decoration:none; font-size: 9pt; color: #000000}
+a:visited	{ text-decoration:none; font-size: 9pt; color: #000000}
+a:active	{ text-decoration:none; font-size: 9pt; color: #000000}
+a:hover	{ text-decoration: none; font-size: 9pt; color: #ff0000}
+.clearboth {clear:both;font-size:0px;}
+input {vertical-align:middle;}
+body,html{height:100%;}
+.noneBox {display:none;}
+/*----Í·---------------------------*/
+.header{width:100%;height:53px;background:url(images/usercontrolPanel/header_bei.gif);}
+.header01{float:left;height:53px;width:45px;margin-left:15px;background:url(images/usercontrolPanel/header01.gif) no-repeat;}
+.header02{float:left;height:28px;width:auto;margin-left:10px;padding-top:25px;font-size:20px;font-family:"ºÚÌå";}
+/*----left---------------------------*/
+.left{float:left;width:214px;height:auto;margin:8px 0 8px 8px!important;margin:8px 0 4px 4px;}
+.left02{width:214px;height:auto;margin-bottom:8px;}
+.left02top{width:214px;height:36px;background:url(images/usercontrolPanel/left02_bei.gif) repeat-x;}
+.left02top_left{float:left;height:36px;width:3px;background:url(images/usercontrolPanel/left02_left.gif);}
+.left02top_right{float:right;height:36px;width:3px;background:url(images/usercontrolPanel/left02_right.gif);}
+.left02top_c{float:left;height:36px;line-height:33px;width:198px;padding-left:10px;font-weight:bold;}
+.left02down{width:212px;height:auto;border:1px solid #b4b4b4;border-top:0;background:#fff;}
+.left02down01{width:202px;height:27px;line-height:27px;padding-left:10px;}
+.left02down01_img{float:left;width:7px;height:27px;margin-right:5px;background:url(images/usercontrolPanel/01.gif) no-repeat;}
+.left02down01_xia ul{margin:0;padding:0 5px 0 19px;}
+.left02down01_xia li{width:auto;height:20px;line-height:20px;margin:3px 0;padding-left:2px;}
+.left02down01_xia_li{background:#eff6ff;} 
+.left03_right{float:right;height:33px;width:30px;background:url(images/usercontrolPanel/03.gif);}
+.left03_c{float:left;height:33px;line-height:33px;width:171px;padding-left:10px;color:#002f76;}
+/*----rrcc-------------*/
+.rrcc{width:auto;height:90%;margin:8px 8px 8px 222px;position: relative;}
+/*----center---------------------------*/
+.center{float:left;height:200px;width:8px;margin-left:8px!important;margin-left:4px; background:url(images/usercontrolPanel/center0.gif) no-repeat;cursor:pointer;}
+/*----right---------------------------*/
+.right{width:98%;height:98%;margin-left:20px!important;margin-left:10px;border:1px solid #b4b4b4;background:#fff;padding-bottom:2px;position: relative;}
+.right01{padding:2px;margin:0;height:100%;position: relative;} 
+.passwordStrength{
+	display:inline-block;
+	text-align:center;
+	height:22px;
+	line-height:22px;
+	width:38px;
+	margin:2px 3px 2px 3px;
+	border: 1px solid #99ccff;
+	background-color:#e0f0ff;
+}
+/********multiselect2side**********/
+.ms2side__div {
+	padding: 1px;
+	margin:20px;
+	margin-left:30px;
+}
+.ms2side__select {
+	width: 40%;
+	float: left;
+}
+.ms2side__select select{
+	width: 100% !important;
+	height: 200px;
+}
+.ms2side__header {
+	color: #000088;
+	background-color: #EEEEFF;
+	height: 25px;
+	line-height:25px;
+	border: 1px solid #7eb5e4;
+	border-bottom: 0px;
+}
+
+.ms2side__options, .ms2side__updown {
+	float: left;
+	font-size: 10pt;
+	margin: 0;
+	padding: 0 8px;
+	width: 40px;
+	color: black;
+	text-align: center;
+	overflow: hidden;
+}
+
+.ms2side__updown {
+	font-size: 9pt;
+}
+
+.ms2side__options p, .ms2side__updown p {
+	width:40px;
+	margin: 2px 0;
+	padding: 0;
+	cursor: pointer;
+	border: 1px solid black;
+}
+
+.ms2side__options p.ms2side_hover, .ms2side__updown p.ms2side_hover {
+	background-color: #F0F0FF;
+	border-color: #0000FF;
+	cursor: pointer;
+}
+
+.ms2side__options p.ms2side__hide, .ms2side__updown p.ms2side__hide {
+	cursor: default;
+	color: gray;
+	border: 1px solid gray;
+	background-color: #F0F0F0;
+}
+
+.ms2side__div select {
+	width: 220px;
+	float: left;
+}
+
+
+/* INPUT FOR SEARCH */
+.ms2side__header input {
+float:none !important;
+	width: 80px;
+	height: 12px;
+}
+
+.ms2side__header input.wait {
+	width: 80px;
+	height: 12px;
+	background: #FFFFFF url(../img/loading.gif) no-repeat center right;
+}
+
+.ms2side__header input.small {
+	width: 50px;
+	height: 12px;
+}
+
+
+/* INPUT FOR SELECT SEARCH */
+.ms2side__header select {
+	width: 100px;
+	font-size: 11px;
+	height: 18px;
+	float: none;
+}
+
+.ms2side__header select.small {
+	width: 70px;
+}
+
+
+/* REMOVE FILTER OPTION FOR SEARCH */
+.ms2side__header a {
+	font-size: 10pt;
+	padding: 0 8px;
+	width: 16px;
+	height: 16px;
+	color: black;
+	text-align: center;
+	text-decoration: none;
+	border: 1px solid gray;
+	background: #FFFFFF url(../img/close.gif) no-repeat center center;
+	margin: 0 0 0 3px;
+}
+
+.ms2side__header a:hover {
+	background-color: #F0F0FF;
+	border-color: gray;
+}
+.AddOne,.AddAll,.RemoveOne,.RemoveAll{
+	font-family: Helvetica;font-size:20px;
+}

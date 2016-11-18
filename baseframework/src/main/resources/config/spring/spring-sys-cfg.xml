@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!--快捷查询控件配置 -->
+	<bean id="easySearchManager" class="com.brc.system.share.easysearch.EasySearchManager">
+		<!--Map注入 -->
+		<property name="mapping">
+			<map>
+				<entry key="test">
+					<value>config/content/easysearch/easy-search-test.xml</value>
+				</entry>
+				<entry key="sys">
+					<value>config/content/easysearch/easy-search-sys.xml</value>
+				</entry>
+				<entry key="opm">
+					<value>config/content/easysearch/easy-search-opm.xml</value>
+				</entry>
+				<entry key="bpm">
+					<value>config/content/easysearch/easy-search-sys-bmp.xml</value>
+				</entry>
+				<entry key="li">
+					<value>config/content/easysearch/easy-search-li.xml</value>
+				</entry>
+				<entry key="hr">
+					<value>config/content/easysearch/easy-search-hr.xml</value>
+				</entry>
+				<entry key="process">
+					<value>config/content/easysearch/easy-search-process.xml</value>
+				</entry>
+				<entry key="pm">
+					<value>config/content/easysearch/easy-search-pm.xml</value>
+				</entry>
+				<entry key="app">
+					<value>config/content/easysearch/easy-search-app.xml</value>
+				</entry>
+				<entry key="sp">
+					<value>config/content/easysearch/easy-search-sp.xml</value>
+				</entry>
+				<entry key="oa">
+					<value>config/content/easysearch/easy-search-oa.xml</value>
+				</entry>
+				<entry key="zk">
+					<value>config/content/easysearch/easy-search-zk.xml</value>
+				</entry>
+				<entry key="mm">
+					<value>config/content/easysearch/easy-search-mm.xml</value>
+				</entry>
+				<entry key="pt">
+					<value>config/content/easysearch/easy-search-plantemplate.xml
+					</value>
+				</entry>
+				<entry key="lim">
+					<value>config/content/easysearch/easy-search-lim.xml</value>
+				</entry>
+				<entry key="engineeringproject">
+					<value>config/content/easysearch/easy-search-engineeringproject.xml
+					</value>
+				</entry>
+				<entry key="fee">
+					<value>config/content/easysearch/easy-search-fee.xml</value>
+				</entry>
+				<entry key="masterdata">
+					<value>config/content/easysearch/easy-search-masterdata.xml</value>
+				</entry>
+				<entry key="pa">
+					<value>config/content/easysearch/easy-search-pa.xml</value>
+				</entry>
+				<entry key="bm">
+					<value>config/content/easysearch/easy-search-bm.xml</value>
+				</entry>
+				<entry key="ep">
+					<value>config/content/easysearch/easy-search-ep.xml</value>
+				</entry>
+				<entry key="cost">
+					<value>config/content/easysearch/easy-search-cost.xml</value>
+				</entry>
+				<entry key="am">
+					<value>config/content/easysearch/easy-search-am.xml</value>
+				</entry>
+				<entry key="tp">
+					<value>config/content/easysearch/easy-search-tp.xml</value>
+				</entry>
+				<entry key="sm">
+					<value>config/content/easysearch/easy-search-sm.xml</value>
+				</entry>
+				<entry key="csm">
+					<value>config/content/easysearch/easy-search-csm.xml</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+<!-- 	<bean id="processGlobalEventListener" class="com.brc.system.bpm.ProcessGlobalEventListener">
+	</bean> -->
+	<bean id="treeViewManager" class="com.brc.system.share.treeview.TreeViewManager" />
+	<!--启动插件配置 -->
+	<bean id="sysDictionaryPlugIn" class="com.brc.system.plugIn.impl.SysDictionaryPlugIn">
+		<property name="sysDictionaryService" ref="sysDictionaryService" />
+	</bean>
+	<bean id="parameterPlugIn" class="com.brc.system.plugIn.impl.ParameterPlugIn">
+		<property name="parameterService" ref="parameterService" />
+	</bean>
+
+	<bean id="plugInManager" class="com.brc.system.plugIn.PlugInManager">
+		<property name="plugIns">
+			<list>
+				<ref bean="sysDictionaryPlugIn" />
+				<ref bean="parameterPlugIn" />
+			</list>
+		</property>
+	</bean>
+	<!--函数表达式 -->
+	<bean id="commonFun" class="com.brc.model.fn.impl.CommonFun" />
+	<bean id="serialNumber" class="com.brc.model.fn.impl.SerialNumberImpl">
+		<property name="serviceUtil" ref="serviceUtil" />
+	</bean>
+	<bean id="orgFun" class="com.brc.model.fn.impl.OrgFun">
+		<property name="serviceUtil" ref="serviceUtil" />
+	</bean>
+	<!-- <bean id="hrMessageRemindFun" class="com.brc.model.fn.impl.HRMessageRemindFun"> 
+		<property name="serviceUtil" ref="serviceUtil"/> <property name="getPermission" 
+		ref="getPermission"/> <property name="attStatisticsService" ref="attStatisticsService"/> 
+		<property name="operationPeriodService" ref="operationPeriodService"/> <property 
+		name="attLeaveService" ref="attLeaveService"/> </bean> -->
+	<!--<bean id="spRemindFun" class="com.brc.model.fn.impl.SPRemindFun"> <property 
+		name="contractService" ref="contractService" /> <property name="partnerService" 
+		ref="partnerService"></property> <property name="strategicPartnerInfoService" 
+		ref="strategicPartnerInfoService"></property> </bean> -->
+	<!-- <bean id="limMessageRemindFun" class="com.brc.model.fn.impl.LimMessageRemindFun"> 
+		<property name="limLandMessageRemindFunService" ref="limLandMessageRemindFunService" 
+		/> </bean> -->
+	<!-- <bean id="engineeringProjectRemindFun" class="com.brc.model.fn.impl.EngineeringProjectRemindFun"> 
+		<property name="superviseService" ref="superviseService"/> <property name="thirdQsCompEvalService" 
+		ref="thirdQsCompEvalService"/> </bean> -->
+	<!--<bean id="liMessageRemindFun" class="com.brc.model.fn.impl.LIMessageRemindFun"> 
+		<property name="landInfoService" ref="landInfoService" /> </bean> -->
+	<!-- <bean id="oaMessageRemindFun" class="com.brc.model.fn.impl.OAMessageRemindFun"> 
+		<property name="planTaskManagerService" ref="planTaskManagerService"/> </bean> -->
+	<!-- <bean id="pmCommonFun" class="com.brc.model.fn.impl.pm.PMCommonFun"> 
+		<property name="serviceUtil" ref="serviceUtil"/> <property name="orgFun" 
+		ref="orgFun"/> </bean> -->
+	<!-- <bean id="resourceFun" class="com.brc.biz.sm.common.service.impl.ResourceFun"> -->
+	<!-- <property name="serviceUtil" ref="serviceUtil"/> -->
+	<!-- </bean> -->
+	<bean id="expressUtil" class="com.brc.model.fn.ExpressUtil">
+		<property name="beanNames">
+			<list>
+				<ref bean="commonFun" />
+				<ref bean="serialNumber" />
+				<ref bean="orgFun" />
+				<!-- <ref bean="hrMessageRemindFun" /> -->
+				<!--<ref bean="spRemindFun"/> -->
+				<!-- <ref bean="limMessageRemindFun"/> -->
+				<!--<ref bean="liMessageRemindFun"/> -->
+				<!-- <ref bean="pmCommonFun"/> -->
+				<!-- <ref bean="oaMessageRemindFun"/> -->
+				<!-- <ref bean="engineeringProjectRemindFun"/> -->
+				<!-- <ref bean="resourceFun"/> -->
+			</list>
+		</property>
+	</bean>
+	<!-- 往Oc发送消息 -->
+	<!--<bean id="oCMessage" class="com.brc.message.impl.OCMessageImpl"> <property 
+		name="landParameterService" ref="landParameterService"/> </bean> -->
+
+	<!-- 通用邮件发送 -->
+	<bean id="emailSendService" class="com.brc.message.impl.EmailSendImpl">
+	</bean>
+
+</beans>
