@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" build-on-make="true" name="web:war explorded">
-    <output-path>D:/IdeaBuild/artifacts/web_war_explorded</output-path>
+  <artifact type="exploded-war" build-on-make="true" name="baseframework:war explorded">
+    <output-path>D:/IdeaBuild/artifacts/baseframework_war_explorded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
