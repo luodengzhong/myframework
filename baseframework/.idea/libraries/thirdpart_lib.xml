@@ -1,10 +1,10 @@
 <component name="libraryTable">
   <library name="thirdpart_lib">
     <CLASSES>
-      <root url="file://D:/devkit/apache-tomcat-7.0.63/thirdpart_lib" />
+      <root url="file://D:/third_lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
-    <jarDirectory url="file://D:/devkit/apache-tomcat-7.0.63/thirdpart_lib" recursive="false" />
+    <jarDirectory url="file://D:/third_lib" recursive="false" />
   </library>
 </component>

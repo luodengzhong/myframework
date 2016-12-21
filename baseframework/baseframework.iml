@@ -175,6 +175,40 @@
         </webroots>
       </configuration>
     </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/WebContent/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-app.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-bpm-demo.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-cxf.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-dataSource-ams.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-dataSource-erp.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-dataSource-pub.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-dataSource.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-ehcache.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-log.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-li-quartz-land.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-message.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-pa.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-sys-bpm.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-sys-cfg-tool.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-xmemcached.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-weixin.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-system.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-sys-opm.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/config/spring/spring-sys-cfg.xml</file>
+        </fileset>
+        <fileset id="fileset2" name="Spring Application Context (2)" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/activiti-context.xml</file>
+          <file>file://$MODULE_DIR$/WebContent/activiti-context.xml</file>
+        </fileset>
+        <fileset id="fileset3" name="Spring Application Context (3)" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/config/demo/bean.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/WebContent/WEB-INF/classes" />
@@ -198,5 +232,7 @@
     </orderEntry>
     <orderEntry type="library" name="thirdpart_lib" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 7.0.63" level="application_server_libraries" />
+    <orderEntry type="library" name="tomcat8" level="project" />
+    <orderEntry type="library" name="sigar" level="project" />
   </component>
 </module>

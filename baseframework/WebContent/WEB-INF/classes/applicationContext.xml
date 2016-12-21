@@ -9,9 +9,10 @@
     <!-- <context:property-placeholder location="file:E:/workspace3/home/brc/etc/application.properties"/> -->   
     <context:property-placeholder location="file:/home/framework/etc/application.properties"/>
      
-	<!--<util:properties id="email" location="file:/home/brc/etc/synEmailKey.properties" />
-	<util:properties id="fineReport" location="file:/home/brc/etc/fine-report.properties" />-->
-
+	<util:properties id="email" location="file:/home/framework/etc/synEmailKey.properties" />
+	<util:properties id="fineReport" location="file:/home/framework/etc/fine-report.properties" />
+	
+	
 	<import resource="classpath:config/spring/spring-cxf.xml" />
 	<!-- 使用 annotation -->
 	<context:annotation-config />
@@ -20,7 +21,7 @@
 	
 	<import resource="classpath:config/spring/spring-dataSource-pub.xml" />
 
-	<import resource="classpath:config/spring/spring-dataSource-erp.xml" />
+<!-- 	<import resource="classpath:config/spring/spring-dataSource-erp.xml" /> -->
 	
 <!-- 	<import resource="classpath:config/spring/spring-dataSource-yr.xml" /> -->
 <!-- 	<import resource="classpath:config/spring/spring-dataSource-syyr.xml" /> -->

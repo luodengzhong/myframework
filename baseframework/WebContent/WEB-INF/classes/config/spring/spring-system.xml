@@ -66,7 +66,7 @@
     </bean>
     <bean id="personOwnService" class="com.brc.system.person.service.impl.PersonOwnServiceImpl">
         <property name="serviceUtil" ref="serviceUtil"/>
-        <property name="erpJDBCDao" ref="erpJDBCDao"/>
+<!--         <property name="erpJDBCDao" ref="erpJDBCDao"/> -->
         <property name="pageSize" value="50"/>
     </bean>
     <bean id="impExcelService" class="com.brc.system.imp.service.impl.ImpExcelServiceImpl">

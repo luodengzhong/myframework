@@ -12,6 +12,8 @@ public class HelloQLExpress {
 		ExpressRunner runner = new ExpressRunner(false, true);
 		Object r = runner.execute(express, null, null, false, true);
 		Assert.assertTrue("表达式计算", r.toString().equalsIgnoreCase("117"));
-		System.out.println("表达式计算：" + express + " = " + r);
+		System.out.println("表达式计算：" + express + " = " + r); 
+		
+		
 	}
 }

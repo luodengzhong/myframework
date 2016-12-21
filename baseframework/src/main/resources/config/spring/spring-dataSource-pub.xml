@@ -9,9 +9,9 @@
 		<property name="jdbcUrl"  value="${pub.db.url}"/>
 		<property name="user" value="${pub.db.user}"/>
 		<property name="password" value="${pub.db.password}"/>
-		<property name="maxPoolSize" value="200"/>
-		<property name="minPoolSize" value="3"/>
-		<property name="initialPoolSize" value="1"/>
+		<property name="maxPoolSize" value="20"/>
+		<property name="minPoolSize" value="5"/>
+		<property name="initialPoolSize" value="5"/>
 		<property name="maxIdleTime" value="20"/>
 	</bean>
 
