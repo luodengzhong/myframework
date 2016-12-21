@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brc.pa.projectdata.mapper.NodePermissionMapper">
+    <insert id="insert" parameterType="nodePermission">
+		INSERT INTO PA_NODE_PERMISSION(NODE_PERMISSION_ID, KIND_ID, OBJECT_KIND_ID, OBJECT_ID, BIZ_KIND_ID, BIZ_ID, VERSION)
+		VALUES(PA_ID_SEQ.nextval,${kindId}, ${objectKindId}, #{objectId, jdbcType=VARCHAR}, ${bizKindId}, ${bizId}, PA_VERSION_SEQ.nextval)
+	</insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO PA_NODE_PERMISSION(NODE_PERMISSION_ID, KIND_ID, OBJECT_KIND_ID, OBJECT_ID, BIZ_KIND_ID, BIZ_ID,
+        VERSION)
+        SELECT
+        PA_ID_SEQ.nextval,t.*,PA_VERSION_SEQ.nextval FROM (
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            SELECT ${item.kindId} as KIND_ID, ${item.objectKindId} as OBJECT_KIND_ID,
+            #{item.objectId, jdbcType=VARCHAR} as OBJECT_ID, ${item.bizKindId} as BIZ_KIND_ID,
+            ${item.bizId} as BIZ_ID FROM DUAL
+        </foreach>
+        ) t
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM PA_NODE_PERMISSION WHERE NODE_PERMISSION_ID = #{nodePermissionId}
+	</delete>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        DELETE FROM PA_NODE_PERMISSION WHERE NODE_PERMISSION_ID IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="nodePermission">
+        UPDATE PA_NODE_PERMISSION
+        <set>
+            <if test="kindId != null">
+                KIND_ID=${kindId},
+            </if>
+            <if test="objectKindId != null">
+                OBJECT_KIND_ID=${objectKindId},
+            </if>
+            <if test="objectId != null">
+                OBJECT_ID=#{objectId, jdbcType=VARCHAR},
+            </if>
+            <if test="bizKindId != null">
+                BIZ_KIND_ID=${bizKindId},
+            </if>
+            <if test="bizId != null">
+                BIZ_ID=${bizId},
+            </if>
+        </set>
+        WHERE NODE_PERMISSION_ID = #{nodePermissionId}
+    </update>
+
+    <select id="queryAll" parameterType="java.util.Map" resultType="nodePermission">
+        SELECT NODE_PERMISSION_ID as nodePermissionId, KIND_ID as kindId, OBJECT_KIND_ID as objectKindId, OBJECT_ID as
+        objectId, BIZ_KIND_ID as bizKindId, BIZ_ID as
+        bizId, VERSION as version FROM PA_NODE_PERMISSION
+        <where>
+            <if test="kindId != null and kindId > 0 and kindId &lt; 4">
+                AND KIND_ID = ${kindId}
+            </if>
+            <if test="kindId != null and kindId == 4">
+                AND KIND_ID in (1,2)
+            </if>
+            <if test="objectKindId != null and objectKindId > 0">
+                AND OBJECT_KIND_ID = ${objectKindId}
+            </if>
+            <if test="objectId != null">
+                AND OBJECT_ID =#{objectId}
+            </if>
+            <if test="bizKindId != null and bizKindId > -1 ">
+                AND BIZ_KIND_ID = #{bizKindId}
+            </if>
+            <if test="bizId != null and bizId > -1 ">
+                AND BIZ_ID = #{bizId}
+            </if>
+        </where>
+        ORDER BY NODE_PERMISSION_ID ASC
+    </select>
+
+    <select id="slicedQueryNodePermissionForReceive" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT projectName as "projectName",
+        projectId as "projectId",
+        projectNodeName as "projectNodeName",
+        projectNodeFunctionName as "projectNodeFunctionName",
+        nodePermissionId as "nodePermissionId",
+        objectId as "objectId",
+        objectName as "objectName",
+        fullName as "fullName" from
+        ( SELECT ROWNUM as RN,mp.NAME AS projectName,
+        ppn.BIZ_ID AS projectId,
+        ppn.NAME AS projectNodeName,
+        pfd.NAME AS projectNodeFunctionName,
+        pnp.NODE_PERMISSION_ID AS nodePermissionId,
+        pnp.OBJECT_ID AS objectId,
+        so.NAME as objectName,
+        so.FULL_NAME as fullName
+        FROM PA_PROJECT_NODE ppn, MD_PROJECT mp, PA_NODE_FUNCTION pnf,PA_NODE_PERMISSION pnp,PA_FUNCTION_DEFINE pfd,SA_OPORG so
+        <where>
+            ppn.BIZ_ID =mp.PROJECT_ID
+            AND pnf.BIZ_ID = ppn.PROJECT_NODE_ID
+            AND pnf.NODE_FUNCTION_ID = pnp.BIZ_ID
+            AND pfd.FUNCTION_DEFINE_ID = pnf.FUNCTION_DEFINE_ID
+            AND so.ID = pnp.OBJECT_ID
+            AND ppn.NODE_KIND_ID = 2
+            AND pnp.BIZ_KIND_ID = 8
+            <if test="projectName != null">
+                AND  mp.NAME like concat(concat('%', #{projectName}),'%')
+            </if>
+            <if test="projectNodeName != null">
+                AND ppn.NAME like concat(concat('%', #{projectNodeName}),'%')
+            </if>
+            <if test="projectNodeFunctionName != null">
+                AND pfd.NAME like concat(concat('%', #{projectNodeFunctionName}),'%')
+            </if>
+            <if test="objectName != null">
+                AND so.NAME like concat(concat('%', #{objectName}),'%')
+            </if>
+            <if test="objectKindId != null">
+                AND pnp.OBJECT_KIND_ID = ${objectKindId}
+            </if>
+        </where>
+        ORDER BY ${sortname} ${sortorder})
+        WHERE RN > (${page}-1)*${pagesize} AND RN &lt;= ${page}*${pagesize}
+    </select>
+
+    <select id="slicedQueryNodePermissionForBaseFunction" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT projectName as "projectName",
+        projectId as "projectId",
+        projectNodeName as "projectNodeName",
+        projectNodeFunctionName as "projectNodeFunctionName",
+        nodePermissionId as "nodePermissionId",
+        objectId as "objectId",
+        objectName as "objectName",
+        fullName as "fullName" from
+        ( SELECT ROWNUM as RN,mp.NAME AS projectName,
+        ppn.BIZ_ID AS projectId,
+        ppn.NAME AS projectNodeName,
+        pfd.NAME AS projectNodeFunctionName,
+        pnp.NODE_PERMISSION_ID AS nodePermissionId,
+        pnp.OBJECT_ID AS objectId,
+        so.NAME as objectName,
+        '' as fullName
+        FROM PA_PROJECT_NODE ppn, MD_PROJECT mp, PA_NODE_FUNCTION pnf,PA_NODE_PERMISSION pnp,PA_FUNCTION_DEFINE pfd,SA_OPBASEFUNCTIONTYPE so
+        <where>
+            ppn.BIZ_ID =mp.PROJECT_ID
+            AND pnf.BIZ_ID = ppn.PROJECT_NODE_ID
+            AND pnf.NODE_FUNCTION_ID = pnp.BIZ_ID
+            AND pfd.FUNCTION_DEFINE_ID = pnf.FUNCTION_DEFINE_ID
+            AND so.ID = pnp.OBJECT_ID
+            AND ppn.NODE_KIND_ID = 2
+            AND pnp.BIZ_KIND_ID = 8
+            <if test="projectName != null">
+                AND  mp.NAME like concat(concat('%', #{projectName}),'%')
+            </if>
+            <if test="projectNodeName != null">
+                AND ppn.NAME like concat(concat('%', #{projectNodeName}),'%')
+            </if>
+            <if test="projectNodeFunctionName != null">
+                AND pfd.NAME like concat(concat('%', #{projectNodeFunctionName}),'%')
+            </if>
+            <if test="objectName != null">
+                AND so.NAME like concat(concat('%', #{objectName}),'%')
+            </if>
+            <if test="objectKindId != null">
+                AND pnp.OBJECT_KIND_ID = ${objectKindId}
+            </if>
+        </where>
+        ORDER BY ${sortname} ${sortorder})
+        WHERE RN > (${page}-1)*${pagesize} AND RN &lt;= ${page}*${pagesize}
+    </select>
+
+    <select id="slicedQuery" parameterType="java.util.Map" resultType="nodePermission">
+        <!-- SELECT t.NODE_PERMISSION_ID as nodePermissionId,t.KIND_ID as kindId,t.OBJECT_KIND_ID as objectKindId,t.OBJECT_ID as objectId, t.BIZ_KIND_ID as bizKindId,
+            t.BIZ_ID as bizId, t1.full_name as fullName,t1.name as name FROM PA_NODE_PERMISSION t,SA_OPORG t1 ORDER BY NODE_PERMISSION_ID ${sortorder} OFFSET (${page}-1)*${pagesize}
+            ROWS FETCH NEXT ${pagesize} ROWS ONLY -->
+        SELECT NODE_PERMISSION_ID as nodePermissionId, KIND_ID as kindId, OBJECT_KIND_ID as objectKindId, OBJECT_ID as
+        objectId, BIZ_KIND_ID as bizKindId, BIZ_ID as
+        bizId, VERSION as version,fullName,name as name
+        FROM (select t.NODE_PERMISSION_ID, t.KIND_ID, t.OBJECT_KIND_ID, t.OBJECT_ID, t.BIZ_KIND_ID, t.BIZ_ID, t.VERSION,
+        t1.full_name as fullName,t1.name ,ROWNUM RN FROM PA_NODE_PERMISSION t,SA_OPORG t1
+        <where>
+            t1.id = t.object_id
+            <if test="kindId != null and kindId > 0">
+                AND t.KIND_ID = ${kindId}
+            </if>
+            <if test="objectKindId != null and objectKindId > 0">
+                AND t.OBJECT_KIND_ID = ${objectKindId}
+            </if>
+            <if test="objectId != null">
+                AND t.OBJECT_ID =#{objectId}
+            </if>
+            <if test="name != null">
+                AND t1.name like concat(concat('%',#{name}),'%')
+            </if>
+            <if test="bizKindId != null and bizKindId > -1 ">
+                AND t.BIZ_KIND_ID = #{bizKindId}
+            </if>
+            <if test="bizId != null and bizId > -1 ">
+                AND t.BIZ_ID = #{bizId}
+            </if>
+        </where>
+        ORDER BY ${sortname} ${sortorder}
+        )
+        WHERE RN > (${page}-1)*${pagesize} AND RN &lt;= ${page}*${pagesize}
+
+    </select>
+
+    <select id="getRecordCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM PA_NODE_PERMISSION t,SA_OPORG t1
+        <where>
+            t1.id = t.object_id
+            <if test="kindId != null and kindId > 0 and kindId &lt; 4">
+                AND t.KIND_ID = ${kindId}
+            </if>
+            <if test="kindId != null and kindId == 4">
+                AND t.KIND_ID in (1,2)
+            </if>
+            <if test="objectKindId != null and objectKindId > 0">
+                AND t.OBJECT_KIND_ID = ${objectKindId}
+            </if>
+            <if test="objectId != null">
+                AND t.OBJECT_ID = #{objectId}
+            </if>
+            <if test="name != null">
+                AND t1.name like concat(concat('%',#{name}),'%')
+            </if>
+            <if test="bizKindId != null and bizKindId > -1 ">
+                AND t.BIZ_KIND_ID = #{bizKindId}
+            </if>
+            <if test="bizId != null and bizId > -1 ">
+                AND t.BIZ_ID = #{bizId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getNodePermissionForReceiveCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM PA_PROJECT_NODE ppn, MD_PROJECT mp, PA_NODE_FUNCTION pnf,PA_NODE_PERMISSION pnp,PA_FUNCTION_DEFINE pfd,SA_OPORG so
+        <where>
+            ppn.BIZ_ID =mp.PROJECT_ID
+            AND pnf.BIZ_ID = ppn.PROJECT_NODE_ID
+            AND pnf.NODE_FUNCTION_ID = pnp.BIZ_ID
+            AND pfd.FUNCTION_DEFINE_ID = pnf.FUNCTION_DEFINE_ID
+            AND ppn.NODE_KIND_ID = 2
+            AND pnp.BIZ_KIND_ID = 8
+            AND so.ID = pnp.OBJECT_ID
+            <if test="projectName != null">
+                AND  mp.NAME like concat(concat('%', #{projectName}),'%')
+            </if>
+            <if test="projectNodeName != null">
+                AND ppn.NAME like concat(concat('%', #{projectNodeName}),'%')
+            </if>
+            <if test="projectNodeFunctionName != null">
+                AND pfd.NAME like concat(concat('%', #{projectNodeFunctionName}),'%')
+            </if>
+            <if test="objectName != null">
+                AND so.NAME like concat(concat('%', #{objectName}),'%')
+            </if>
+            <if test="objectKindId != null">
+                AND pnp.OBJECT_KIND_ID = #{objectKindId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getNodePermissionForBaseFunctionCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM PA_PROJECT_NODE ppn, MD_PROJECT mp, PA_NODE_FUNCTION pnf,PA_NODE_PERMISSION pnp,PA_FUNCTION_DEFINE pfd,SA_OPBASEFUNCTIONTYPE so
+        <where>
+            ppn.BIZ_ID =mp.PROJECT_ID
+            AND pnf.BIZ_ID = ppn.PROJECT_NODE_ID
+            AND pnf.NODE_FUNCTION_ID = pnp.BIZ_ID
+            AND pfd.FUNCTION_DEFINE_ID = pnf.FUNCTION_DEFINE_ID
+            AND ppn.NODE_KIND_ID = 2
+            AND pnp.BIZ_KIND_ID = 8
+            AND so.ID = pnp.OBJECT_ID
+            <if test="projectName != null">
+                AND  mp.NAME like concat(concat('%', #{projectName}),'%')
+            </if>
+            <if test="projectNodeName != null">
+                AND ppn.NAME like concat(concat('%', #{projectNodeName}),'%')
+            </if>
+            <if test="projectNodeFunctionName != null">
+                AND pfd.NAME like concat(concat('%', #{projectNodeFunctionName}),'%')
+            </if>
+            <if test="objectName != null">
+                AND so.NAME like concat(concat('%', #{objectName}),'%')
+            </if>
+            <if test="objectKindId != null">
+                AND pnp.OBJECT_KIND_ID = #{objectKindId}
+            </if>
+        </where>
+    </select>
+
+    <select id="slicedQueryRole" parameterType="java.util.Map" resultType="nodePermission">
+        <!-- SELECT t.NODE_PERMISSION_ID as nodePermissionId,t.KIND_ID as kindId,t.OBJECT_KIND_ID as objectKindId,t.OBJECT_ID as objectId, t.BIZ_KIND_ID as bizKindId,
+            t.BIZ_ID as bizId, t1.name as name FROM PA_NODE_PERMISSION t,SA_OPROLE t1 ORDER BY NODE_PERMISSION_ID ${sortorder} OFFSET (${page}-1)*${pagesize} ROWS FETCH NEXT
+            ${pagesize} ROWS ONLY -->
+        SELECT NODE_PERMISSION_ID as nodePermissionId, KIND_ID as kindId, OBJECT_KIND_ID as objectKindId, OBJECT_ID as
+        objectId, BIZ_KIND_ID as bizKindId, BIZ_ID as
+        bizId, VERSION as version,name as name
+        FROM (select t.NODE_PERMISSION_ID, t.KIND_ID, t.OBJECT_KIND_ID, t.OBJECT_ID, t.BIZ_KIND_ID, t.BIZ_ID,
+        t.VERSION,t1.name ,ROWNUM RN FROM PA_NODE_PERMISSION t,SA_OPROLE t1
+        <where>
+            t1.id = t.object_id
+            <if test="kindId != null and kindId > 0 and kindId &lt; 4">
+                AND t.KIND_ID = ${kindId}
+            </if>
+            <if test="kindId != null and kindId == 4">
+                AND t.KIND_ID in (1,2)
+            </if>
+            <if test="objectKindId != null and objectKindId > 0">
+                AND t.OBJECT_KIND_ID = ${objectKindId}
+            </if>
+            <if test="objectId != null">
+                AND t.OBJECT_ID =#{objectId}
+            </if>
+            <if test="name != null">
+                AND t1.name like concat(concat('%',#{name}),'%')
+            </if>
+            <if test="bizKindId != null and bizKindId > -1 ">
+                AND t.BIZ_KIND_ID = #{bizKindId}
+            </if>
+            <if test="bizId != null and bizId > -1 ">
+                AND t.BIZ_ID = #{bizId}
+            </if>
+        </where>
+        ORDER BY ${sortname} ${sortorder}
+        )
+        WHERE RN > (${page}-1)*${pagesize} AND RN &lt;= ${page}*${pagesize}
+    </select>
+
+    <select id="slicedQueryNodePermissionBaesFunctionType" parameterType="java.util.Map" resultType="nodePermission">
+        <!-- SELECT t.NODE_PERMISSION_ID as nodePermissionId,t.KIND_ID as kindId,t.OBJECT_KIND_ID as objectKindId,t.OBJECT_ID as objectId, t.BIZ_KIND_ID as bizKindId,
+            t.BIZ_ID as bizId, t1.name as name FROM pa_node_permission t ,SA_OPBASEFUNCTIONTYPE t1 ORDER BY NODE_PERMISSION_ID ${sortorder} OFFSET (${page}-1)*${pagesize} ROWS
+            FETCH NEXT ${pagesize} ROWS ONLY -->
+        SELECT NODE_PERMISSION_ID as nodePermissionId, KIND_ID as kindId, OBJECT_KIND_ID as objectKindId, OBJECT_ID as
+        objectId, BIZ_KIND_ID as bizKindId, BIZ_ID as
+        bizId, VERSION as version,name as name
+        FROM (select t.NODE_PERMISSION_ID, t.KIND_ID, t.OBJECT_KIND_ID, t.OBJECT_ID, t.BIZ_KIND_ID, t.BIZ_ID,
+        t.VERSION,t1.name,'' as FULLNAME ,ROWNUM RN FROM PA_NODE_PERMISSION t,SA_OPBASEFUNCTIONTYPE t1
+        <where>
+            t1.id = t.object_id
+            <if test="kindId != null and kindId > 0 and kindId &lt; 4">
+                AND t.KIND_ID = ${kindId}
+            </if>
+            <if test="kindId != null and kindId == 4">
+                AND t.KIND_ID in (1,2)
+            </if>
+            <if test="objectKindId != null and objectKindId > 0">
+                AND t.OBJECT_KIND_ID = ${objectKindId}
+            </if>
+            <if test="objectId != null">
+                AND t.OBJECT_ID =#{objectId}
+            </if>
+            <if test="name != null">
+                AND t1.name like concat(concat('%',#{name}),'%')
+            </if>
+            <if test="bizKindId != null and bizKindId > -1 ">
+                AND t.BIZ_KIND_ID = #{bizKindId}
+            </if>
+            <if test="bizId != null and bizId > -1 ">
+                AND t.BIZ_ID = #{bizId}
+            </if>
+        </where>
+        ORDER BY ${sortname} ${sortorder}
+        )
+        WHERE RN > (${page}-1)*${pagesize} AND RN &lt;= ${page}*${pagesize}
+    </select>
+
+    <select id="getRecordCountRole" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM PA_NODE_PERMISSION t,SA_OPROLE t1
+        <where>
+            t1.id = t.object_id
+            <if test="kindId != null and kindId > 0 and kindId &lt; 4">
+                AND t.KIND_ID = ${kindId}
+            </if>
+            <if test="objectKindId != null and objectKindId > 0">
+                AND t.OBJECT_KIND_ID = ${objectKindId}
+            </if>
+            <if test="objectId != null">
+                AND t.OBJECT_ID = #{objectId}
+            </if>
+            <if test="name != null">
+                AND t1.name like concat(concat('%',#{name}),'%')
+            </if>
+            <if test="bizKindId != null and bizKindId > -1 ">
+                AND t.BIZ_KIND_ID = #{bizKindId}
+            </if>
+            <if test="bizId != null and bizId > -1 ">
+                AND t.BIZ_ID = #{bizId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getRecordCountBaesFunctionType" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM PA_NODE_PERMISSION t, SA_OPBASEFUNCTIONTYPE t1
+        <where>
+            t1.id = t.object_id
+            <if test="kindId != null and kindId > 0 and kindId &lt; 4">
+                AND t.KIND_ID = ${kindId}
+            </if>
+            <if test="objectKindId != null and objectKindId > 0">
+                AND t.OBJECT_KIND_ID = ${objectKindId}
+            </if>
+            <if test="objectId != null">
+                AND t.OBJECT_ID = #{objectId}
+            </if>
+            <if test="name != null">
+                AND t1.name like concat(concat('%',#{name}),'%')
+            </if>
+            <if test="bizKindId != null and bizKindId > -1 ">
+                AND t.BIZ_KIND_ID = #{bizKindId}
+            </if>
+            <if test="bizId != null and bizId > -1 ">
+                AND t.BIZ_ID = #{bizId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

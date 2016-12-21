@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" build-on-make="true" name="web:war explorded">
+    <output-path>D:/IdeaBuild/artifacts/web_war_explorded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="baseframework" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="thirdpart_lib" />
+          <element id="library" level="module" name="junit4" module-name="baseframework" />
+        </element>
+      </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/WebContent" />
+    </root>
+  </artifact>
+</component>

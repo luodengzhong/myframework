@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+
+	<entity name="weixinMessageKind" label="微信消息发送类别" table="SYS_WEIXIN_MESSAGE_KIND">
+		<id column="WEIXIN_MESSAGE_KIND_ID" name="weixinMessageKindId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="false" label="类别ID"/>
+		<property column="CODE" name="code" type="java.lang.String" length="64" required="false" label="编码"/>
+		<property column="NAME" name="name" type="java.lang.String" length="64" required="false" label="名称"/>
+		<property column="MSG_TYPE" name="msgType" type="java.lang.String" length="32" required="false" label="发送类别 （文本，图片，新闻，文件）"/>
+		<property column="LINK_URL" name="linkUrl" type="java.lang.String" length="256" required="false" label="连接地址"/>
+		<property column="TITLE" name="title" type="java.lang.String" length="256" required="false" label="默认标题"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" length="1" required="false" label="状态" default-expr="1" fill-kind="insert"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="序号"/>
+		<property column="REMARK" name="remark" type="java.lang.String" length="512" required="false" label="备注"/>
+		<condition column="PARENT_ID" name="parentId" symbol="="/>
+		<condition column="code" name="code" symbol="like"/>
+		<condition column="name" name="name" symbol="like"/>
+		<condition column="MSG_TYPE" name="msgType" symbol="="/>
+		<sql name="loadByCode">select * from sys_weixin_message_kind where code=?</sql>
+	</entity>
+
+
+</domain>

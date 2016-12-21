@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="workflowService" class="com.brc.system.bpm.service.impl.WorkflowServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil" />
+		<property name="repositoryService" ref="flowRepositoryService" />
+		<property name="formService" ref="flowFormService" />
+		<property name="runtimeService" ref="flowRuntimeService" />
+		<property name="taskService" ref="flowTaskService" />
+		<property name="managementService" ref="flowManagementService" />
+		<property name="historyService" ref="flowHistoryService" />
+		<property name="sqlBuilder" ref="sqlBuilder" />
+		<property name="processManageService" ref="processManageService" />
+		<property name="actService" ref="actService" />		
+		<property name="procUnitHandlerService" ref="procUnitHandlerService" />		
+		<property name="approvalRuleService" ref="approvalRuleService" />
+		<property name="orgService" ref="orgService" />
+		<property name="freeFlowService" ref="freeFlowService" />
+	</bean>
+	<bean id="procUnitHandlerService" class="com.brc.system.bpm.service.impl.ProcUnitHandlerServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil" />
+		<property name="historicProcUnitHandlerService" ref="historicProcUnitHandlerService" />
+		<property name="workflowService" ref="workflowService" />
+	</bean>
+	<bean id="historicProcUnitHandlerService" class="com.brc.system.bpm.service.impl.HistoricProcUnitHandlerServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil" />
+	</bean>
+	<bean id="procApprovalRuleParseService" class="com.brc.system.bpm.service.impl.ProcApprovalRuleParseServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil" />
+		<property name="orgService" ref="orgService" />
+		<property name="orgFun" ref="orgFun" />
+		<property name="handlerParseService" ref="handlerParseService" />
+	</bean>
+	<bean id="workflowAction" scope="prototype" class="com.brc.system.bpm.action.WorkflowAction">
+		<property name="workflowService" ref="workflowService" />
+	</bean>
+	<bean id="actService" class="com.brc.system.bpm.service.impl.ActServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil" />
+		<property name="workflowService" ref="workflowService" />
+		<property name="procUnitHandlerService" ref="procUnitHandlerService" />
+	</bean>
+	<bean id="handlerParseService" class="com.brc.system.bpm.service.impl.HandlerParseServiceImpl">
+		<property name="orgService" ref="orgService" />
+	</bean>	
+	<bean id="processManageService" class="com.brc.system.bpm.service.impl.ProcessManageServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil" />
+		<property name="repositoryService" ref="flowRepositoryService" />
+		<property name="workflowService" ref="workflowService" />		
+	</bean>
+	<bean id="processManageAction" scope="prototype" class="com.brc.system.bpm.action.ProcessManageAction">
+		<property name="processManageService" ref="processManageService" />
+	</bean>	
+	<bean id="workflowWebService" class="com.brc.system.bpm.webservice.impl.WorkflowWebServiceImpl">
+		<property name="workflowService" ref="workflowService" />
+	</bean>
+	<bean id="workflowForAppWebService" class="com.brc.system.bpm.webservice.impl.WorkflowForAppWebServiceImpl">
+		<property name="workflowService" ref="workflowService" />
+<!-- 		<property name="tokenManager" ref="tokenManager" /> -->
+	</bean>
+	<bean id="freeFlowService" class="com.brc.system.bpm.service.impl.FreeFlowServiceImpl">
+		<property name="serviceUtil" ref="serviceUtil" />
+		<property name="workflowService" ref="workflowService" />
+	</bean>	
+	<bean id="freeFlowAction" scope="prototype" class="com.brc.system.bpm.action.FreeFlowAction">
+		<property name="freeFlowService" ref="freeFlowService" />
+	</bean>		
+</beans>

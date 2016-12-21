@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+	<entity name="baseSegmentationType" label="基础段类" table="WF_BASESEGMENTATIONTYPE" >
+		<id column="BASE_SEGMENTATION_TYPE_ID" name="baseSegmentationTypeId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="CODE" name="code" type="java.lang.String" length="32" required="false" label="编码" />
+		<property column="NAME" name="name" type="java.lang.String" length="64" required="false" label="名称" />
+		<property column="FOLDER_ID" name="folderId" type="java.lang.Long" required="false" label="目录ID"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="排序号" />
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" />
+		<sql name ="checkBaseSegmentationTypeExistSql">
+			<![CDATA[
+			select code, name from WF_BaseSegmentationType where base_segmentation_type_id <> ? and (upper(code) = ? or upper(name) = ?)
+			]]>
+		</sql>
+		<sql name="selectBaseSegmentationTypeReferencedByAuthorize">
+			<![CDATA[
+			select  * from WF_BizSegmentationAuthorize where base_segmentation_type_id = ? and rownum = 1
+			]]>
+		</sql>
+		<sql name="selectBaseSegmentationType">
+			select * from WF_BaseSegmentationType where base_segmentation_type_id = ?
+		</sql>
+		<condition column="CODE" name="code" symbol="like" alias=""/>
+		<condition column="NAME" name="name" symbol="like" alias=""/>
+		<condition column="FOLDER_ID" name="folderId" symbol="=" alias=""/>
+		<condition column="param" name="param" symbol="like">
+		   and (baseSegmentationType.code like :param or baseSegmentationType.name like :param)
+		</condition>
+	</entity>
+	
+	<entity name="bizSegmentation" label="业务段" table="WF_BIZSEGMENTATION" >
+		<id column="BIZ_SEGMENTATION_ID" name="bizSegmentationId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="ORG_ID" name="orgId" type="java.lang.String" length="64" required="false" label="组织id" />
+		<property column="KIND_ID" name="kindId" type="java.lang.Integer"  required="false" label="类别id" />
+		<property column="CODE" name="code" type="java.lang.String" length="32" required="false" label="编码" />
+		<property column="NAME" name="name" type="java.lang.String" length="64" required="false" label="名称" />
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" />
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="排序号" />
+		<sql name="selectBizSegmentationHandlerCount">
+          <![CDATA[
+			select  count(*) from WF_SegmentationHandler where  biz_segmentation_id = ?
+			]]>			
+		</sql>
+		<condition column="ORG_ID" name="orgId" symbol="=" alias=""/>
+		<condition column="CODE" name="code" symbol="like" alias=""/>
+		<condition column="NAME" name="name" symbol="like" alias=""/>		
+	</entity>
+
+		<entity name="segmentationHandler" label="组织业务段处理人" table="WF_SEGMENTATIONHANDLER" >
+		<id column="SEGMENTATION_HANDLER_ID" name="segmentationHandlerId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="SEGMENTATION_ID" name="segmentationId" type="java.lang.Long" length="22" required="false" label="BizSegmentationTypeID" />
+		<property column="DESCRIPTION" name="description" type="java.lang.String" length="256" required="false" label="描述" />
+		<property column="HANDLER_KIND_CODE" name="handlerKindCode" type="java.lang.String" length="32" required="false" label="管理权限、部门、岗位、人员成员、函数" />
+		<property column="HANDLER_ID" name="handlerId" type="java.lang.String" length="65" required="false" label="处理人ID" />
+		<property column="HANDLER_NAME" name="handlerName" type="java.lang.String" length="128" required="false" label="处理人名称" />
+		<property column="GROUP_ID" name="groupId" type="java.lang.Long" length="22" required="false" label="分组ID" />
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="排序号" />
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" />
+		<sql name="selectBizSegmentationHandler">
+			<![CDATA[
+			select segmentationHandler.*, k.name as handler_kind_name, k.data_source_config from WF_SegmentationHandler segmentationHandler, Wf_ApprovalHandlerKind k 
+			where segmentationHandler.handler_kind_code = k.code
+			]]>
+		</sql>
+		<sql name="selectHandlerBySegmentationId">
+			<![CDATA[
+			select * from WF_SegmentationHandler where Segmentation_ID = ? order by group_id
+			]]>
+		</sql>
+		<condition column="SEGMENTATION_ID" name="segmentationId" symbol="=" alias=""/>		
+	</entity>
+
+	<entity name="bizSegmentationAuthorize" label="组织分段授权" table="WF_BIZSEGMENTATIONAUTHORIZE" >
+		<id column="BIZ_SEGMENTATION_AUTHORIZE_ID" name="bizSegmentationAuthorizeId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="BIZ_SEGMENTATION_ID" name="bizSegmentationId" type="java.lang.Long" length="22" required="false" label="BizSegmentationTypeID" />
+		<property column="BASE_SEGMENTATION_TYPE_ID" name="baseSegmentationTypeId" type="java.lang.Long" length="22" required="false" label="BaseSegmentationTypeID" />
+		<property column="ORG_ID" name="orgId" type="java.lang.String" length="65" required="false" label="组织Id" />
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="排序号" />
+		<version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" />
+		<sql-query>
+			<![CDATA[
+			select bizSegmentationAuthorize.*, s.name biz_segmentation_name from WF_BizSegmentationAuthorize bizSegmentationAuthorize, WF_BizSegmentation s 
+			where bizSegmentationAuthorize.biz_segmentation_id = s.biz_segmentation_id
+			]]>
+		</sql-query>
+		<condition column="BASE_SEGMENTATION_TYPE_ID" name="baseSegmentationTypeId" symbol="=" alias=""/>
+		<condition column="ORG_ID" name="orgId" symbol="=" alias=""/>
+	</entity>
+</domain>

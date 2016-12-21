@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brc.pa.projectdata.mapper.ContractMapper">
+	<insert id="insert" parameterType="contract">
+		INSERT INTO PA_CONTRACT(CONTRACT_ID, PROJECT_ID, PROJECT_NODE_ID, CONTRACT_CATEGORY_ID, CODE, NAME, AUNIT, ACREATOR,
+		BUNIT, BCREATOR, CONTRACT_AMOUNT, SIGN_DATE,
+		SIGN_ADDRESS, DESCRIPTION, CREATOR_ID, CREATOR_NAME, VERSION)
+		VALUES(PA_ID_SEQ.nextval,${projectId},
+		${projectNodeId},
+		${contractCategoryId}, #{code, jdbcType=VARCHAR}, #{name, jdbcType=VARCHAR}, #{aunit, jdbcType=VARCHAR}, #{acreator, jdbcType=VARCHAR},
+		#{bunit,
+		jdbcType=VARCHAR}, #{bcreator, jdbcType=VARCHAR}, ${contractAmount}, #{signDate, jdbcType=TIMESTAMP}, #{signAddress, jdbcType=VARCHAR}, #{description,
+		jdbcType=VARCHAR}, #{creatorId, jdbcType=VARCHAR}, #{creatorName, jdbcType=VARCHAR}, PA_VERSION_SEQ.nextval)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO PA_CONTRACT(CONTRACT_ID, PROJECT_ID, PROJECT_NODE_ID, CONTRACT_CATEGORY_ID, CODE, NAME, AUNIT, ACREATOR, BUNIT, BCREATOR, CONTRACT_AMOUNT,
+		SIGN_DATE, SIGN_ADDRESS, DESCRIPTION, CREATOR_ID, CREATOR_NAME, VERSION)
+		SELECT PA_ID_SEQ.nextval,t.*,PA_VERSION_SEQ.nextval FROM (
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			SELECT ${item.projectId} as PROJECT_ID, ${item.projectNodeId} as PROJECT_NODE_ID,
+			${item.contractCategoryId} as CONTRACT_CATEGORY_ID, #{item.code,
+			jdbcType=VARCHAR} as CODE, #{item.name, jdbcType=VARCHAR} as NAME, #{item.aunit,
+			jdbcType=VARCHAR} as AUNIT, #{item.acreator, jdbcType=VARCHAR} as ACREATOR,
+			#{item.bunit, jdbcType=VARCHAR} as BUNIT, #{item.bcreator, jdbcType=VARCHAR} as
+			BCREATOR, ${item.contractAmount} as CONTRACT_AMOUNT, #{item.signDate,
+			jdbcType=TIMESTAMP} as SIGN_DATE, #{item.signAddress, jdbcType=VARCHAR} as SIGN_ADDRESS,
+			#{item.description, jdbcType=VARCHAR} as DESCRIPTION, #{item.creatorId,
+			jdbcType=VARCHAR} as CREATOR_ID , #{item.creatorName,
+			jdbcType=VARCHAR} as CREATOR_NAME
+			FROM DUAL
+		</foreach>
+		) t
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM PA_CONTRACT WHERE CONTRACT_ID = #{contractId}
+	</delete>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		DELETE FROM PA_CONTRACT WHERE CONTRACT_ID IN
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<update id="update" parameterType="contract">
+		UPDATE PA_CONTRACT
+		<set>
+			<if test="projectId != null">
+				PROJECT_ID=${projectId},
+			</if>
+			<if test="projectNodeId != null">
+				PROJECT_NODE_ID=${projectNodeId},
+			</if>
+			<if test="contractCategoryId != null">
+				CONTRACT_CATEGORY_ID=${contractCategoryId},
+			</if>
+			<if test="code != null">
+				CODE=#{code, jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				NAME=#{name, jdbcType=VARCHAR},
+			</if>
+			<if test="aunit != null">
+				AUNIT=#{aunit, jdbcType=VARCHAR},
+			</if>
+			<if test="acreator != null">
+				ACREATOR=#{acreator, jdbcType=VARCHAR},
+			</if>
+			<if test="bunit != null">
+				BUNIT=#{bunit, jdbcType=VARCHAR},
+			</if>
+			<if test="bcreator != null">
+				BCREATOR=#{bcreator, jdbcType=VARCHAR},
+			</if>
+			<if test="contractAmount != null">
+				CONTRACT_AMOUNT=${contractAmount},
+			</if>
+			<if test="signDate != null">
+				SIGN_DATE=#{signDate, jdbcType=TIMESTAMP},
+			</if>
+			<if test="signAddress != null">
+				SIGN_ADDRESS=#{signAddress, jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				DESCRIPTION=#{description, jdbcType=VARCHAR},
+			</if>
+			<if test="creatorId != null">
+				CREATOR_ID=#{creatorId, jdbcType=VARCHAR},
+			</if>
+			<if test="creatorName != null">
+				CREATOR_NAME=#{creatorName, jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE CONTRACT_ID = #{contractId}
+	</update>
+
+	<select id="load" parameterType="java.lang.Long" resultType="contract">
+		SELECT CONTRACT_ID as contractId, PROJECT_ID as projectId, PROJECT_NODE_ID as projectNodeId,
+		CONTRACT_CATEGORY_ID as contractCategoryId, CODE as code, NAME as name,
+		AUNIT as aunit, ACREATOR as acreator, BUNIT as bunit, BCREATOR as bcreator,
+		CONTRACT_AMOUNT as contractAmount, SIGN_DATE as signDate, SIGN_ADDRESS as
+		signAddress, DESCRIPTION as description, CREATOR_ID as creatorId, CREATOR_NAME as
+		creatorName, VERSION as version
+		FROM PA_CONTRACT WHERE CONTRACT_ID=#{contractId}
+	</select>
+
+	<select id="queryAll" parameterType="java.util.Map" resultType="contract">
+		SELECT CONTRACT_ID as contractId, PROJECT_ID as projectId, PROJECT_NODE_ID as projectNodeId, CONTRACT_CATEGORY_ID as contractCategoryId, CODE as code, NAME as
+		name, AUNIT as aunit, ACREATOR as acreator, BUNIT as bunit, BCREATOR as bcreator, CONTRACT_AMOUNT as contractAmount, SIGN_DATE as signDate, SIGN_ADDRESS as
+		signAddress, DESCRIPTION as description, CREATOR_ID as creatorId, CREATOR_NAME as creatorName, VERSION as version FROM PA_CONTRACT
+		<where>
+			<if test="projectId != null and projectId > -1 ">
+				AND PROJECT_ID = #{projectId}
+			</if>
+			<if test="projectNodeId != null and projectNodeId > -1 ">
+				AND PROJECT_NODE_ID = #{projectNodeId}
+			</if>
+			<if test="contractCategoryId != null and contractCategoryId > -1 ">
+				AND CONTRACT_CATEGORY_ID = #{contractCategoryId}
+			</if>
+			<if test="code != null">
+				AND CODE like concat(concat('%',#{code}),'%')
+			</if>
+			<if test="name != null">
+				AND NAME like concat(concat('%',#{name}),'%')
+			</if>
+			<if test="creatorId != null">
+				AND CREATOR_ID = #{creatorId}
+			</if>
+		</where>
+		ORDER BY CONTRACT_ID ASC
+	</select>
+
+	<select id="slicedQuery" parameterType="java.util.Map" resultType="contract">
+		<!-- SELECT CONTRACT_ID as contractId, PROJECT_ID as projectId, PROJECT_NODE_ID as projectNodeId, CONTRACT_CATEGORY_ID as contractCategoryId, CODE as code, NAME 
+			as name, AUNIT as aunit, ACREATOR as acreator, BUNIT as bunit, BCREATOR as bcreator, CONTRACT_AMOUNT as contractAmount, SIGN_DATE as signDate, SIGN_ADDRESS as signAddress, 
+			DESCRIPTION as description, CREATOR_ID as creatorId, CREATOR_NAME as creatorName, VERSION as version FROM PA_CONTRACT ORDER BY ${sortname} ${sortorder} OFFSET (${page}-1)*${pagesize} 
+			ROWS FETCH NEXT ${pagesize} ROWS ONLY -->
+		SELECT CONTRACT_ID as contractId, PROJECT_ID as projectId, PROJECT_NODE_ID as projectNodeId, CONTRACT_CATEGORY_ID as contractCategoryId, CODE as code, NAME as
+		name, AUNIT as aunit, ACREATOR as acreator, BUNIT as bunit, BCREATOR as bcreator, CONTRACT_AMOUNT as contractAmount, SIGN_DATE as signDate, SIGN_ADDRESS as
+		signAddress, DESCRIPTION as description, CREATOR_ID as creatorId, CREATOR_NAME as creatorName, VERSION as version FROM (select t.CONTRACT_ID, t.PROJECT_ID, t.PROJECT_NODE_ID, t.CONTRACT_CATEGORY_ID, t.CODE, t.NAME, t.AUNIT, t.ACREATOR, t.BUNIT, t.BCREATOR, t.CONTRACT_AMOUNT, t.SIGN_DATE, t.SIGN_ADDRESS, t.DESCRIPTION, t.CREATOR_ID, t.CREATOR_NAME, t.VERSION,ROWNUM RN FROM PA_CONTRACT
+		t
+		<where>
+			<if test="projectId != null and projectId > -1 ">
+				AND PROJECT_ID = #{projectId}
+			</if>
+			<if test="projectNodeId != null and projectNodeId > -1 ">
+				AND PROJECT_NODE_ID = #{projectNodeId}
+			</if>
+			<if test="contractCategoryId != null and contractCategoryId > -1 ">
+				AND CONTRACT_CATEGORY_ID = #{contractCategoryId}
+			</if>
+			<if test="code != null">
+				AND CODE like concat(concat('%',#{code}),'%')
+			</if>
+			<if test="name != null">
+				AND NAME like concat(concat('%',#{name}),'%')
+			</if>
+			<if test="creatorId != null">
+				AND CREATOR_ID = #{creatorId}
+			</if>
+		</where>
+		ORDER BY ${sortname} ${sortorder}
+		)
+		WHERE RN > (${page}-1)*${pagesize} AND RN &lt;= ${page}*${pagesize}
+
+	</select>
+
+	<select id="getRecordCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT COUNT(0) FROM PA_CONTRACT
+		<where>
+			<if test="projectId != null and projectId > -1 ">
+				AND PROJECT_ID = #{projectId}
+			</if>
+			<if test="projectNodeId != null and projectNodeId > -1 ">
+				AND PROJECT_NODE_ID = #{projectNodeId}
+			</if>
+			<if test="contractCategoryId != null and contractCategoryId > -1 ">
+				AND CONTRACT_CATEGORY_ID = #{contractCategoryId}
+			</if>
+			<if test="code != null">
+				AND CODE like concat(concat('%',#{code}),'%')
+			</if>
+			<if test="name != null">
+				AND NAME like concat(concat('%',#{name}),'%')
+			</if>
+			<if test="creatorId != null">
+				AND CREATOR_ID = #{creatorId}
+			</if>
+			<if test="fullCode != null">
+				AND CODE = #{fullCode}
+			</if>
+			<if test="contractId != null and contractId > -1">
+				AND CONTRACT_ID != #{contractId}
+			</if>
+		</where>
+	</select>
+
+</mapper>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brc.pa.projectdata.mapper.TransactionCommentMapper">
+	<insert id="insert" parameterType="transactionComment">
+		INSERT INTO PA_TRANSACTION_COMMENT(TRANSACTION_COMMENT_ID, TRANSACTION_HANDLE_ID, SUBJECT, CONTENT, CREATOR_ID, CREATE_TIME)
+		VALUES(PA_ID_SEQ.nextval,${transactionHandleId}, #{subject, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR}, #{creatorId}, #{createTime, jdbcType=TIMESTAMP})
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO PA_TRANSACTION_COMMENT(TRANSACTION_COMMENT_ID, TRANSACTION_HANDLE_ID, SUBJECT, CONTENT, CREATOR_ID,
+		CREATE_TIME)
+		SELECT PA_ID_SEQ.nextval,t.*,PA_VERSION_SEQ.nextval FROM (
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			SELECT ${item.transactionHandleId} as TRANSACTION_HANDLE_ID, #{item.subject, jdbcType=VARCHAR} as SUBJECT,
+			#{item.content, jdbcType=VARCHAR} as CONTENT, ${item.creatorId} as CREATOR_ID,
+			#{item.createTime, jdbcType=TIMESTAMP} as CREATE_TIME FROM DUAL
+		</foreach>
+		) t
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM PA_TRANSACTION_COMMENT WHERE TRANSACTION_COMMENT_ID = #{id}
+	</delete>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		DELETE FROM PA_TRANSACTION_COMMENT WHERE TRANSACTION_COMMENT_ID IN
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<update id="update" parameterType="transactionComment">
+		UPDATE PA_TRANSACTION_COMMENT
+		<set>
+			<if test="transactionHandleId != null">
+				TRANSACTION_HANDLE_ID=${transactionHandleId},
+			</if>
+			<if test="subject != null">
+				SUBJECT=#{subject, jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				CONTENT=#{content, jdbcType=VARCHAR},
+			</if>
+			<if test="creatorId != null">
+				CREATOR_ID=${creatorId},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME=#{createTime, jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		WHERE TRANSACTION_COMMENT_ID = #{transactionCommentId}
+	</update>
+
+	<update id="updateSequence" parameterType="transactionComment">
+		UPDATE PA_TRANSACTION_COMMENT SET SEQUENCE = #{sequence}
+		WHERE TRANSACTION_COMMENT_ID = #{transactionCommentId}
+	</update>
+
+	<select id="load" parameterType="java.lang.Long" resultType="transactionComment">
+		SELECT TRANSACTION_COMMENT_ID as transactionCommentId, TRANSACTION_HANDLE_ID as transactionHandleId, SUBJECT as subject, CONTENT as content, CREATOR_ID as
+		creatorId, CREATE_TIME as createTime FROM PA_TRANSACTION_COMMENT WHERE TRANSACTION_COMMENT_ID=#{id}
+	</select>
+
+	<select id="queryAll" parameterType="java.util.Map" resultType="transactionComment">
+		SELECT t.TRANSACTION_COMMENT_ID as transactionCommentId,t.TRANSACTION_HANDLE_ID as transactionHandleId,
+		t.SUBJECT as subject, t.CONTENT as content, t.CREATOR_ID as creatorId, t.CREATE_TIME as createTime,t1.NAME as
+		creatorName FROM PA_TRANSACTION_COMMENT t,SA_OPPERSON t1
+		<where>
+			t.creator_id=t1.id
+			<if test="transactionCommentId != null and transactionCommentId > -1 ">
+				AND t.TRANSACTION_COMMENT_ID = #{transactionCommentId}
+			</if>
+			<if test="transactionHandleId != null and transactionHandleId > -1 ">
+				AND t.TRANSACTION_HANDLE_ID = #{transactionHandleId}
+			</if>
+			<if test="subject != null">
+				AND t.SUBJECT like concat(concat('%',#{subject}),'%')
+			</if>
+			<if test="content != null">
+				AND t.CONTENT = #{content}
+			</if>
+			<if test="creatorId != null and creatorId > -1 ">
+				AND t.CREATOR_ID = #{creatorId}
+			</if>
+			<if test="createTime != null">
+				AND t.CREATE_TIME = to_date(#{createTime},'yyyy-MM-dd HH24:mm:ss')
+			</if>
+			<if test="creatorName != null">
+				AND t1.NAME like concat(concat('%',#{creatorName}),'%')
+			</if>
+		</where>
+		ORDER BY TRANSACTION_COMMENT_ID ASC
+	</select>
+
+	<select id="slicedQuery" parameterType="java.util.Map" resultType="transactionComment">
+		<!-- SELECT t.TRANSACTION_COMMENT_ID as transactionCommentId,t.TRANSACTION_HANDLE_ID as transactionHandleId, t.SUBJECT as subject, t.CONTENT as content, t.CREATOR_ID 
+			as creatorId, t.CREATE_TIME as createTime,t1.NAME as creatorName FROM PA_TRANSACTION_COMMENT t,SA_OPPERSON t1 <where> t.creator_id=t1.id <if test="transactionCommentId 
+			!= null and transactionCommentId > -1 "> AND t.TRANSACTION_COMMENT_ID = #{transactionCommentId} </if> <if test="transactionHandleId != null and transactionHandleId 
+			> -1 "> AND t.TRANSACTION_HANDLE_ID = #{transactionHandleId} </if> <if test="subject != null"> AND t.SUBJECT like concat(concat('%',#{subject}),'%') </if> <if test="content 
+			!= null"> AND t.CONTENT = #{content} </if> <if test="creatorId != null and creatorId > -1 "> AND t.CREATOR_ID = #{creatorId} </if> <if test="createTime != null"> 
+			AND t.CREATE_TIME = to_date(#{createTime},'yyyy-MM-dd HH24:mm:ss') </if> <if test="creatorName != null"> AND t1.NAME like concat(concat('%',#{creatorName}),'%') 
+			</if> </where> ORDER BY ${sortname} ${sortorder} OFFSET (${page}-1)*${pagesize} ROWS FETCH NEXT ${pagesize} ROWS ONLY -->
+		SELECT TRANSACTION_COMMENT_ID as transactionCommentId, TRANSACTION_HANDLE_ID as transactionHandleId, SUBJECT as subject, CONTENT as content, CREATOR_ID as
+		creatorId, CREATE_TIME as createTime,NAME as creatorName
+		FROM (select t.TRANSACTION_COMMENT_ID, t.TRANSACTION_HANDLE_ID, t.SUBJECT, t.CONTENT, t.CREATOR_ID, t.CREATE_TIME,t1.NAME ,ROWNUM RN FROM PA_TRANSACTION_COMMENT t,SA_OPPERSON t1
+		<where>
+			t.creator_id=t1.id
+			<if test="transactionCommentId != null and transactionCommentId > -1 ">
+				AND t.TRANSACTION_COMMENT_ID = #{transactionCommentId}
+			</if>
+			<if test="transactionHandleId != null and transactionHandleId > -1 ">
+				AND t.TRANSACTION_HANDLE_ID = #{transactionHandleId}
+			</if>
+			<if test="subject != null">
+				AND t.SUBJECT like concat(concat('%',#{subject}),'%')
+			</if>
+			<if test="content != null">
+				AND t.CONTENT = #{content}
+			</if>
+			<if test="creatorId != null and creatorId > -1 ">
+				AND t.CREATOR_ID = #{creatorId}
+			</if>
+			<if test="createTime != null">
+				AND t.CREATE_TIME = to_date(#{createTime},'yyyy-MM-dd HH24:mm:ss')
+			</if>
+			<if test="creatorName != null">
+				AND t1.NAME like concat(concat('%',#{creatorName}),'%')
+			</if>
+		</where>
+		ORDER BY ${sortname} ${sortorder}
+		)
+		WHERE RN > (${page}-1)*${pagesize} AND RN &lt;= ${page}*${pagesize}
+
+	</select>
+
+	<select id="getRecordCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT COUNT(0) FROM PA_TRANSACTION_COMMENT t,SA_OPPERSON t1
+		<where>
+			t.creator_id=t1.id
+			<if test="transactionCommentId != null and transactionCommentId > -1 ">
+				AND t.TRANSACTION_COMMENT_ID = #{transactionCommentId}
+			</if>
+			<if test="transactionHandleId != null and transactionHandleId > -1 ">
+				AND t.TRANSACTION_HANDLE_ID = #{transactionHandleId}
+			</if>
+			<if test="subject != null">
+				AND t.SUBJECT like concat(concat('%',#{subject}),'%')
+			</if>
+			<if test="content != null">
+				AND t.CONTENT = #{content}
+			</if>
+			<if test="creatorId != null and creatorId > -1 ">
+				AND t.CREATOR_ID = #{creatorId}
+			</if>
+			<if test="createTime != null">
+				AND t.CREATE_TIME = to_date(#{createTime},'yyyy-MM-dd HH24:mm:ss')
+			</if>
+			<if test="creatorName != null">
+				AND t1.NAME like concat(concat('%',#{creatorName}),'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="getNextSequence" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT NVL(MAX(SEQUENCE),0) + 1 FROM PA_TRANSACTION_COMMENT
+	</select>
+
+</mapper>

@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+    <entity name="projectScheme" label="项目规划方案表" table="MD_PROJECT_SCHEME" update="true" insert="true">
+        <id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+        <property column="NAME" name="name" type="java.lang.String" length="100" required="false" label="名称" update="true" insert="true"/>
+        <property column="CODE" name="code" type="java.lang.String" length="100" required="false" label="编码" update="true" insert="true"/>
+        <property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="项目ID" update="true" insert="true"/>
+        <property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="false" label="父节点ID" update="true" insert="true"/>
+        <property column="SCHEME_PHASE" name="schemePhase" type="java.lang.String" length="16" required="false" label="规划阶段" update="true" insert="true"/>
+        <property column="STATUS" name="status" type="java.lang.Integer" length="22" required="false" label="状态" update="true" insert="true"/>
+        <property column="IS_SCHEME" name="isScheme" type="java.lang.Integer" length="22" required="false" label="是否为方案" update="true" insert="true"/>
+        <property column="VALID_STATUS" name="validStatus" type="java.lang.Integer" length="22" required="false" label="生效状态" update="true" insert="true"/>
+        <property column="REMARK" name="remark" type="java.lang.String" length="2048" required="false" label="备注" update="true" insert="true"/>
+        <property column="CREATE_BY_ID" name="createById" type="java.lang.String" length="65" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_BY_NAME" name="createByName" type="java.lang.String" length="64" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_DATE" name="createDate" type="java.sql.Date" length="20" required="true" label="创建时间" update="false" insert="true"/>
+        <property column="LAST_MODIFY_BY_ID" name="lastModifyById" type="java.lang.String" length="65" required="false" label="最近修改人" update="true" insert="true"/>
+        <property column="LAST_MODIFY_BY_NAME" name="lastModifyByName" type="java.lang.String" length="64" required="true" label="最后修改人" update="false" insert="true"/>
+        <property column="LAST_MODIFY_DATE" name="lastModifyDate" type="java.sql.Date" length="20" required="false" label="最近修时间" update="true" insert="true"/>
+        <property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+        <version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+
+        <condition column="PROJECT_ID" name="projectId" symbol="="/>
+        <condition column="SCHEME_PHASE" name="schemePhase" symbol="="/>
+        <condition column="VALID_STATUS" name="validStatus" symbol="="/>
+        <condition column="CODE" name="code" symbol="like"/>
+        <condition column="NAME" name="name" symbol="like"/>
+        <condition column="PARENT_ID" name="parentId" symbol="="/>
+        <condition column="ID" name="id" symbol="="/>
+		
+		<sql name="copyProjectSchemeData">
+           <![CDATA[
+			 {CALL PKG_MD.MD_COPY_PROJECT_SCHEME(?,?,?,?,?)}
+			]]>
+		</sql>
+		
+		<sql name="moveProjectSchemeHistory">
+           <![CDATA[
+			 {CALL PKG_MD.MD_MOVE_PROJECT_SCHEME_HISTORY(?,?,?)}
+			]]>
+		</sql>
+		
+		<sql name="addProjectData">
+           <![CDATA[
+			 {CALL PKG_MD.MD_ADD_PROJECT_DATA(?,?,?,?)}
+			]]>
+		</sql>
+    </entity>
+    
+	<entity name="projectSchemeHistory" label="项目规划历史表" table="MD_PROJECT_SCHEME_HISTORY" update="true" insert="true">
+		<id column="ID" name="id" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+        <property column="NAME" name="name" type="java.lang.String" length="100" required="false" label="名称" update="true" insert="true"/>
+        <property column="CODE" name="code" type="java.lang.String" length="100" required="false" label="编码" update="true" insert="true"/>
+        <property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="项目ID" update="true" insert="true"/>
+        <property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="false" label="父节点ID" update="true" insert="true"/>
+        <property column="SCHEME_PHASE" name="schemePhase" type="java.lang.String" length="16" required="false" label="规划阶段" update="true" insert="true"/>
+        <property column="STATUS" name="status" type="java.lang.Integer" length="22" required="false" label="状态" update="true" insert="true"/>
+        <property column="IS_SCHEME" name="isScheme" type="java.lang.Integer" length="22" required="false" label="是否为方案" update="true" insert="true"/>
+        <property column="VALID_STATUS" name="validStatus" type="java.lang.Integer" length="22" required="false" label="生效状态" update="true" insert="true"/>
+        <property column="REMARK" name="remark" type="java.lang.String" length="2048" required="false" label="备注" update="true" insert="true"/>
+        <property column="CREATE_BY_ID" name="createById" type="java.lang.String" length="65" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_BY_NAME" name="createByName" type="java.lang.String" length="64" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_DATE" name="createDate" type="java.sql.Date" length="20" required="true" label="创建时间" update="false" insert="true"/>
+        <property column="LAST_MODIFY_BY_ID" name="lastModifyById" type="java.lang.String" length="65" required="false" label="最近修改人" update="true" insert="true"/>
+        <property column="LAST_MODIFY_BY_NAME" name="lastModifyByName" type="java.lang.String" length="64" required="true" label="最后修改人" update="false" insert="true"/>
+        <property column="LAST_MODIFY_DATE" name="lastModifyDate" type="java.sql.Date" length="20" required="false" label="最近修时间" update="true" insert="true"/>
+ 		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+        <version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+        <condition column="PROJECT_ID" name="projectId" symbol="="/>
+        <condition column="SCHEME_PHASE" name="schemePhase" symbol="="/>
+        <condition column="VALID_STATUS" name="validStatus" symbol="="/>
+        <condition column="CODE" name="code" symbol="like"/>
+        <condition column="NAME" name="name" symbol="like"/>
+        <condition column="PARENT_ID" name="parentId" symbol="="/>
+        <condition column="ID" name="id" symbol="="/>
+	</entity>
+
+	
+	<entity name="stageScheme" label="分期方案表" table="MD_STAGE_SCHEME" update="true" insert="true">
+        <id column="STAGE_ID" name="stageId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+        <property column="NAME" name="name" type="java.lang.String" length="200" required="false" label="名称" update="true" insert="true"/>
+        <property column="CODE" name="code" type="java.lang.String" length="100" required="false" label="编码" update="true" insert="true"/>
+        <property column="RESOURCE_KIND_ID" name="resourceKindId" type="java.lang.String" length="20" required="false" label="资源类型ID" update="true" insert="true"/>
+        <property column="SCHEME_ID" name="schemeId" type="java.lang.String" length="100" required="false" label="方案ID" update="true" insert="true"/>
+        <property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="项目ID" update="true" insert="true"/>
+        <property column="PROJECT_NAME" name="projectName" type="java.lang.String" length="100" required="false" label="项目上级节点名称" update="false" insert="false">
+            SELECT NAME PROJECT_NAME FROM MD_PROJECT WHERE PROJECT_ID=stageScheme.PROJECT_ID 
+        </property>
+		<property column="LOGIC_AREA_NAME" name="logicAreaName" type="java.lang.String" length="65" update="false" insert="false">
+            SELECT NAME LOGIC_AREA_NAME FROM LI_LOGIC_AREA A,MD_PROJECT P WHERE L.LOGIC_AREA_ID=P.LOGIC_AREA_ID 
+				AND P.PROJECT_ID=stageScheme.PROJECT_ID 
+        </property>
+        <property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="false" label="上级节点ID" update="true" insert="true"/>
+        <property column="IS_MASTER_STAGE" name="isMasterStage" type="java.lang.Integer" length="22" required="false" label="是否主分区" update="true" insert="true"/>
+        <property column="LAND_ID" name="landId" type="java.lang.Long" length="22" required="false" label="土地ID" update="true" insert="true"/>
+        <property column="LAND_NAME" name="landName" type="java.lang.String" length="2048" required="false" label="土地名称" update="false" insert="false">
+            SELECT  LAND_NAME FROM MD_LAND WHERE LAND_ID = stageScheme.LAND_ID
+        </property>
+		<property column="MANAGER_ID" name="managerId" type="java.lang.String" length="65" required="false" label="管理者ID" update="true" insert="true"/>
+		<property column="MANAGER_NAME" name="managerName" type="java.lang.String" length="64" required="false" label="管理者名称" update="true" insert="true"/>
+        <property column="AREA" name="area" type="java.math.BigDecimal" length="22" required="false" label="面积" update="true" insert="true"/>
+        <property column="VOLUME_RATE" name="volumeRate" type="java.math.BigDecimal" length="22" required="false" label="容积率" update="true" insert="true"/>
+		<property column="BUSINESS_MAX_SCALE" name="businessMaxScale" type="java.math.BigDecimal" length="22" required="false" label="最大商业占比" update="true" insert="true"/>
+        <property column="ADDRESS" name="address" type="java.lang.String" length="1024" required="false" label="项目地址" update="true" insert="true"/>
+        <property column="REMARK" name="remark" type="java.lang.String" length="2048" required="false" label="" update="true" insert="true"/>
+        <property column="CREATE_BY_ID" name="createById" type="java.lang.String" length="65" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_BY_NAME" name="createByName" type="java.lang.String" length="64" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_DATE" name="createDate" type="java.sql.Date" length="20" required="true" label="创建时间" update="false" insert="true"/>
+        <property column="LAST_MODIFY_BY_ID" name="lastModifyById" type="java.lang.String" length="65" required="false" label="最近修改人" update="true" insert="true"/>
+        <property column="LAST_MODIFY_BY_NAME" name="lastModifyByName" type="java.lang.String" length="64" required="true" label="最后修改人" update="false" insert="true"/>
+        <property column="LAST_MODIFY_DATE" name="lastModifyDate" type="java.sql.Date" length="20" required="false" label="最近修时间" update="true" insert="true"/>
+        <property column="OLD_RESOURCE_ID" name="oldResourceId" type="java.lang.Long" length="22" required="false" label="原资源ID" update="true" insert="true"/>
+		<property column="MD_FULL_NAME" name="mdFullName" type="java.lang.String" length="2048" required="false" label="资源全路名全路径" update="true" insert="true"/>
+        <property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="排序号" update="true" insert="true"/>
+        <property column="IS_DELETE" name="isDelete" type="java.lang.Integer" length="22" required="false" label="是否删除" update="true" insert="true"/>
+        <version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" update="true" insert="true"/>
+        <property column="STAGE_LOGO_ID" name="stageLogoId" type="java.lang.Long" length="22" required="false" label="分期标识ID" update="true" insert="true"/>
+        <property column="IS_PUBLIC" name="isPublic" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+        <property column="BUSINESS_TYPE_NAME" name="businessTypeName" type="java.lang.String" length="2048" required="false" label="成本业态名称" update="false" insert="false">
+             pkg_md.f_get_cm_resource_bt_names(stageScheme.STAGE_ID)
+        </property>
+      
+      
+        <condition column="CODE" name="code" symbol="like"/>
+        <condition column="NAME" name="name" symbol="like"/>
+	    <condition column="PROJECT_ID" name="projectId" symbol="="/>
+        <condition column="SCHEME_ID" name="schemeId" symbol="="/>
+        <condition column="STAGE_ID" name="stageId" symbol="="/>
+		
+		<sql name="query">
+           <![CDATA[
+			 SELECT * FROM (
+			 	SELECT * FROM MD_STAGE_SCHEME 
+				UNION ALl
+			 	SELECT * FROM MD_STAGE_SCHEME_HISTORY 
+			 ) stageScheme 
+			]]>
+		</sql>
+    </entity>
+
+	<entity name="stageSchemeHistory" label="分期方案历史表" table="MD_STAGE_SCHEME_HISTORY" update="true" insert="true">
+        <id column="STAGE_ID" name="stageId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+        <property column="NAME" name="name" type="java.lang.String" length="200" required="false" label="名称" update="true" insert="true"/>
+        <property column="CODE" name="code" type="java.lang.String" length="100" required="false" label="编码" update="true" insert="true"/>
+        <property column="RESOURCE_KIND_ID" name="resourceKindId" type="java.lang.String" length="20" required="false" label="资源类型ID" update="true" insert="true"/>
+        <property column="SCHEME_ID" name="schemeId" type="java.lang.String" length="100" required="false" label="方案ID" update="true" insert="true"/>
+        <property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="项目ID" update="true" insert="true"/>
+        <property column="PROJECT_NAME" name="projectName" type="java.lang.String" length="100" required="false" label="项目上级节点名称" update="false" insert="false">
+            SELECT NAME PROJECT_NAME FROM MD_PROJECT WHERE PROJECT_ID=stageScheme.PROJECT_ID 
+        </property>
+		<property column="LOGIC_AREA_NAME" name="logicAreaName" type="java.lang.String" length="65" update="false" insert="false">
+            SELECT NAME LOGIC_AREA_NAME FROM LI_LOGIC_AREA A,MD_PROJECT P WHERE L.LOGIC_AREA_ID=P.LOGIC_AREA_ID 
+				AND P.PROJECT_ID=stageScheme.PROJECT_ID 
+        </property>
+        <property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="false" label="上级节点ID" update="true" insert="true"/>
+        <property column="IS_MASTER_STAGE" name="isMasterStage" type="java.lang.Integer" length="22" required="false" label="是否主分区" update="true" insert="true"/>
+        <property column="LAND_ID" name="landId" type="java.lang.Long" length="22" required="false" label="土地ID" update="true" insert="true"/>
+        <property column="LAND_NAME" name="landName" type="java.lang.String" length="2048" required="false" label="土地名称" update="false" insert="false">
+            SELECT  LAND_NAME FROM MD_LAND WHERE LAND_ID = stageScheme.LAND_ID
+        </property>
+		<property column="MANAGER_ID" name="managerId" type="java.lang.String" length="65" required="false" label="管理者ID" update="true" insert="true"/>
+		<property column="MANAGER_NAME" name="managerName" type="java.lang.String" length="64" required="false" label="管理者名称" update="true" insert="true"/>
+        <property column="AREA" name="area" type="java.math.BigDecimal" length="22" required="false" label="面积" update="true" insert="true"/>
+        <property column="VOLUME_RATE" name="volumeRate" type="java.math.BigDecimal" length="22" required="false" label="容积率" update="true" insert="true"/>
+		<property column="BUSINESS_MAX_SCALE" name="businessMaxScale" type="java.math.BigDecimal" length="22" required="false" label="最大商业占比" update="true" insert="true"/>
+        <property column="ADDRESS" name="address" type="java.lang.String" length="1024" required="false" label="项目地址" update="true" insert="true"/>
+        <property column="REMARK" name="remark" type="java.lang.String" length="2048" required="false" label="" update="true" insert="true"/>
+        <property column="CREATE_BY_ID" name="createById" type="java.lang.String" length="65" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_BY_NAME" name="createByName" type="java.lang.String" length="64" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_DATE" name="createDate" type="java.sql.Date" length="20" required="true" label="创建时间" update="false" insert="true"/>
+        <property column="LAST_MODIFY_BY_ID" name="lastModifyById" type="java.lang.String" length="65" required="false" label="最近修改人" update="true" insert="true"/>
+        <property column="LAST_MODIFY_BY_NAME" name="lastModifyByName" type="java.lang.String" length="64" required="true" label="最后修改人" update="false" insert="true"/>
+        <property column="LAST_MODIFY_DATE" name="lastModifyDate" type="java.sql.Date" length="20" required="false" label="最近修时间" update="true" insert="true"/>
+        <property column="OLD_RESOURCE_ID" name="oldResourceId" type="java.lang.Long" length="22" required="false" label="原资源ID" update="true" insert="true"/>
+		<property column="MD_FULL_NAME" name="mdFullName" type="java.lang.String" length="2048" required="false" label="资源全路名全路径" update="true" insert="true"/>
+        <property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="排序号" update="true" insert="true"/>
+        <property column="IS_DELETE" name="isDelete" type="java.lang.Integer" length="22" required="false" label="是否删除" update="true" insert="true"/>
+        <version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本号" update="true" insert="true"/>
+        <property column="STAGE_LOGO_ID" name="stageLogoId" type="java.lang.Long" length="22" required="false" label="分期标识ID" update="true" insert="true"/>
+        <property column="IS_PUBLIC" name="isPublic" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+
+       
+        <condition column="CODE" name="code" symbol="like"/>
+        <condition column="NAME" name="name" symbol="like"/>
+	    <condition column="PROJECT_ID" name="projectId" symbol="="/>
+        <condition column="SCHEME_ID" name="schemeId" symbol="="/>
+        <condition column="STAGE_ID" name="stageId" symbol="="/>
+	</entity>
+    
+	
+
+	
+    <entity name="buildingScheme" label="楼栋方案表" table="MD_BUILDING_SCHEME" update="true" insert="true">
+        <id column="BUILDING_ID" name="buildingId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+        <property column="NAME" name="name" type="java.lang.String" length="200" required="false" label="名称" update="true" insert="true"/>
+        <property column="CODE" name="code" type="java.lang.String" length="100" required="false" label="编码" update="true" insert="true"/>
+        <property column="RESOURCE_KIND_ID" name="resourceKindId" type="java.lang.String" length="20" required="false" label="资源类型" update="true" insert="true"/>
+        <property column="SCHEME_ID" name="schemeId" type="java.lang.String" length="100" required="false" label="方案编号" update="true" insert="true"/>
+        <property column="STAGE_ID" name="stageId" type="java.lang.Long" length="22" required="false" label="分期ID" update="true" insert="true"/>
+        <property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="项目ID" update="true" insert="true"/>
+        <property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="false" label="上级节点ID" update="true" insert="true"/>
+        <property column="BUSINESS_TYPE_ID" name="businessTypeId" type="java.lang.String" length="2048" required="false" label="资源业态类型ID" update="true" insert="true"/>
+        <property column="BUSINESS_TYPE_NAME" name="businessTypeName" type="java.lang.String" length="2048" required="false" label="资源业态名称" update="false" insert="false">
+            SELECT FULL_NAME BUSINESS_TYPE_NAME FROM MD_RESOURCE_BUSINESS_TYPE WHERE BUSINESS_TYPE_ID = buildingScheme.BUSINESS_TYPE_ID OR BUSINESS_TYPE_ID=(
+				SELECT BUSINESS_TYPE_ID FROM MD_BUILDING WHERE BUILDING_ID=buildingScheme.PARENT_ID 
+			)
+        </property>
+		<property column="IS_OWNSHIP" name="isOwnship" type="java.lang.Integer" length="22" required="false" label="是否自有资源" update="true" insert="true"/>
+        <property column="UNITS" name="units" type="java.lang.String" length="10" required="false" label="单元数" update="true" insert="true"/>
+        <property column="REMARK" name="remark" type="java.lang.String" length="2048" required="false" label="备注" update="true" insert="true"/>
+        <property column="CREATE_BY_ID" name="createById" type="java.lang.String" length="65" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_BY_NAME" name="createByName" type="java.lang.String" length="64" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_DATE" name="createDate" type="java.sql.Date" length="20" required="true" label="创建时间" update="false" insert="true"/>
+        <property column="LAST_MODIFY_BY_ID" name="lastModifyById" type="java.lang.String" length="65" required="false" label="最近修改人" update="true" insert="true"/>
+        <property column="LAST_MODIFY_BY_NAME" name="lastModifyByName" type="java.lang.String" length="64" required="true" label="最后修改人" update="false" insert="true"/>
+        <property column="LAST_MODIFY_DATE" name="lastModifyDate" type="java.sql.Date" length="20" required="false" label="最近修时间" update="true" insert="true"/>
+        <property column="OLD_RESOURCE_ID" name="oldResourceId" type="java.lang.Long" length="22" required="false" label="原资源ID" update="true" insert="true"/>
+		<property column="MD_FULL_NAME" name="mdFullName" type="java.lang.String" length="2048" required="false" label="资源全称" update="true" insert="true"/>
+        <property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="序列" update="true" insert="true"/>
+        <property column="IS_DELETE" name="isDelete" type="java.lang.Integer" length="22" required="false" label="是否允许删除" update="true" insert="true"/>
+        <version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本信息" update="true" insert="true"/>
+        <condition column="PROJECT_ID" name="projectId" symbol="="/>
+        <condition column="CODE" name="code" symbol="like"/>
+        <condition column="NAME" name="name" symbol="like"/>
+        <condition column="SCHEME_ID" name="schemeId" symbol="="/>
+        <condition column="STAGE_ID" name="stageId" symbol="="/>
+        <condition column="BUILDING_ID" name="buildingId" symbol="="/>
+		
+		<sql name="query">
+           <![CDATA[
+			 SELECT * FROM (
+			 	SELECT * FROM MD_BUILDING_SCHEME 
+				UNION ALl
+			 	SELECT * FROM MD_BUILDING_SCHEME_HISTORY 
+			 ) buildingScheme 
+			]]>
+		</sql>
+    </entity>
+
+	<entity name="buildingSchemeHistory" label="楼栋方案历史表" table="MD_BUILDING_SCHEME_HISTORY" update="true" insert="true">
+        <id column="BUILDING_ID" name="buildingId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+        <property column="NAME" name="name" type="java.lang.String" length="200" required="false" label="名称" update="true" insert="true"/>
+        <property column="CODE" name="code" type="java.lang.String" length="100" required="false" label="编码" update="true" insert="true"/>
+        <property column="RESOURCE_KIND_ID" name="resourceKindId" type="java.lang.String" length="20" required="false" label="资源类型" update="true" insert="true"/>
+        <property column="SCHEME_ID" name="schemeId" type="java.lang.String" length="100" required="false" label="方案编号" update="true" insert="true"/>
+        <property column="STAGE_ID" name="stageId" type="java.lang.Long" length="22" required="false" label="分期ID" update="true" insert="true"/>
+        <property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="项目ID" update="true" insert="true"/>
+        <property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="false" label="上级节点ID" update="true" insert="true"/>
+        <property column="BUSINESS_TYPE_ID" name="businessTypeId" type="java.lang.String" length="2048" required="false" label="资源业态类型ID" update="true" insert="true"/>
+        <property column="BUSINESS_TYPE_NAME" name="businessTypeName" type="java.lang.String" length="2048" required="false" label="资源业态名称" update="false" insert="false">
+            SELECT FULL_NAME BUSINESS_TYPE_NAME FROM MD_RESOURCE_BUSINESS_TYPE WHERE BUSINESS_TYPE_ID = buildingScheme.BUSINESS_TYPE_ID OR BUSINESS_TYPE_ID=(
+				SELECT BUSINESS_TYPE_ID FROM MD_BUILDING WHERE BUILDING_ID=buildingScheme.PARENT_ID 
+			)
+        </property>
+ 		<property column="IS_OWNSHIP" name="isOwnship" type="java.lang.Integer" length="22" required="false" label="是否自有资源" update="true" insert="true"/>
+        <property column="UNITS" name="units" type="java.lang.String" length="10" required="false" label="单元数" update="true" insert="true"/>
+        <property column="REMARK" name="remark" type="java.lang.String" length="2048" required="false" label="备注" update="true" insert="true"/>
+        <property column="CREATE_BY_ID" name="createById" type="java.lang.String" length="65" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_BY_NAME" name="createByName" type="java.lang.String" length="64" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_DATE" name="createDate" type="java.sql.Date" length="20" required="true" label="创建时间" update="false" insert="true"/>
+        <property column="LAST_MODIFY_BY_ID" name="lastModifyById" type="java.lang.String" length="65" required="false" label="最近修改人" update="true" insert="true"/>
+        <property column="LAST_MODIFY_BY_NAME" name="lastModifyByName" type="java.lang.String" length="64" required="true" label="最后修改人" update="false" insert="true"/>
+        <property column="LAST_MODIFY_DATE" name="lastModifyDate" type="java.sql.Date" length="20" required="false" label="最近修时间" update="true" insert="true"/>
+        <property column="OLD_RESOURCE_ID" name="oldResourceId" type="java.lang.Long" length="22" required="false" label="原资源ID" update="true" insert="true"/>
+		<property column="MD_FULL_NAME" name="mdFullName" type="java.lang.String" length="2048" required="false" label="资源全称" update="true" insert="true"/>
+        <property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="序列" update="true" insert="true"/>
+        <property column="IS_DELETE" name="isDelete" type="java.lang.Integer" length="22" required="false" label="是否允许删除" update="true" insert="true"/>
+        <version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本信息" update="true" insert="true"/>
+        <condition column="PROJECT_ID" name="projectId" symbol="="/>
+        <condition column="CODE" name="code" symbol="like"/>
+        <condition column="NAME" name="name" symbol="like"/>
+        <condition column="SCHEME_ID" name="schemeId" symbol="="/>
+        <condition column="STAGE_ID" name="stageId" symbol="="/>
+        <condition column="BUILDING_ID" name="buildingId" symbol="="/>
+	</entity>
+  
+    <entity name="roomScheme" label="房间方案表" table="MD_ROOM_SCHEME" update="true" insert="true">
+        <id column="ROOM_ID" name="roomId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+        <property column="ID" name="id" type="java.lang.Long" length="22" required="false" label="" update="false" insert="false">
+            select ROOM_ID ID from MD_ROOM_SCHEME where ROOM_ID=roomScheme.ROOM_ID
+        </property>
+        <property column="NAME" name="name" type="java.lang.String" length="200" required="false" label="名称" update="true" insert="true"/>
+        <property column="CODE" name="code" type="java.lang.String" length="100" required="false" label="编码" update="true" insert="true"/>
+        <property column="ROOM" name="room" type="java.lang.String" length="100" required="false" label="房号" update="true" insert="true"/>
+        <property column="ROOM_MODEL" name="roomModel" type="java.lang.String" length="100" required="false" label="户型结构" update="true" insert="true"/>
+        <property column="ROOM_CODE" name="roomCode" type="java.lang.String" length="100" required="false" label="户型编号" update="true" insert="true"/>
+        <property column="IS_SHOW_ROOM" name="isShowRoom" type="java.lang.Integer" length="22" required="false" label="是否为样板间" update="true" insert="true"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" length="22" required="false" label="状态" update="true" insert="true"/>
+        <property column="RESOURCE_KIND_ID" name="resourceKindId" type="java.lang.String" length="20" required="false" label="资源类型" update="true" insert="true"/>
+        <property column="SCHEME_ID" name="schemeId" type="java.lang.String" length="100" required="false" label="方案编号" update="true" insert="true"/>
+        <property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="项目ID" update="true" insert="true"/>
+        <property column="STAGE_ID" name="stageId" type="java.lang.Long" length="22" required="false" label="分期ID" update="true" insert="true"/>
+        <property column="BUILDING_ID" name="buildingId" type="java.lang.Long" length="22" required="false" label="楼栋ID" update="true" insert="true"/>
+        <property column="FLOOR_ID" name="floorId" type="java.lang.String" length="100" required="false" label="楼层ID" update="true" insert="true"/>
+        <property column="BUILDING_UNIT" name="buildingUnit" type="java.lang.Integer" length="2" required="false" label="楼栋单元" update="true" insert="true"/>
+		<property column="BUSINESS_TYPE_NAME" name="businessTypeName" type="java.lang.String" length="2048" required="false" label="楼栋资源业态名称" update="false" insert="false">
+            SELECT FULL_NAME BUSINESS_TYPE_NAME FROM MD_RESOURCE_BUSINESS_TYPE WHERE BUSINESS_TYPE_ID = (
+				SELECT BUSINESS_TYPE_ID FROM MD_BUILDING WHERE BUILDING_ID=roomScheme.BUILDING_ID  
+			)
+        </property>
+        <property column="MANAGER_TYPE" name="managerType" type="java.lang.Integer" length="22" required="false" label="管理者类型" update="true" insert="true"/>
+        <property column="STRUCTURE" name="structure" type="java.lang.String" length="200" required="false" label="结构" update="true" insert="true"/>
+        <property column="ORIENTATIONS" name="orientations" type="java.lang.String" length="200" required="false" label="朝向" update="true" insert="true"/>
+        <property column="ASSET_PROPERTY" name="assetProperty" type="java.math.BigDecimal" length="22" required="false" label="资源属性" update="true" insert="true"/>
+        <property column="SIGHT" name="sight" type="java.lang.String" length="30" required="false" label="景观" update="true" insert="true"/>
+        <property column="FLOOR_HEIGHT" name="floorHeight" type="java.math.BigDecimal" length="22" required="false" label="层高" update="true" insert="true"/>
+        <property column="HALL_WIDTH" name="hallWidth" type="java.math.BigDecimal" length="22" required="false" label="开间" update="true" insert="true"/>
+        <property column="OLD_RESOURCE_ID" name="oldResourceId" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+        <property column="CREATE_BY_ID" name="createById" type="java.lang.String" length="65" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_BY_NAME" name="createByName" type="java.lang.String" length="64" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_DATE" name="createDate" type="java.sql.Date" length="20" required="true" label="创建时间" update="false" insert="true"/>
+        <property column="LAST_MODIFY_BY_ID" name="lastModifyById" type="java.lang.String" length="65" required="false" label="最近修改人" update="true" insert="true"/>
+        <property column="LAST_MODIFY_BY_NAME" name="lastModifyByName" type="java.lang.String" length="64" required="true" label="最后修改人" update="false" insert="true"/>
+        <property column="LAST_MODIFY_DATE" name="lastModifyDate" type="java.sql.Date" length="20" required="false" label="最近修时间" update="true" insert="true"/>
+        <property column="REMARK" name="remark" type="java.lang.String" length="2048" required="false" label="备注" update="true" insert="true"/>
+		<property column="MD_FULL_NAME" name="mdFullName" type="java.lang.String" length="2048" required="false" label="全名称" update="true" insert="true"/>
+        <property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="序列" update="true" insert="true"/>
+        <property column="IS_DELETE" name="isDelete" type="java.lang.Integer" length="22" required="false" label="是否删除" update="true" insert="true"/>
+        <version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本信息" update="true" insert="true"/>
+        <condition column="PROJECT_ID" name="projectId" symbol="="/>
+        <condition column="FLOOR_ID" name="floorId" symbol="="/>
+        <condition column="CODE" name="code" symbol="like"/>
+        <condition column="NAME" name="name" symbol="like"/>
+        <condition column="SCHEME_ID" name="schemeId" symbol="="/>
+        <condition column="ROOM_ID" name="roomId" symbol="="/>
+		
+		<sql name="query">
+           <![CDATA[
+			 SELECT * FROM (
+			 	SELECT * FROM MD_ROOM_SCHEME 
+				UNION ALl
+			 	SELECT * FROM MD_ROOM_SCHEME_HISTORY  
+			 ) roomScheme 
+			]]>
+		</sql>
+    </entity>
+
+	<entity name="roomSchemeHistory" label="房间方案历史表" table="MD_ROOM_SCHEME_HISTORY" update="true" insert="true">
+        <id column="ROOM_ID" name="roomId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+        <property column="NAME" name="name" type="java.lang.String" length="200" required="false" label="名称" update="true" insert="true"/>
+        <property column="CODE" name="code" type="java.lang.String" length="100" required="false" label="编码" update="true" insert="true"/>
+        <property column="ROOM" name="room" type="java.lang.String" length="100" required="false" label="房号" update="true" insert="true"/>
+        <property column="ROOM_MODEL" name="roomModel" type="java.lang.String" length="100" required="false" label="户型结构" update="true" insert="true"/>
+        <property column="ROOM_CODE" name="roomCode" type="java.lang.String" length="100" required="false" label="户型编号" update="true" insert="true"/>
+        <property column="IS_SHOW_ROOM" name="isShowRoom" type="java.lang.Integer" length="22" required="false" label="是否为样板间" update="true" insert="true"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" length="22" required="false" label="状态" update="true" insert="true"/>
+        <property column="RESOURCE_KIND_ID" name="resourceKindId" type="java.lang.String" length="20" required="false" label="资源类型" update="true" insert="true"/>
+        <property column="SCHEME_ID" name="schemeId" type="java.lang.String" length="100" required="false" label="方案编号" update="true" insert="true"/>
+        <property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="项目ID" update="true" insert="true"/>
+        <property column="STAGE_ID" name="stageId" type="java.lang.Long" length="22" required="false" label="分期ID" update="true" insert="true"/>
+        <property column="BUILDING_ID" name="buildingId" type="java.lang.Long" length="22" required="false" label="楼栋ID" update="true" insert="true"/>
+        <property column="FLOOR_ID" name="floorId" type="java.lang.String" length="100" required="false" label="楼层ID" update="true" insert="true"/>
+        <property column="BUILDING_UNIT" name="buildingUnit" type="java.lang.Integer" length="2" required="false" label="楼栋单元" update="true" insert="true"/>
+		<property column="BUSINESS_TYPE_NAME" name="businessTypeName" type="java.lang.String" length="2048" required="false" label="楼栋资源业态名称" update="false" insert="false">
+            SELECT FULL_NAME BUSINESS_TYPE_NAME FROM MD_RESOURCE_BUSINESS_TYPE WHERE BUSINESS_TYPE_ID = (
+				SELECT BUSINESS_TYPE_ID FROM MD_BUILDING WHERE BUILDING_ID=roomScheme.BUILDING_ID  
+			)
+        </property>
+        <property column="MANAGER_TYPE" name="managerType" type="java.lang.Integer" length="22" required="false" label="管理者类型" update="true" insert="true"/>
+        <property column="STRUCTURE" name="structure" type="java.lang.String" length="200" required="false" label="结构" update="true" insert="true"/>
+        <property column="ORIENTATIONS" name="orientations" type="java.lang.String" length="200" required="false" label="朝向" update="true" insert="true"/>
+        <property column="ASSET_PROPERTY" name="assetProperty" type="java.math.BigDecimal" length="22" required="false" label="资源属性" update="true" insert="true"/>
+        <property column="SIGHT" name="sight" type="java.lang.String" length="30" required="false" label="景观" update="true" insert="true"/>
+        <property column="FLOOR_HEIGHT" name="floorHeight" type="java.math.BigDecimal" length="22" required="false" label="层高" update="true" insert="true"/>
+        <property column="HALL_WIDTH" name="hallWidth" type="java.math.BigDecimal" length="22" required="false" label="开间" update="true" insert="true"/>
+        <property column="OLD_RESOURCE_ID" name="oldResourceId" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+        <property column="CREATE_BY_ID" name="createById" type="java.lang.String" length="65" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_BY_NAME" name="createByName" type="java.lang.String" length="64" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_DATE" name="createDate" type="java.sql.Date" length="20" required="true" label="创建时间" update="false" insert="true"/>
+        <property column="LAST_MODIFY_BY_ID" name="lastModifyById" type="java.lang.String" length="65" required="false" label="最近修改人" update="true" insert="true"/>
+        <property column="LAST_MODIFY_BY_NAME" name="lastModifyByName" type="java.lang.String" length="64" required="true" label="最后修改人" update="false" insert="true"/>
+        <property column="LAST_MODIFY_DATE" name="lastModifyDate" type="java.sql.Date" length="20" required="false" label="最近修时间" update="true" insert="true"/>
+        <property column="REMARK" name="remark" type="java.lang.String" length="2048" required="false" label="备注" update="true" insert="true"/>
+		<property column="MD_FULL_NAME" name="mdFullName" type="java.lang.String" length="2048" required="false" label="全名称" update="true" insert="true"/>
+        <property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="序列" update="true" insert="true"/>
+        <property column="IS_DELETE" name="isDelete" type="java.lang.Integer" length="22" required="false" label="是否删除" update="true" insert="true"/>
+        <version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="版本信息" update="true" insert="true"/>
+        <condition column="PROJECT_ID" name="projectId" symbol="="/>
+        <condition column="FLOOR_ID" name="floorId" symbol="="/>
+        <condition column="CODE" name="code" symbol="like"/>
+        <condition column="NAME" name="name" symbol="like"/>
+        <condition column="SCHEME_ID" name="schemeId" symbol="="/>
+        <condition column="ROOM_ID" name="roomId" symbol="="/>
+ 	</entity>
+
+    <entity name="apartmentScheme" label="户型方案表" table="MD_APARTMENT_SCHEME" update="true" insert="true">
+        <id column="APARTMENT_ID" name="apartmentId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+        <property column="SCHEME_ID" name="schemeId" type="java.lang.String" length="100" required="false" label="方案ID" update="true" insert="true"/>
+        <property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="项目ID" update="true" insert="true"/>
+        <property column="STAGE_ID" name="stageId" type="java.lang.Long" length="22" required="true" label="分期ID" update="true" insert="true"/>
+        <property column="STAGE_NAME" name="stageName" type="java.lang.String" length="100" required="false" label="分期名称" update="false" insert="false">
+            SELECT NAME STAGE_NAME FROM MD_STAGE_SCHEME WHERE STAGE_ID=apartmentScheme.STAGE_ID 
+        </property>
+        <property column="ROOM_CODE" name="roomCode" type="java.lang.String" length="20" required="false" label="户型编码" update="true" insert="true"/>
+        <property column="ROOM_MODEL" name="roomModel" type="java.lang.String" length="100" required="false" label="名称" update="true" insert="true"/>
+        <property column="CONSTRUCTION_AREA" name="constructionArea" type="java.math.BigDecimal" length="22" required="false" label="建筑面积" update="true" insert="true"/>
+        <property column="INSIDE_AREA" name="insideArea" type="java.math.BigDecimal" length="22" required="false" label="套内面积" update="true" insert="true"/>
+        <property column="FREE_AREA" name="freeArea" type="java.math.BigDecimal" length="22" required="false" label="赠送面积" update="true" insert="true"/>
+        <property column="CONSTRUCTION_PRICE" name="constructionPrice" type="java.math.BigDecimal" length="22" required="false" label="建筑单价" update="true" insert="true"/>
+        <property column="INSIDE_PRICE" name="insidePrice" type="java.math.BigDecimal" length="22" required="false" label="套内单价" update="true" insert="true"/>
+        <property column="COUNT" name="count" type="java.math.BigDecimal" length="22" required="false" label="数量" update="true" insert="true"/>
+        <property column="REMARK" name="remark" type="java.lang.String" length="1024" required="false" label="备注" update="true" insert="true"/>
+        <property column="CREATE_BY_ID" name="createById" type="java.lang.String" length="65" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_BY_NAME" name="createByName" type="java.lang.String" length="64" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_DATE" name="createDate" type="java.sql.Date" length="20" required="true" label="创建时间" update="false" insert="true"/>
+        <property column="LAST_MODIFY_BY_ID" name="lastModifyById" type="java.lang.String" length="65" required="false" label="最近修改人" update="true" insert="true"/>
+        <property column="LAST_MODIFY_BY_NAME" name="lastModifyByName" type="java.lang.String" length="64" required="true" label="最后修改人" update="false" insert="true"/>
+        <property column="LAST_MODIFY_DATE" name="lastModifyDate" type="java.sql.Date" length="20" required="false" label="最近修时间" update="true" insert="true"/>
+        <property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+        <property column="IS_DELETE" name="isDelete" type="java.lang.Integer" length="22" required="false" label="是否删除" update="true" insert="true"/>
+        <version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+        <condition column="PROJECT_ID" name="projectId" symbol="="/>
+        <condition column="STAGE_ID" name="stageId" symbol="="/>
+        <condition column="ROOM_CODE" name="roomCode" symbol="like"/>
+        <condition column="ROOM_MODEL" name="roomModel" symbol="like"/>
+        <condition column="SCHEME_ID" name="schemeId" symbol="="/>
+        <condition column="APARTMENT_ID" name="apartmentId" symbol="="/>
+		<sql name="query">
+           <![CDATA[
+			 SELECT * FROM (
+			 	SELECT S.Name STAGE_NAME,A.* FROM MD_APARTMENT_SCHEME A,MD_STAGE_SCHEME S WHERE A.STAGE_ID=S.STAGE_ID 
+				UNION ALl
+			 	SELECT S.Name STAGE_NAME,A.*  FROM MD_APARTMENT_SCHEME_HISTORY A,MD_STAGE_SCHEME_HISTORY S WHERE A.STAGE_ID=S.STAGE_ID 
+			 ) apartmentScheme 
+			 WHERE 1=1 
+			]]>
+		</sql>
+    </entity>
+
+	<entity name="apartmentSchemeHistory" label="户型方案历史表" table="MD_APARTMENT_SCHEME_HISTORY" update="true" insert="true">
+		<id column="APARTMENT_ID" name="apartmentId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+        <property column="SCHEME_ID" name="schemeId" type="java.lang.String" length="100" required="false" label="方案ID" update="true" insert="true"/>
+        <property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="项目ID" update="true" insert="true"/>
+        <property column="STAGE_ID" name="stageId" type="java.lang.Long" length="22" required="false" label="分期ID" update="true" insert="true"/>
+        <property column="STAGE_NAME" name="stageName" type="java.lang.String" length="100" required="false" label="分期名称" update="false" insert="false">
+            SELECT NAME STAGE_NAME FROM MD_STAGE_SCHEME_HISTORY WHERE STAGE_ID=apartmentSchemeHistory.STAGE_ID 
+        </property>
+        <property column="ROOM_CODE" name="roomCode" type="java.lang.String" length="20" required="false" label="户型编码" update="true" insert="true"/>
+        <property column="ROOM_MODEL" name="roomModel" type="java.lang.String" length="100" required="false" label="名称" update="true" insert="true"/>
+        <property column="CONSTRUCTION_AREA" name="constructionArea" type="java.math.BigDecimal" length="22" required="false" label="建筑面积" update="true" insert="true"/>
+        <property column="INSIDE_AREA" name="insideArea" type="java.math.BigDecimal" length="22" required="false" label="套内面积" update="true" insert="true"/>
+        <property column="FREE_AREA" name="freeArea" type="java.math.BigDecimal" length="22" required="false" label="赠送面积" update="true" insert="true"/>
+        <property column="CONSTRUCTION_PRICE" name="constructionPrice" type="java.math.BigDecimal" length="22" required="false" label="建筑单价" update="true" insert="true"/>
+        <property column="INSIDE_PRICE" name="insidePrice" type="java.math.BigDecimal" length="22" required="false" label="套内单价" update="true" insert="true"/>
+        <property column="COUNT" name="count" type="java.math.BigDecimal" length="22" required="false" label="数量" update="true" insert="true"/>
+        <property column="REMARK" name="remark" type="java.lang.String" length="1024" required="false" label="备注" update="true" insert="true"/>
+        <property column="CREATE_BY_ID" name="createById" type="java.lang.String" length="65" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_BY_NAME" name="createByName" type="java.lang.String" length="64" required="true" label="创建人" update="false" insert="true"/>
+        <property column="CREATE_DATE" name="createDate" type="java.sql.Date" length="20" required="true" label="创建时间" update="false" insert="true"/>
+        <property column="LAST_MODIFY_BY_ID" name="lastModifyById" type="java.lang.String" length="65" required="false" label="最近修改人" update="true" insert="true"/>
+        <property column="LAST_MODIFY_BY_NAME" name="lastModifyByName" type="java.lang.String" length="64" required="true" label="最后修改人" update="false" insert="true"/>
+        <property column="LAST_MODIFY_DATE" name="lastModifyDate" type="java.sql.Date" length="20" required="false" label="最近修时间" update="true" insert="true"/>
+ 		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+		<property column="IS_DELETE" name="isDelete" type="java.lang.Integer" length="22" required="false" label="" update="true" insert="true"/>
+        <version column="VERSION" name="version" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+        <condition column="PROJECT_ID" name="projectId" symbol="="/>
+        <condition column="STAGE_ID" name="stageId" symbol="="/>
+        <condition column="ROOM_CODE" name="roomCode" symbol="like"/>
+        <condition column="ROOM_MODEL" name="roomModel" symbol="like"/>
+        <condition column="SCHEME_ID" name="schemeId" symbol="="/>
+        <condition column="APARTMENT_ID" name="apartmentId" symbol="="/>
+	</entity>
+	
+	<entity name="vProjectScheme" label="项目规划视图" table="V_MD_PROJECT_SCHEME" update="false" insert="false">
+		<id column="ID" name="id" type="java.lang.String" length="200" required="false" label="名称" update="true" insert="true"/>
+		<property column="NAME" name="name" type="java.lang.String" length="200" required="false" label="名称" update="true" insert="true"/>
+		<property column="CODE" name="code" type="java.lang.String" length="100" required="false" label="编码" update="true" insert="true"/>
+		<property column="IS_SCHEME" name="isScheme" type="java.lang.Integer" length="10" required="false" label="" update="true" insert="true"/>
+		<property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="false" label="父节点" update="true" insert="true"/>
+		<property column="IS_HISTORY" name="isHistory" type="java.lang.Integer" length="10" required="false" label="是否历史" update="true" insert="true"/>
+		<property column="SCHEME_PHASE" name="schemePhase" type="java.lang.String" length="16" required="false" label="规划阶段" update="true" insert="true"/>
+		<property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" length="10" required="false" label="状态" update="true" insert="true"/>
+		<property column="VALID_STATUS" name="validsStatus" type="java.lang.Integer" length="10" required="false" label="状态" update="true" insert="true"/>
+        <property column="CREATE_BY_NAME" name="createByName" type="java.lang.String" length="64" required="false" label="" update="true" insert="true"/>
+        <property column="CREATE_DATE" name="createDate" type="java.util.Date" length="7" required="false" label="" update="true" insert="true"/>
+		<property column="Has_Children" name="hasChildren" type="java.lang.Integer" update="false" insert="false">
+			SELECT count(*) hasChildren FROM V_MD_PROJECT_SCHEME  WHERE PARENT_ID=vProjectScheme.ID 
+		</property>
+		
+        <property column="REMARK" name="remark" type="java.lang.String" length="2048" required="false" label="" update="true" insert="true"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="" update="true" insert="true"/>
+		<condition  column="ID" name="id" symbol="="/>
+        <condition column="CODE" name="code" symbol="like"/>
+        <condition column="NAME" name="name" symbol="like"/>
+		<condition  column="PARENT_ID" name="parentId" symbol="="/>
+		<condition  column="PROJECT_ID" name="projectId" symbol="="/>
+		<condition 	column="SCHEME_ID" name="schemeId" symbol="=">
+				AND (SCHEME_ID = :schemeId OR SCHEME_ID IS NULL) 
+		</condition>
+	</entity>
+	
+	<entity name="vProjectResourceScheme" label="项目资源" table="V_MD_PROJECT_RESOURCE_SCHEME" update="false" insert="false">
+		<id column="ID" name="id" type="java.lang.String" length="200" required="false" label="名称" update="true" insert="true"/>
+		<property column="NAME" name="name" type="java.lang.String" length="200" required="false" label="名称" update="true" insert="true"/>
+		<property column="CODE" name="code" type="java.lang.String" length="100" required="false" label="编码" update="true" insert="true"/>
+		<property column="RESOURCE_KIND_ID" name="resourceKindId" type="java.lang.String" length="20" required="false" label="" update="true" insert="true"/>
+		<property column="PARENT_ID" name="parentId" type="java.lang.Long" length="22" required="false" label="父节点" update="true" insert="true"/>
+		<property column="Has_Children" name="hasChildren" type="java.lang.Integer" update="false" insert="false">
+			SELECT count(*) hasChildren FROM V_MD_PROJECT_RESOURCE_SCHEME  WHERE PARENT_ID=vProjectResourceScheme.ID 
+		</property>
+		<property column="CM_RESOURCE_BT_NAME" name="cmResourceBtName" type="java.lang.String" update="false" insert="false">
+			   pkg_md.f_get_cm_resource_bt_names(vProjectResourceScheme.ID)
+		</property>
+		<property column="PROJECT_ID" name="projectId" type="java.lang.Long" length="22" required="false" label="项目编号" update="true" insert="true"/>
+		<property column="STAGE_ID" name="stageId" type="java.lang.Long" length="22" required="false" label="分期编号" update="true" insert="true"/>
+		<property column="SCHEME_ID" name="schemeId" type="java.lang.Long" length="22" required="false" label="规划ID" update="true" insert="true"/>
+		<property column="BUILDING_ID" name="buildingId" type="java.lang.Long" length="22" required="false" label="楼栋ID" update="true" insert="true"/>
+		<property column="FLOOR_ID" name="floorId" type="java.lang.Long" length="22" required="false" label="楼层ID" update="true" insert="true"/>
+		<property column="IS_HISTORY" name="isHistory" type="java.lang.Integer" length="10" required="false" label="是否历史" update="true" insert="true"/>
+        <property column="CREATE_BY_NAME" name="createByName" type="java.lang.String" length="64" required="false" label="创建人" update="true" insert="true"/>
+        <property column="CREATE_DATE" name="createDate" type="java.util.Date" length="7" required="false" label="创建时间" update="true" insert="true"/>
+		<property column="MD_FULL_NAME" name="mdFullName" type="java.lang.String" length="2048" required="false" label="全称" update="true" insert="true"/>
+        <property column="REMARK" name="remark" type="java.lang.String" length="2048" required="false" label="备注" update="true" insert="true"/>
+		<property column="SEQUENCE" name="sequence" type="java.lang.Long" length="22" required="false" label="序列" update="true" insert="true"/>
+		<condition  column="ID" name="id" symbol="="/>
+		<condition  column="NAME" name="name" symbol="like"/>
+		<condition  column="CODE" name="code" symbol="like"/>
+		<condition  column="PARENT_ID" name="parentId" symbol="="/>
+		<condition  column="PROJECT_ID" name="projectId" symbol="="/>
+		<condition 	column="SCHEME_ID" name="schemeId" symbol="=">
+				AND (SCHEME_ID = :schemeId OR SCHEME_ID IS NULL) 
+		</condition>
+	</entity>
+
+	<entity name="updateSchemeResourceFullName" label="更新规划资源全路径" table="" update="false" insert="false">
+        <sql name="updateSchemeStageFullName">
+            <![CDATA[
+				UPDATE MD_STAGE_SCHEME T SET MD_FULL_NAME=:newFullName||SUBSTR(MD_FULL_NAME,:startIndex,LENGTH(MD_FULL_NAME)) 
+					WHERE MD_FULL_NAME LIKE :oldFullName||'%' 
+			]]>
+		</sql>
+		
+		<sql name="updateSchemeBuildingFullName">
+            <![CDATA[
+				UPDATE MD_BUILDING_SCHEME T SET MD_FULL_NAME=:newFullName||SUBSTR(MD_FULL_NAME,:startIndex,LENGTH(MD_FULL_NAME)) 
+					WHERE MD_FULL_NAME LIKE :oldFullName||'%'
+			]]>
+		</sql>
+		
+		<sql name="updateSchemeRoomFullName">
+            <![CDATA[
+				UPDATE MD_ROOM_SCHEME T SET MD_FULL_NAME=:newFullName||SUBSTR(MD_FULL_NAME,:startIndex,LENGTH(MD_FULL_NAME)) 
+					WHERE MD_FULL_NAME LIKE :oldFullName||'%'
+			]]>
+		</sql>
+		<condition  column="PROJECT_ID" name="projectId" type="java.lang.Long" symbol="=" alias="T"/>
+		<condition  column="STAGE_ID" name="stageId" type="java.lang.Long" symbol="=" alias="T"/>
+		<condition  column="BUILDING_ID" name="buildingId" type="java.lang.Long" symbol="=" alias="T"/>
+		<condition  column="FLOOR_ID" name="floorId" type="java.lang.Long" symbol="=" alias="T"/>
+		<condition  column="ROOM_ID" name="roomId" type="java.lang.Long" symbol="=" alias="T"/>
+	</entity>
+</domain>

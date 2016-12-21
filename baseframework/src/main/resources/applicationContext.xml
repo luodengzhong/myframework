@@ -7,12 +7,11 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
     <!-- <context:property-placeholder location="file:E:/workspace3/home/brc/etc/application.properties"/> -->   
-    <context:property-placeholder location="file:/home/brc/etc/application.properties"/>
+    <context:property-placeholder location="file:/home/framework/etc/application.properties"/>
      
-	<util:properties id="email" location="file:/home/brc/etc/synEmailKey.properties" />
-	<util:properties id="fineReport" location="file:/home/brc/etc/fine-report.properties" />
-	
-	
+	<!--<util:properties id="email" location="file:/home/brc/etc/synEmailKey.properties" />
+	<util:properties id="fineReport" location="file:/home/brc/etc/fine-report.properties" />-->
+
 	<import resource="classpath:config/spring/spring-cxf.xml" />
 	<!-- 使用 annotation -->
 	<context:annotation-config />

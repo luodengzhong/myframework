@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+	
+	<entity name="serviceUtil" label="系统附件表" table="SYS_SERVICEUTIL" update="false" insert="false">
+		<sql name="loadAttachmentByBizCodeAndBizId">select t.* from sys_attachment t where t.biz_code=? and t.biz_id=? order by t.sequence,t.id asc</sql>
+		<sql name="loadAttachmentByAttachmentCodeAndBizId">select t.* from sys_attachment t where t.biz_code=? and t.attachment_code=? and t.biz_id=? order by t.id asc</sql>
+		<sql name="deleteAttachmentById">delete from sys_attachment t where t.id=?</sql>
+		<sql name="updateBizCode">update sys_attachment t set t.biz_code=? where t.id=?</sql>
+		<sql name="countAttachment">select count(0) from sys_attachment t where t.biz_code=?  and t.biz_id=?</sql>
+		<sql name="countAttachmentByCode">select count(0) from sys_attachment t where t.biz_code=? and t.attachment_code=? and t.biz_id=?</sql>
+		<sql name="queryTaskInfoByProcInstId">
+	      select t.id_ task_id,
+			       proc_inst_id_ proc_inst_id,
+			       te.kind_id_ task_kind_id,
+			       (select p.key_ from act_re_procdef p where p.id_ = t.proc_def_id_) process_definition_key,
+			       te.business_key_ as biz_Id,
+			       t.task_def_key_ proc_unit_id
+			  from act_ru_task t, act_ru_task_extension te
+			 where t.id_ = te.id_
+			   and t.proc_inst_id_ = ?
+		</sql>
+		<sql name="getExpTempletByCode">select t.id,t.table_name from sys_exp_templet t where t.templet_code=?</sql>
+		<sql name="deleteExpLogByTemplet">delete from sys_imp_exp_log t where t.serial_id=? and t.templ_id=?</sql>
+	</entity>
+	
+</domain>

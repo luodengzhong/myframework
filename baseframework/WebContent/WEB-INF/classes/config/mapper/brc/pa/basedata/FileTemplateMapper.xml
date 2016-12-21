@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brc.pa.basedata.mapper.FileTemplateMapper">
+	<insert id="insert" parameterType="fileTemplate">
+		INSERT INTO PA_FILE_TEMPLATE(FILE_TEMPLATE_ID, NODE_KIND_ID, PARENT_ID, TEMPLATE_KIND_ID, TITLE, STATUS, BIZ_CODE,
+		DESCRIPTION, FULL_ID, SEQUENCE, VERSION)
+		VALUES(PA_ID_SEQ.nextval,${nodeKindId}, ${parentId}, ${templateKindId}, #{title, jdbcType=VARCHAR}, ${status},
+		#{bizCode, jdbcType=VARCHAR}, #{description,
+		jdbcType=VARCHAR}, #{fullId, jdbcType=VARCHAR}||'/'||PA_ID_SEQ.nextval, ${sequence}, PA_VERSION_SEQ.nextval)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO PA_FILE_TEMPLATE(FILE_TEMPLATE_ID, NODE_KIND_ID, PARENT_ID, TEMPLATE_KIND_ID, TITLE, STATUS, BIZ_CODE, DESCRIPTION, FULL_ID, SEQUENCE, VERSION)
+		SELECT PA_ID_SEQ.nextval,t.*,PA_VERSION_SEQ.nextval FROM (
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			SELECT ${item.nodeKindId} as NODE_KIND_ID, ${item.parentId} as PARENT_ID,
+			${item.templateKindId} as TEMPLATE_KIND_ID, #{item.title, jdbcType=VARCHAR} as TITLE,
+			${item.status} as STATUS, #{item.bizCode, jdbcType=VARCHAR} as BIZ_CODE,
+			#{item.description, jdbcType=VARCHAR} as DESCRIPTION, #{item.fullId,
+			jdbcType=VARCHAR} as FULL_ID, ${item.sequence} as SEQUENCE FROM DUAL
+		</foreach>
+		) t
+	</insert>
+
+
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM PA_FILE_TEMPLATE WHERE FILE_TEMPLATE_ID = #{fileTemplateId}
+	</delete>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		DELETE FROM PA_FILE_TEMPLATE WHERE FILE_TEMPLATE_ID IN
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<update id="update" parameterType="fileTemplate">
+		UPDATE PA_FILE_TEMPLATE
+		<set>
+			<if test="nodeKindId != null">
+				NODE_KIND_ID=${nodeKindId},
+			</if>
+			<if test="parentId != null">
+				PARENT_ID=${parentId},
+			</if>
+			<if test="templateKindId != null">
+				TEMPLATE_KIND_ID=${templateKindId},
+			</if>
+			<if test="title != null">
+				TITLE=#{title, jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS=${status},
+			</if>
+			<if test="bizCode != null">
+				BIZ_CODE=#{bizCode, jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				DESCRIPTION=#{description, jdbcType=VARCHAR},
+			</if>
+			<if test="fullId != null">
+				FULL_ID=#{fullId, jdbcType=VARCHAR},
+			</if>
+			<if test="sequence != null">
+				SEQUENCE=${sequence},
+			</if>
+		</set>
+		WHERE FILE_TEMPLATE_ID = #{fileTemplateId}
+	</update>
+
+	<update id="updateSequence" parameterType="fileTemplate">
+		UPDATE PA_FILE_TEMPLATE SET SEQUENCE = #{sequence}
+		WHERE FILE_TEMPLATE_ID = #{fileTemplateId}
+	</update>
+
+	<update id="move" parameterType="fileTemplate">
+		update PA_FILE_TEMPLATE set PARENT_ID = ${parentId},FULL_ID = #{fullId} where FILE_TEMPLATE_ID=${fileTemplateId}
+	</update>
+
+	<select id="load" parameterType="java.lang.Long" resultType="fileTemplate">
+		SELECT FILE_TEMPLATE_ID as fileTemplateId, NODE_KIND_ID as nodeKindId, PARENT_ID as
+		parentId, TEMPLATE_KIND_ID as templateKindId, TITLE as title, STATUS as status,
+		BIZ_CODE as bizCode, DESCRIPTION as description, FULL_ID as fullId, SEQUENCE as
+		sequence, VERSION as version FROM PA_FILE_TEMPLATE WHERE
+		FILE_TEMPLATE_ID=#{fileTemplateId}
+	</select>
+
+	<select id="queryAll" parameterType="java.util.Map" resultType="fileTemplate">
+		SELECT FILE_TEMPLATE_ID as fileTemplateId, NODE_KIND_ID as nodeKindId, PARENT_ID as parentId, TEMPLATE_KIND_ID as templateKindId, TITLE as title, STATUS as
+		status, BIZ_CODE as bizCode, DESCRIPTION as description, FULL_ID as fullId, SEQUENCE as sequence, VERSION as version FROM PA_FILE_TEMPLATE
+		<where>
+			<if test="nodeKindId != null and nodeKindId > -1 ">
+				AND NODE_KIND_ID = #{nodeKindId}
+			</if>
+			<if test="parentId != null and parentId > -1 ">
+				AND PARENT_ID = #{parentId}
+			</if>
+			<if test="templateKindId != null and templateKindId > -1 ">
+				AND TEMPLATE_KIND_ID = #{templateKindId}
+			</if>
+			<if test="title != null">
+				AND TITLE like concat(concat('%', #{title}),'%')
+			</if>
+			<if test="fullId != null">
+				AND FULL_ID like concat(#{fullId},'%')
+			</if>
+			<if test="templateKindId != null and templateKindId > 0 ">
+				AND TEMPLATE_KIND_ID = #{templateKindId}
+			</if>
+		</where>
+		ORDER BY SEQUENCE ASC
+	</select>
+
+	<select id="slicedQuery" parameterType="java.util.Map" resultType="fileTemplate">
+		<!-- SELECT FILE_TEMPLATE_ID as fileTemplateId, NODE_KIND_ID as nodeKindId, PARENT_ID as parentId, TEMPLATE_KIND_ID as templateKindId, TITLE as title, STATUS as 
+			status, BIZ_CODE as bizCode, DESCRIPTION as description, FULL_ID as fullId, SEQUENCE as sequence, VERSION as version FROM PA_FILE_TEMPLATE ORDER BY ${sortname} ${sortorder} 
+			OFFSET (${page}-1)*${pagesize} ROWS FETCH NEXT ${pagesize} ROWS ONLY -->
+		SELECT FILE_TEMPLATE_ID as fileTemplateId, NODE_KIND_ID as nodeKindId, PARENT_ID as parentId, TEMPLATE_KIND_ID as templateKindId, TITLE as title, STATUS as
+		status, BIZ_CODE as bizCode, DESCRIPTION as description, FULL_ID as fullId, SEQUENCE as sequence, VERSION as version FROM (select t.FILE_TEMPLATE_ID, t.NODE_KIND_ID, t.PARENT_ID, t.TEMPLATE_KIND_ID, t.TITLE, t.STATUS, t.BIZ_CODE, t.DESCRIPTION, t.FULL_ID, t.SEQUENCE, t.VERSION,ROWNUM RN FROM
+		PA_FILE_TEMPLATE t
+		<where>
+			<if test="nodeKindId != null and nodeKindId > -1 ">
+				AND NODE_KIND_ID = #{nodeKindId}
+			</if>
+			<if test="parentId != null and parentId > -1 ">
+				AND PARENT_ID = #{parentId}
+			</if>
+			<if test="templateKindId != null and templateKindId > -1 ">
+				AND TEMPLATE_KIND_ID = #{templateKindId}
+			</if>
+			<if test="title != null">
+				AND TITLE like concat(concat('%', #{title}),'%')
+			</if>
+			<if test="fullId != null">
+				AND FULL_ID like concat(#{fullId},'%')
+			</if>
+			<if test="templateKindId != null and templateKindId > 0 ">
+				AND TEMPLATE_KIND_ID = #{templateKindId}
+			</if>
+		</where>
+		ORDER BY ${sortname} ${sortorder}
+		)
+		WHERE RN > (${page}-1)*${pagesize} AND RN &lt;= ${page}*${pagesize}
+
+	</select>
+
+	<select id="getRecordCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT COUNT(0) FROM PA_FILE_TEMPLATE
+		<where>
+			<if test="nodeKindId != null and nodeKindId > -1 ">
+				AND NODE_KIND_ID = #{nodeKindId}
+			</if>
+			<if test="parentId != null and parentId > -1 ">
+				AND PARENT_ID = #{parentId}
+			</if>
+			<if test="templateKindId != null and templateKindId > -1 ">
+				AND TEMPLATE_KIND_ID = #{templateKindId}
+			</if>
+			<if test="title != null">
+				AND TITLE like concat(concat('%', #{title}),'%')
+			</if>
+			<if test="fullId != null">
+				AND FULL_ID like concat(#{fullId},'%')
+			</if>
+			<if test="templateKindId != null and templateKindId > 0 ">
+				AND TEMPLATE_KIND_ID = #{templateKindId}
+			</if>
+		</where>
+	</select>
+
+	<select id="getNextSequence" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT NVL(MAX(SEQUENCE),0) + 1 FROM PA_FILE_TEMPLATE WHERE PARENT_ID =
+		#{parentId} AND TEMPLATE_KIND_ID = #{templateKindId}
+	</select>
+
+</mapper>

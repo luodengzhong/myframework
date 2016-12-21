@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brc.pa.projectdata.mapper.ProjectVariableMapper">
+	<insert id="insert" parameterType="projectVariable">
+		INSERT INTO PA_PROJECT_VARIABLE(PROJECT_VARIABLE_ID, VARIABLE_DEFINE_ID, VARIABLE_VALUE, SEQUENCE, BIZ_KIND_ID,
+		BIZ_ID, VARIABLE_TEXT, PARENT_ID, FULL_ID,
+		UPDATE_TIME, CREATOR_ID, CREATOR_NAME, KIND_ID, VERSION)
+		VALUES(PA_ID_SEQ.nextval,${variableDefineId},
+		#{variableValue,
+		jdbcType=VARCHAR}, ${sequence}, ${bizKindId}, ${bizId}, #{variableText, jdbcType=VARCHAR},${parentId}, #{fullId,
+		jdbcType=VARCHAR}||'/'||PA_ID_SEQ.nextval,
+		#{updateTime,jdbcType=TIMESTAMP}, #{creatorId, jdbcType=VARCHAR}, #{creatorName, jdbcType=VARCHAR},${kindId},
+		PA_VERSION_SEQ.nextval)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO PA_PROJECT_VARIABLE(PROJECT_VARIABLE_ID, VARIABLE_DEFINE_ID, VARIABLE_VALUE, SEQUENCE, BIZ_KIND_ID, BIZ_ID, VARIABLE_TEXT, PARENT_ID,
+		UPDATE_TIME,
+		CREATOR_ID, CREATOR_NAME, KIND_ID,FULL_ID, VERSION)
+		SELECT
+		PA_ID_SEQ.nextval,t.VARIABLE_DEFINE_ID,t.VARIABLE_VALUE,t.SEQUENCE,t.BIZ_KIND_ID,t.BIZ_ID,t.VARIABLE_TEXT,t.PARENT_ID,t.UPDATE_TIME,t.CREATOR_ID,t.CREATOR_NAME,t.KIND_ID,t.FULL_ID||'/'||PA_ID_SEQ.nextval,PA_VERSION_SEQ.nextval
+		FROM (
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			SELECT ${item.variableDefineId} as VARIABLE_DEFINE_ID, #{item.variableValue,
+			jdbcType=VARCHAR} as VARIABLE_VALUE, ${item.sequence} as SEQUENCE, ${item.bizKindId}
+			as BIZ_KIND_ID, ${item.bizId} as BIZ_ID, #{item.variableText,
+			jdbcType=VARCHAR} as VARIABLE_TEXT, ${item.parentId} as PARENT_ID, #{item.updateTime, jdbcType=DATE} as
+			UPDATE_TIME, #{item.creatorId, jdbcType=VARCHAR} as
+			CREATOR_ID, #{item.creatorName, jdbcType=VARCHAR} as CREATOR_NAME,${item.kindId} as KIND_ID,#{item.fullId,jdbcType=VARCHAR} as FULL_ID FROM DUAL
+		</foreach>
+		) t
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM PA_PROJECT_VARIABLE WHERE PROJECT_VARIABLE_ID = #{projectVariableId}
+	</delete>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		DELETE FROM PA_PROJECT_VARIABLE WHERE PROJECT_VARIABLE_ID IN
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<update id="update" parameterType="projectVariable">
+		UPDATE PA_PROJECT_VARIABLE
+		<set>
+			<if test="variableDefineId != null">
+				VARIABLE_DEFINE_ID=${variableDefineId},
+			</if>
+			<if test="variableValue != null">
+				VARIABLE_VALUE=#{variableValue, jdbcType=VARCHAR},
+			</if>
+			<if test="sequence != null">
+				SEQUENCE=${sequence},
+			</if>
+			<if test="bizKindId != null">
+				BIZ_KIND_ID=${bizKindId},
+			</if>
+			<if test="bizId != null">
+				BIZ_ID=${bizId},
+			</if>
+			<if test="variableText != null">
+				VARIABLE_TEXT=#{variableText, jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null">
+				PARENT_ID=${parentId},
+			</if>
+			<if test="fullId != null">
+				FULL_ID=#{fullId, jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME=#{updateTime, jdbcType=DATE},
+			</if>
+			<if test="creatorId != null">
+				CREATOR_ID=#{creatorId, jdbcType=VARCHAR},
+			</if>
+			<if test="creatorName != null">
+				CREATOR_NAME=#{creatorName, jdbcType=VARCHAR},
+			</if>
+			<if test="kindId != null">
+				KIND_ID=${kindId},
+			</if>
+		</set>
+		WHERE PROJECT_VARIABLE_ID = #{projectVariableId}
+	</update>
+
+	<update id="updateSequence" parameterType="projectVariable">
+		UPDATE PA_PROJECT_VARIABLE SET SEQUENCE = #{sequence}
+		WHERE PROJECT_VARIABLE_ID = #{projectVariableId}
+	</update>
+
+	<update id="move" parameterType="java.util.Map">
+		UPDATE PA_PROJECT_VARIABLE SET PARENT_ID = ${parentId},FULL_ID = #{fullId} WHERE PROJECT_VARIABLE_ID =
+		${projectVariableId}
+	</update>
+
+	<select id="load" parameterType="java.lang.Long" resultType="projectVariable">
+		SELECT PROJECT_VARIABLE_ID as projectVariableId, VARIABLE_DEFINE_ID as variableDefineId,
+		VARIABLE_VALUE as variableValue, SEQUENCE as sequence, BIZ_KIND_ID as
+		bizKindId, BIZ_ID as bizId, VARIABLE_TEXT as variableText, PARENT_ID as parentId, FULL_ID
+		as fullId, UPDATE_TIME as updateTime, CREATOR_ID as creatorId, CREATOR_NAME as creatorName, KIND_ID as kindId, VERSION as version FROM
+		PA_PROJECT_VARIABLE
+		WHERE
+		PROJECT_VARIABLE_ID=#{projectVariableId}
+	</select>
+
+	<select id="queryAll" parameterType="java.util.Map" resultType="projectVariable">
+		SELECT t.PROJECT_VARIABLE_ID as projectVariableId, t.VARIABLE_DEFINE_ID as variableDefineId, t.VARIABLE_VALUE as variableValue, t.SEQUENCE as sequence,
+		t.BIZ_KIND_ID as bizKindId, t.BIZ_ID as bizId, t.VARIABLE_TEXT as variableText, t.PARENT_ID as parentId, t.FULL_ID as fullId, t.UPDATE_TIME as updateTime,
+		t.CREATOR_ID as creatorId, t.CREATOR_NAME as creatorName, t.KIND_ID as kindId, t.VERSION as version,
+		d.CODE as variableCode, d.NAME as
+		variableName,d.DESCRIPTION as
+		description,d.DATA_SOURCE_CONFIG as dataSourceConfig,
+		d.kind_id as variableKindId
+		FROM PA_PROJECT_VARIABLE t,PA_VARIABLE_DEFINE d
+		<where>
+			t.VARIABLE_DEFINE_ID = d.VARIABLE_DEFINE_ID
+			<if test="projectVariableId != null and projectVariableId > -1 ">
+				AND t.PROJECT_VARIABLE_ID = #{projectVariableId}
+			</if>
+			<if test="variableDefineId != null and variableDefineId > -1 ">
+				AND t.VARIABLE_DEFINE_ID = #{variableDefineId}
+			</if>
+			<if test="bizKindId != null and bizKindId > -1 ">
+				AND t.BIZ_KIND_ID = #{bizKindId}
+			</if>
+			<if test="bizId != null and bizId > -1 ">
+				AND t.BIZ_ID = #{bizId}
+			</if>
+			<if test="variableName != null">
+				AND d.NAME like concat(concat('%',#{variableName}),'%')
+			</if>
+			<if test="variableCode != null">
+				AND d.CODE like concat(concat('%',#{variableCode}),'%')
+			</if>
+			<if test="variableKindId != null and variableKindId>0">
+				AND d.KIND_ID=#{variableKindId}
+			</if>
+			<if test="parentId != null and parentId > -1 ">
+				AND t.PARENT_ID = #{parentId}
+			</if>
+			<if test="fullId != null">
+				AND t.FULL_ID like concat(#{fullId},'%')
+			</if>
+		</where>
+		ORDER BY ${sortname} ${sortorder}
+	</select>
+
+	<select id="queryAllProjectVariableClass" parameterType="java.util.Map" resultType="projectVariable">
+		SELECT t.PROJECT_VARIABLE_ID as projectVariableId, t.VARIABLE_DEFINE_ID as variableDefineId, t.VARIABLE_VALUE as variableValue, t.SEQUENCE as sequence,
+		t.BIZ_KIND_ID as bizKindId, t.BIZ_ID as bizId, t.VARIABLE_TEXT as variableText, t.PARENT_ID as parentId, t.FULL_ID as fullId, t.UPDATE_TIME as updateTime,
+		t.CREATOR_ID as creatorId, t.CREATOR_NAME as creatorName, t.KIND_ID as kindId, t.VERSION as version
+		FROM PA_PROJECT_VARIABLE t
+		<where>
+			<if test="projectVariableId != null and projectVariableId > -1 ">
+				AND t.PROJECT_VARIABLE_ID = #{projectVariableId}
+			</if>
+			<if test="variableDefineId != null and variableDefineId > -1 ">
+				AND t.VARIABLE_DEFINE_ID = #{variableDefineId}
+			</if>
+			<if test="bizKindId != null and bizKindId > -1 ">
+				AND t.BIZ_KIND_ID = #{bizKindId}
+			</if>
+			<if test="bizId != null and bizId > -1 ">
+				AND t.BIZ_ID = #{bizId}
+			</if>
+			<if test="variableName != null">
+				AND d.NAME like concat(concat('%',#{variableName}),'%')
+			</if>
+			<if test="variableCode != null">
+				AND d.CODE like concat(concat('%',#{variableCode}),'%')
+			</if>
+			<if test="parentId != null and parentId > -1 ">
+				AND t.PARENT_ID = #{parentId}
+			</if>
+			<if test="fullId != null">
+				AND t.FULL_ID like concat(#{fullId},'%')
+			</if>
+			<if test="kindId != null and kindId > -1 ">
+				AND t.KIND_ID = #{kindId}
+			</if>
+		</where>
+		ORDER BY t.SEQUENCE ASC
+	</select>
+
+	<select id="slicedQuery" parameterType="java.util.Map" resultType="projectVariable">
+		<!-- SELECT t.PROJECT_VARIABLE_ID as projectVariableId, t.VARIABLE_DEFINE_ID as variableDefineId, t.VARIABLE_VALUE as variableValue, t.SEQUENCE as sequence, t.BIZ_KIND_ID 
+			as bizKindId, t.BIZ_ID as bizId, t.VARIABLE_TEXT as variableText, t.PARENT_ID as parentId, t.FULL_ID as fullId, t.UPDATE_TIME as updateTime, t.CREATOR_ID as creatorId, 
+			t.CREATOR_NAME as creatorName, t.KIND_ID as kindId, t.VERSION as version, d.CODE as variableCode, d.NAME as variableName,d.DESCRIPTION as description,d.DATA_SOURCE_CONFIG 
+			as dataSourceConfig FROM PA_PROJECT_VARIABLE t,PA_VARIABLE_DEFINE d <where> t.VARIABLE_DEFINE_ID = d.VARIABLE_DEFINE_ID <if test="projectVariableId != null and projectVariableId 
+			> -1 "> AND t.PROJECT_VARIABLE_ID = #{projectVariableId} </if> <if test="variableDefineId != null and variableDefineId > -1 "> AND t.VARIABLE_DEFINE_ID = #{variableDefineId} 
+			</if> <if test="bizKindId != null and bizKindId > -1 "> AND t.BIZ_KIND_ID = #{bizKindId} </if> <if test="bizId != null and bizId > -1 "> AND t.BIZ_ID = #{bizId} 
+			</if> <if test="variableName != null"> AND d.NAME like concat(concat('%',#{variableName}),'%') </if> <if test="variableCode != null"> AND d.CODE like concat(concat('%',#{variableCode}),'%') 
+			</if> <if test="parentId != null and parentId > -1 "> AND t.PARENT_ID = #{parentId} </if> <if test="fullId != null"> AND t.FULL_ID like concat(#{fullId},'%') </if> 
+			</where> ORDER BY ${sortname} ${sortorder} OFFSET (${page}-1)*${pagesize} ROWS FETCH NEXT ${pagesize} ROWS ONLY -->
+		SELECT PROJECT_VARIABLE_ID as projectVariableId, VARIABLE_DEFINE_ID as variableDefineId, variableValue, SEQUENCE as sequence, BIZ_KIND_ID as
+		bizKindId, BIZ_ID as bizId, variableText, VERSION as version, PARENT_ID as parentId, FULL_ID as fullId, UPDATE_TIME as updateTime, CREATOR_ID
+		as creatorId, CREATOR_NAME as creatorName, KIND_ID as kindId,variableCode,variableName,DESCRIPTION as description,DATA_SOURCE_CONFIG as
+		dataSourceConfig
+		FROM (select t.PROJECT_VARIABLE_ID, t.VARIABLE_DEFINE_ID, t.VARIABLE_VALUE as variableValue, t.SEQUENCE, t.BIZ_KIND_ID, t.BIZ_ID, t.VARIABLE_TEXT as variableText, t.VERSION, t.PARENT_ID, t.FULL_ID, t.UPDATE_TIME, t.CREATOR_ID, t.CREATOR_NAME, t.KIND_ID,d.CODE as variableCode, d.NAME as variableName,d.DESCRIPTION ,d.DATA_SOURCE_CONFIG,'' as EXECUTIONNODE ,ROWNUM RN FROM PA_PROJECT_VARIABLE t,PA_VARIABLE_DEFINE d
+		<where>
+			t.VARIABLE_DEFINE_ID = d.VARIABLE_DEFINE_ID
+			<if test="projectVariableId != null and projectVariableId > -1 ">
+				AND t.PROJECT_VARIABLE_ID = #{projectVariableId}
+			</if>
+			<if test="variableDefineId != null and variableDefineId > -1 ">
+				AND t.VARIABLE_DEFINE_ID = #{variableDefineId}
+			</if>
+			<if test="bizKindId != null and bizKindId > -1 ">
+				AND t.BIZ_KIND_ID = #{bizKindId}
+			</if>
+			<if test="bizId != null and bizId > -1 ">
+				AND t.BIZ_ID = #{bizId}
+			</if>
+			<if test="variableName != null">
+				AND d.NAME like concat(concat('%',#{variableName}),'%')
+			</if>
+			<if test="variableCode != null">
+				AND d.CODE like concat(concat('%',#{variableCode}),'%')
+			</if>
+			<if test="parentId != null and parentId > -1 ">
+				AND t.PARENT_ID = #{parentId}
+			</if>
+			<if test="fullId != null">
+				AND t.FULL_ID like concat(#{fullId},'%')
+			</if>
+		</where>
+		ORDER BY ${sortname} ${sortorder}
+		)
+		WHERE RN > (${page}-1)*${pagesize} AND RN &lt;= ${page}*${pagesize}
+
+	</select>
+
+	<select id="getRecordCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT COUNT(0) FROM PA_PROJECT_VARIABLE t,PA_VARIABLE_DEFINE d
+		<where>
+			t.VARIABLE_DEFINE_ID = d.VARIABLE_DEFINE_ID
+			<if test="projectVariableId != null and projectVariableId > -1 ">
+				AND t.PROJECT_VARIABLE_ID = #{projectVariableId}
+			</if>
+			<if test="variableDefineId != null and variableDefineId > -1 ">
+				AND t.VARIABLE_DEFINE_ID = #{variableDefineId}
+			</if>
+			<if test="bizKindId != null and bizKindId > -1 ">
+				AND t.BIZ_KIND_ID = #{bizKindId}
+			</if>
+			<if test="bizId != null and bizId > -1 ">
+				AND t.BIZ_ID = #{bizId}
+			</if>
+			<if test="variableName != null">
+				AND d.NAME like concat(concat('%',#{variableName}),'%')
+			</if>
+			<if test="variableCode != null">
+				AND d.CODE like concat(concat('%',#{variableCode}),'%')
+			</if>
+			<if test="parentId != null and parentId > -1 ">
+				AND t.PARENT_ID = #{parentId}
+			</if>
+			<if test="fullId != null">
+				AND t.FULL_ID like concat(#{fullId},'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="getClassRecordCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT COUNT(0) FROM PA_PROJECT_VARIABLE t
+		<where>
+			<if test="projectVariableId != null and projectVariableId > -1 ">
+				AND t.PROJECT_VARIABLE_ID = #{projectVariableId}
+			</if>
+			<if test="variableDefineId != null and variableDefineId > -1 ">
+				AND t.VARIABLE_DEFINE_ID = #{variableDefineId}
+			</if>
+			<if test="bizKindId != null and bizKindId > -1 ">
+				AND t.BIZ_KIND_ID = #{bizKindId}
+			</if>
+			<if test="bizId != null and bizId > -1 ">
+				AND t.BIZ_ID = #{bizId}
+			</if>
+			<if test="parentId != null and parentId > -1 ">
+				AND t.PARENT_ID = #{parentId}
+			</if>
+			<if test="fullId != null">
+				AND t.FULL_ID like concat(#{fullId},'%')
+			</if>
+			<if test="kindId != null and kindId > -1 ">
+				AND t.KIND_ID = #{kindId}
+			</if>
+		</where>
+	</select>
+
+	<select id="getNextSequence" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT NVL(MAX(SEQUENCE),0) + 1 FROM PA_PROJECT_VARIABLE WHERE BIZ_ID = ${bizId}
+		AND BIZ_KIND_ID=${bizKindId}
+	</select>
+
+	<select id="getClassNextSequence" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT NVL(MAX(SEQUENCE),0) + 1 FROM PA_PROJECT_VARIABLE WHERE BIZ_ID =
+		${bizId}
+		AND BIZ_KIND_ID=${bizKindId} AND PARENT_ID=${parentId}
+	</select>
+
+</mapper>

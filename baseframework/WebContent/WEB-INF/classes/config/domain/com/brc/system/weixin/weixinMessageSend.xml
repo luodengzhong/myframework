@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain>
+
+	<entity name="weixinMessageSend" label="微信消息发送记录" table="SYS_WEIXIN_MESSAGE_SEND">
+		<id column="WEIXIN_MESSAGE_SEND_ID" name="weixinMessageSendId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="ORGAN_ID" name="organId" type="java.lang.String" length="64" required="false" label="公司ID" default-expr="currentOrgId()" fill-kind="both"/>
+		<property column="ORGAN_NAME" name="organName" type="java.lang.String" length="64" required="false" label="公司名称" default-expr="currentOrgName()" fill-kind="both"/>
+		<property column="FILLIN_DATE" name="fillinDate" type="java.util.Date" length="7" required="false" label="填表日期" default-expr="currentDateTime()" fill-kind="both"/>
+		<property column="BILL_CODE" name="billCode" type="java.lang.String" length="32" required="false" label="单据号码" default-expr="getSerialNumber('auditReport')" fill-kind="both"/>
+		<property column="DEPT_ID" name="deptId" type="java.lang.String" length="64" required="false" label="部门ID" default-expr="currentDeptId()" fill-kind="both"/>
+		<property column="DEPT_NAME" name="deptName" type="java.lang.String" length="64" required="false" label="部门" default-expr="currentDeptName()" fill-kind="both"/>
+		<property column="POSITION_ID" name="positionId" type="java.lang.String" length="64" required="false" label="职务ID" default-expr="currentPositionId()" fill-kind="both"/>
+		<property column="POSITION_NAME" name="positionName" type="java.lang.String" length="64" required="false" label="职务" default-expr="currentPositionName()" fill-kind="both"/>
+		<property column="PERSON_MEMBER_ID" name="personMemberId" type="java.lang.String" length="65" required="false" label="人员ID" default-expr="currentPersonMemberId()" fill-kind="both"/>
+		<property column="PERSON_MEMBER_NAME" name="personMemberName" type="java.lang.String" length="32" required="false" label="姓名" default-expr="currentPersonMemberName()" fill-kind="both"/>
+		<property column="FULL_ID" name="fullId" type="java.lang.String" length="1024" required="false" label="FULL_ID" default-expr="currentFullId()" fill-kind="both"/>
+		<property column="STATUS" name="status" type="java.lang.Integer" length="1" required="false" label="状态" update="false" default-expr="0" fill-kind="insert"/>
+		<property column="WEIXIN_MESSAGE_KIND_ID" name="weixinMessageKindId" type="java.lang.Long" length="22" required="false" label="消息类别"/>
+		<property column="WEIXIN_MESSAGE_KIND_NAME" name="weixinMessageKindName" type="java.lang.String" length="16" required="false" label="发送类别名称" insert="false" update="false">
+			select t.name from sys_weixin_message_kind t where t.weixin_message_kind_id=weixinMessageSend.weixin_message_kind_id
+		</property>
+		<property column="MSG_TYPE" name="msgType" type="java.lang.String" length="16" required="false" label="发送类别"/>
+		<property column="TITLE" name="title" type="java.lang.String" length="256" required="false" label="标题"/>
+		<property column="DESCRIPTION" name="description" type="java.lang.String" length="512" required="false" label="消息内容"/>
+		<property column="LINK_URL" name="linkUrl" type="java.lang.String" length="256" required="false" label="url"/>
+		<property column="SEND_DATE" name="sendDate" type="java.util.Date" length="7" required="false" label="发送时间" update="false"/>
+		<condition column="BILL_CODE" name="billCode" symbol="like" />
+		<condition column="FILLIN_DATE" name="fillinBeginDate" symbol="&gt;="  type="java.util.Date" />
+		<condition column="FILLIN_DATE" name="fillinEndDate" symbol="&lt;="  type="java.util.Date" />
+		<condition column="full_id" name="fullId" symbol="like"/>
+		<condition column="STATUS" name="status" symbol="="/>
+		<condition column="title" name="title" symbol="like"/>
+		<condition column="PERSON_MEMBER_NAME" name="personMemberName" symbol="like" />
+		<condition column="toUser" name="toUser" symbol="like">
+			and exists (select 0 from sys_weixin_message_send_detail a where a.weixin_message_send_id=weixinMessageSend.weixin_message_send_id and a.org_unit_name like :toUser)
+		</condition>
+		<condition column="SEND_DATE" name="sendBeginDate" symbol="&gt;="  type="java.util.Date" />
+		<condition column="SEND_DATE" name="sendEndDate" symbol="&lt;="  type="java.util.Date" />
+	</entity>
+
+	<entity name="weixinMessageSendDetail" label="微信消息发送明细" table="SYS_WEIXIN_MESSAGE_SEND_DETAIL">
+		<id column="WEIXIN_MESSAGE_SEND_DETAIL_ID" name="weixinMessageSendDetailId" type="java.lang.Long" length="22" sequence="SEQ_ID"/>
+		<property column="WEIXIN_MESSAGE_SEND_ID" name="weixinMessageSendId" type="java.lang.Long" length="22" required="true" label=""/>
+		<property column="ORG_UNIT_ID" name="orgUnitId" type="java.lang.String" length="65" required="false" label=""/>
+		<property column="ORG_UNIT_NAME" name="orgUnitName" type="java.lang.String" length="64" required="false" label=""/>
+		<property column="IS_SUCCESS" name="isSuccess" type="java.lang.Integer" length="1" required="false" label=""/>
+		<property column="ORG_KIND_ID" name="orgKindId" type="java.lang.String" length="16" required="false" label=""/>
+		<sql name="insertBySendId">
+			insert into sys_weixin_message_send_detail
+				  (weixin_message_send_detail_id,
+				   weixin_message_send_id,
+				   org_unit_id,
+				   org_unit_name,
+				   is_success,
+				   org_kind_id)
+				  select seq_id.nextval,
+				         ?,
+				         org_unit_id,
+				         org_unit_name,
+				         is_success,
+				         org_kind_id
+				    from sys_weixin_message_send_detail
+				   where weixin_message_send_id = ?
+		</sql>
+		<sql name="queryByBizId">
+			select t.weixin_message_send_detail_id,
+			       t.org_unit_id,
+			       t.org_unit_id as id,
+			       t.org_unit_name,
+			       t.org_unit_name as name,
+			       t.org_kind_id,
+			       o.full_id,
+			       (select count(0) from syn_weixin_record s where substr(t.org_unit_id, 1, INSTR(t.org_unit_id, '@') - 1) = s.id) as status,
+			       nvl(o.full_name, t.org_unit_name) as full_name,
+			       nvl(o.full_sequence, '/000') as full_sequence
+			  from sys_weixin_message_send_detail t, sa_oporg o
+			 where t.org_unit_id = o.id
+			   and t.weixin_message_send_id = ?
+			 order by nvl(o.full_sequence, '/000') asc
+		</sql>
+		<!--查询接收人微信ID-->
+		<sql name="querySendWeixinId">
+			select t.org_unit_id, t.org_kind_id, s.weixin_id
+			  from sys_weixin_message_send_detail t, syn_weixin_record s
+			 where substr(t.org_unit_id, 1, INSTR(t.org_unit_id, '@') - 1) = s.id
+			 and t.weixin_message_send_id=?
+		</sql>
+	</entity>
+
+
+</domain>

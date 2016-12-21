@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brc.pa.projectmanage.mapper.AttachmentMapper">
+	<insert id="insert" parameterType="attachment">
+		INSERT INTO SYS_ATTACHMENT(ID, BIZ_CODE, BIZ_ID, PATH, FILE_NAME, FILE_SIZE, FILE_KIND, REMARK, CREATOR_ID, CREATE_DATE, CREATOR_NAME, ATTACHMENT_CODE)
+		VALUES(PA_ID_SEQ.nextval,#{bizCode, jdbcType=VARCHAR}, ${bizId}, #{path, jdbcType=VARCHAR}, #{fileName, jdbcType=VARCHAR}, #{fileSize, jdbcType=VARCHAR},
+		#{fileKind, jdbcType=VARCHAR}, #{remark, jdbcType=VARCHAR}, #{creatorId, jdbcType=VARCHAR}, #{createDate, jdbcType=VARCHAR}, #{creatorName, jdbcType=VARCHAR},
+		#{attachmentCode, jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO SYS_ATTACHMENT(ID, BIZ_CODE, BIZ_ID, PATH, FILE_NAME, FILE_SIZE, FILE_KIND, REMARK, CREATOR_ID,
+		CREATE_DATE, CREATOR_NAME, ATTACHMENT_CODE)
+		SELECT PA_ID_SEQ.nextval,t.*,PA_VERSION_SEQ.nextval FROM (
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			SELECT #{item.bizCode, jdbcType=VARCHAR} as BIZ_CODE, ${item.bizId} as BIZ_ID,
+			#{item.path, jdbcType=VARCHAR} as PATH, #{item.fileName, jdbcType=VARCHAR} as FILE_NAME,
+			#{item.fileSize, jdbcType=VARCHAR} as FILE_SIZE, #{item.fileKind, jdbcType=VARCHAR} as FILE_KIND,
+			#{item.remark, jdbcType=VARCHAR} as REMARK, #{item.creatorId, jdbcType=VARCHAR} as CREATOR_ID,
+			#{item.createDate, jdbcType=VARCHAR} as CREATE_DATE, #{item.creatorName, jdbcType=VARCHAR} as CREATOR_NAME,
+			#{item.attachmentCode, jdbcType=VARCHAR} as ATTACHMENT_CODE FROM DUAL
+		</foreach>
+		) t
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM SYS_ATTACHMENT WHERE ID = #{id}
+	</delete>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		DELETE FROM SYS_ATTACHMENT WHERE ID IN
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<update id="update" parameterType="attachment">
+		UPDATE SYS_ATTACHMENT
+		<set>
+			<if test="bizCode != null">
+				BIZ_CODE=#{bizCode, jdbcType=VARCHAR},
+			</if>
+			<if test="bizId != null">
+				BIZ_ID=${bizId},
+			</if>
+			<if test="path != null">
+				PATH=#{path, jdbcType=VARCHAR},
+			</if>
+			<if test="fileName != null">
+				FILE_NAME=#{fileName, jdbcType=VARCHAR},
+			</if>
+			<if test="fileSize != null">
+				FILE_SIZE=#{fileSize, jdbcType=VARCHAR},
+			</if>
+			<if test="fileKind != null">
+				FILE_KIND=#{fileKind, jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				REMARK=#{remark, jdbcType=VARCHAR},
+			</if>
+			<if test="creatorId != null">
+				CREATOR_ID=#{creatorId, jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE=#{createDate, jdbcType=VARCHAR},
+			</if>
+			<if test="creatorName != null">
+				CREATOR_NAME=#{creatorName, jdbcType=VARCHAR},
+			</if>
+			<if test="attachmentCode != null">
+				ATTACHMENT_CODE=#{attachmentCode, jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE ID = #{id}
+	</update>
+
+	<update id="updateSequence" parameterType="attachment">
+		UPDATE SYS_ATTACHMENT SET SEQUENCE = #{sequence}
+		WHERE ID = #{id}
+	</update>
+
+	<update id="move" parameterType="java.util.Map">
+		UPDATE SYS_ATTACHMENT SET PARENT_ID = ${parentId},FULL_ID = #{fullId} WHERE ID = ${id}
+	</update>
+
+	<select id="load" parameterType="java.lang.Long" resultType="attachment">
+		SELECT ID as id, BIZ_CODE as bizCode, BIZ_ID as bizId, PATH as path, FILE_NAME as fileName, FILE_SIZE as fileSize, FILE_KIND as fileKind, REMARK as remark,
+		CREATOR_ID as creatorId, CREATE_DATE as createDate, CREATOR_NAME as creatorName, ATTACHMENT_CODE as attachmentCode FROM SYS_ATTACHMENT WHERE ID=#{id}
+	</select>
+
+	<select id="queryAll" parameterType="java.util.Map" resultType="attachment">
+		SELECT ID as id, BIZ_CODE as bizCode, BIZ_ID as bizId, PATH as path, FILE_NAME as fileName, FILE_SIZE as
+		fileSize, FILE_KIND as fileKind, REMARK as remark, CREATOR_ID as creatorId, CREATE_DATE as createDate,
+		CREATOR_NAME as creatorName, ATTACHMENT_CODE as attachmentCode FROM SYS_ATTACHMENT
+		<where>
+			<if test="bizCode != null">
+				AND BIZ_CODE = #{bizCode}
+			</if>
+			<if test="bizId != null and bizId > -1 ">
+				AND BIZ_ID = #{bizId}
+			</if>
+			<if test="attachmentCode != null">
+				AND ATTACHMENT_CODE = #{attachmentCode}
+			</if>
+		</where>
+		ORDER BY CREATE_DATE DESC
+	</select>
+
+	<select id="queryAllDocumentForArchive" parameterType="java.util.Map" resultType="attachment">
+		SELECT t.id as id,t.biz_code as code,t.biz_id as bizId,t.path as path ,t.file_name as fileName,t.file_size as
+		fileSize, t.file_kind as fileKind,t.remark as remark,t.creator_id as creatorId,t.create_date as createDate,
+		t.creator_name as creatorName,t.attachment_code as attachmentCode,t1.document_classification_id as documentClassificationId,
+		t2.name as nodeName,t2.full_id as fullId,t2.biz_id as projectId,t1.biz_id as projectNodeId,t.biz_code as bizCode FROM sys_attachment t ,pa_node_document t1,
+		pa_project_node t2
+		<where>
+			t.biz_code=to_char(t1.biz_id) and t.ATTACHMENT_CODE=to_char(t1.node_document_id) and t1.biz_id = t2.project_node_id
+			<if test="projectId != null and projectId > 0">
+				AND t2.biz_id like concat(concat('%',#{projectId}),'%')
+			</if>
+			<if test="nodeName != null">
+				AND t2.name like concat(concat('%',#{nodeName}),'%')
+			</if>
+			<if test="fileName != null">
+				AND t.file_name like concat(concat('%',#{fileName}),'%')
+			</if>
+			<if test="fullId != null">
+				AND t2.full_id like concat(concat('%',#{fullId}),'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="slicedQuery" parameterType="java.util.Map" resultType="attachment">
+		<!-- SELECT ID as id, BIZ_CODE as bizCode, BIZ_ID as bizId, PATH as path, FILE_NAME as fileName, FILE_SIZE as fileSize, FILE_KIND as fileKind, REMARK as remark, 
+			CREATOR_ID as creatorId, CREATE_DATE as createDate, CREATOR_NAME as creatorName, ATTACHMENT_CODE as attachmentCode FROM SYS_ATTACHMENT <where> <if test="bizCode 
+			!= null"> AND BIZ_CODE = #{bizCode} </if> <if test="bizId != null and bizId > -1 "> AND BIZ_ID = #{bizId} </if> </where> ORDER BY ${sortname} ${sortorder} OFFSET 
+			(${page}-1)*${pagesize} ROWS FETCH NEXT ${pagesize} ROWS ONLY -->
+		SELECT ID as id, BIZ_CODE as bizCode, BIZ_ID as bizId, PATH as path, FILE_NAME as fileName, FILE_SIZE as
+		fileSize, FILE_KIND as fileKind, REMARK as remark, CREATOR_ID as creatorId, CREATE_DATE as createDate,
+		CREATOR_NAME as creatorName, ATTACHMENT_CODE as attachmentCode
+		FROM (select t.*,ROWNUM RN from (select t.* FROM SYS_ATTACHMENT t
+		<where>
+			<if test="bizCode != null">
+				AND BIZ_CODE = #{bizCode}
+			</if>
+			<if test="bizId != null and bizId > -1 ">
+				AND BIZ_ID = #{bizId}
+			</if>
+			<if test="attachmentCode != null">
+				AND ATTACHMENT_CODE = #{attachmentCode}
+			</if>
+		</where>
+		ORDER BY t.${sortname} ${sortorder}
+		) t )
+		WHERE RN > (${page}-1)*${pagesize} AND RN &lt;= ${page}*${pagesize}
+	</select>
+
+	<select id="getRecordCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT COUNT(0) FROM SYS_ATTACHMENT
+		<where>
+			<if test="bizCode != null">
+				AND BIZ_CODE = #{bizCode}
+			</if>
+			<if test="bizId != null and bizId > -1 ">
+				AND BIZ_ID = #{bizId}
+			</if>
+			<if test="attachmentCode != null">
+				AND ATTACHMENT_CODE = #{attachmentCode}
+			</if>
+		</where>
+	</select>
+
+	<select id="getNextSequence" parameterType="java.util.Map" resultType="java.lang.Long">
+		SELECT NVL(MAX(SEQUENCE),0) + 1 FROM SYS_ATTACHMENT WHERE PARENT_ID = #{parentId}
+	</select>
+
+</mapper>

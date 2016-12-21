@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<easy-search-mapping>
+	
+	<query-scheme name="queryPetitionerByRoomId" desc="根据房间查询以前的接待记录">
+		<sql>
+		 select t.bill_code,
+			       t.petitioner,
+			       t.csm_relation_kind,
+			       t.petitioner_link_info,
+			       t.petitioner_phone,
+			       t.reception_record_id
+			  from csm_reception_record t
+			 where t.room_id = :roomId
+		</sql>
+		<orderby>reception_record_id desc</orderby>
+		<field name="reception_record_id" code="receptionRecordId" type='hidden'/>
+		<field name="csm_relation_kind" code="csmRelationKind" type='hidden'/>
+		<field name="服务请求人" code="petitioner"  width="120"/>
+		<field name="与业主关系" code="csmRelationKindTextView"  width="80" type="dictionary"/>
+		<field name="联系电话" code="petitionerLinkInfo" width="120"/>
+		<field name="联系手机" code="petitionerPhone" width="120"/>
+    </query-scheme>
+    
+    <query-scheme name="queryReceptionRecordUnvisit" desc="查询不用回访的客户接待记录" sqlBeanName="receptionUnvisitService">
+		<sql>
+		select t.reception_record_id,
+		       t.fillin_date,
+		       t.bill_code,
+		       t.person_member_name,
+		       t.status,
+		       t.complain_obj_name,
+		       t.room_name,
+		       t.client_name,
+		       t.petitioner,
+		       t.reception_person_name,
+		       t.reception_date,
+		       t.reception_source,
+		       t.subject,
+		       t.visit_status,
+		       t.close_kind,
+		       t.close_date,
+		       t.visit_remark,
+		       m.full_id
+		  from csm_reception_record t, v_md_project_resources m
+		 where t.complain_obj_id = m.id
+		   and t.status = 4
+		   and t.visit_status = 1
+		   and not exists (select 0
+				          from csm_reception_unvisit_detail p
+				         where t.reception_record_id = p.reception_record_id
+				           and p.reception_unvisit_audit_id = :receptionUnvisitAuditId)
+		</sql>
+		<orderby>reception_date asc</orderby>
+		<field name="reception_record_id" code="receptionRecordId" type='hidden'/>
+		<field name="接待时间" code="receptionDate"  width="100" type="date"/>
+		<field name="接待人" code="receptionPersonName"  width="80"/>
+		<field name="单据编号" code="billCode" width="120"/>
+		<field name="投诉对象" code="complainObjName" width="220"/>
+		<field name="房产" code="roomName" width="220"/>
+		<field name="服务请求人" code="petitioner" width="80"/>
+		<field name="请求来源" code="receptionSource" width="80" type="dictionary"/>
+		<field name="标题" code="subject" width="180"/>
+		<field name="关闭类型" code="closeKindTextView" width="80"  type="dictionary"/>
+		<field name="关闭时间" code="closeDate" width="80" type="date"/>
+		<field name="回访说明" code="visitRemark" width="180"/>
+    </query-scheme>
+    
+</easy-search-mapping>

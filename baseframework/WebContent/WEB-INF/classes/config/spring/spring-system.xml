@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- dao -->
+    <bean id="entityParserDao" class="com.brc.system.data.impl.EntitySqlExecutorDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="sqlBuilder" ref="sqlBuilder"/>
+        <property name="lobHandler" ref="lobHandler"/>
+    </bean>
+    <!-- Util -->
+    <bean id="sqlBuilder" class="com.brc.model.domain.parse.impl.SQLBuilderImpl"/>
+    <bean id="domainManager" class="com.brc.model.domain.DomainManager"/>
+    <bean id="serviceUtil" class="com.brc.system.share.service.impl.ServiceUtilImpl">
+        <property name="domainManager" ref="domainManager"/>
+        <property name="entityParserDao" ref="entityParserDao"/>
+        <property name="sqlQuery" ref="sqlQuery"/>
+        <property name="serialNumber" ref="serialNumber"/>
+    </bean>
+    <!-- Interceptor -->
+    <bean id="executeContextInterceptor" class="com.brc.system.intercept.ExecuteContextInterceptor">
+        <property name="getPermission" ref="getPermission"/>
+        <property name="sysLogService" ref="sysLogService"/>
+        <property name="includes">
+            <list>
+                <value>.*Action!.*</value>
+            </list>
+        </property>
+    </bean>
+    <!-- Sercive -->
+    <bean id="sqlQuery" class="com.brc.system.share.service.impl.SQLQueryImpl">
+        <property name="jdbcDao" ref="jdbcDao"/>
+        <property name="getPermission" ref="getPermission"/>
+    </bean>
+    <bean id="easySearchService" class="com.brc.system.share.service.impl.EasySearchServiceImp">
+        <property name="jdbcDao" ref="jdbcDao"/>
+        <property name="sqlQuery" ref="sqlQuery"/>
+        <property name="getPermission" ref="getPermission"/>
+    </bean>
+    <bean id="extendedFieldService" class="com.brc.system.extendedfield.service.impl.ExtendedFieldServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+    </bean>
+    <bean id="parameterService" class="com.brc.system.parameter.service.impl.ParameterServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+    </bean>
+    <bean id="sysDictionaryService" class="com.brc.system.dictionary.service.impl.SysDictionaryServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+    </bean>
+    <bean id="configurationService" class="com.brc.system.configuration.impl.ConfigurationServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+    </bean>
+    <bean id="operationMapService" class="com.brc.system.configuration.impl.OperationMapServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+    </bean>
+    <bean id="workTableService" class="com.brc.system.share.service.impl.WorkTableServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+    </bean>
+    <bean id="attachmentService" class="com.brc.system.attachment.service.impl.AttachmentServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+    </bean>
+     <bean id="webUploaderService" class="com.brc.system.attachment.service.impl.WebUploaderServiceImpl">
+        <property name="attachmentService" ref="attachmentService"/>
+    </bean>
+    <bean id="treeViewService" class="com.brc.system.share.service.impl.TreeViewServiceImpl">
+        <property name="jdbcDao" ref="jdbcDao"/>
+        <property name="getPermission" ref="getPermission"/>
+    </bean>
+    <bean id="personOwnService" class="com.brc.system.person.service.impl.PersonOwnServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+        <property name="erpJDBCDao" ref="erpJDBCDao"/>
+        <property name="pageSize" value="50"/>
+    </bean>
+    <bean id="impExcelService" class="com.brc.system.imp.service.impl.ImpExcelServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+    </bean>
+    <bean id="messageRemindService" class="com.brc.system.remind.service.impl.MessageRemindServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+    </bean>
+    <bean id="suggestionBoxService" class="com.brc.system.person.service.impl.SuggestionBoxServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+    </bean>
+    <bean id="aboutService" class="com.brc.system.about.service.impl.AboutServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+    </bean>
+    <bean id="contactService" class="com.brc.system.contact.service.impl.ContactServiceImpl">
+        <property name="serviceUtil" ref="serviceUtil"/>
+    </bean>
+    <!-- action -->
+    <bean id="configurationAction" scope="prototype" class="com.brc.system.configuration.action.ConfigurationAction">
+        <property name="configurationService" ref="configurationService"/>
+    </bean>
+    <bean id="operationMapAction" scope="prototype" class="com.brc.system.configuration.action.OperationMapAction">
+        <property name="operationMapService" ref="operationMapService"/>
+    </bean>
+    <bean id="easySearchAction" class="com.brc.client.action.EasySearchAction" scope="prototype">
+        <property name="easySearchManager" ref="easySearchManager"/>
+        <property name="easySearchService" ref="easySearchService"/>
+    </bean>
+    <bean id="twoDimensionCode" class="com.brc.client.action.TwoDimensionCodeAction" scope="prototype"/>
+    <bean id="extendedFieldAction" class="com.brc.system.extendedfield.action.ExtendedFieldAction" scope="prototype">
+        <property name="extendedFieldService" ref="extendedFieldService"/>
+    </bean>
+    <bean id="parameterAction" class="com.brc.system.parameter.action.ParameterAction" scope="prototype">
+        <property name="parameterService" ref="parameterService"/>
+    </bean>
+    <bean id="sysDictionaryAction" class="com.brc.system.dictionary.action.SysDictionaryAction" scope="prototype">
+        <property name="sysDictionaryService" ref="sysDictionaryService"/>
+    </bean>
+    <bean id="workTableAction" class="com.brc.client.action.WorkTableAction" scope="prototype">
+        <property name="service" ref="workTableService"/>
+    </bean>
+    <bean id="attachmentAction" class="com.brc.system.attachment.action.AttachmentAction" scope="prototype">
+        <property name="service" ref="attachmentService"/>
+    </bean>
+     <bean id="webUploadAction" class="com.brc.system.attachment.action.WebUploadAction" scope="prototype">
+        <property name="webUploaderService" ref="webUploaderService"/>
+    </bean>
+    <bean id="treeViewAction" class="com.brc.client.action.TreeViewAction" scope="prototype">
+        <property name="configPath" value="config/content/tree_view_config.xml"/>
+        <property name="treeViewManager" ref="treeViewManager"/>
+        <property name="treeViewService" ref="treeViewService"/>
+    </bean>
+    <bean id="personOwnAction" class="com.brc.system.person.action.PersonOwnAction" scope="prototype">
+        <property name="personOwnService" ref="personOwnService"/>
+        <property name="orgService" ref="orgService"/>
+        <property name="hrArchivesService" ref="hrArchivesService"/>
+    </bean>
+    <bean id="impExcelAction" scope="prototype" class="com.brc.system.imp.action.ImpExcelAction">
+        <property name="impExcelService" ref="impExcelService"/>
+    </bean>
+    <bean id="messageRemindAction" scope="prototype" class="com.brc.system.remind.action.MessageRemindAction">
+        <property name="messageRemindService" ref="messageRemindService"/>
+    </bean>
+    <bean id="suggestionBoxAction" scope="prototype" class="com.brc.system.person.action.SuggestionBoxAction">
+        <property name="suggestionBoxService" ref="suggestionBoxService"/>
+    </bean>
+    <bean id="aboutAction" scope="prototype" class="com.brc.system.about.action.AboutAction">
+        <property name="aboutService" ref="aboutService"/>
+    </bean>
+    <bean id="homePageAction" scope="prototype" class="com.brc.client.action.HomePageAction">
+<!--         <property name="workflowService" ref="workflowService"/> -->
+        <property name="authenticationService" ref="authenticationService"/>
+        <property name="messageRemindService" ref="messageRemindService"/>
+<!--         <property name="infoPromulgateService" ref="oaInfoService"/> -->
+<!--         <property name="planTaskQueryService" ref="planTaskManagerService"/> -->
+        <property name="homePageService" ref="homePageService"/>
+    </bean>
+    <bean id="contactAction" class="com.brc.system.contact.action.ContactAction">
+        <property name="contactService" ref="contactService"/>
+    </bean>
+    <bean id="homePageService" class="com.brc.client.service.impl.HomePageServiceImpl">
+<!--         <property name="amsJDBCDaoImpl" ref="amsJDBCDao"/> -->
+<!--         <property name="erpJDBCDaoImpl" ref="erpJDBCDao"/> -->
+<!--         <property name="whJDBCTemplate" ref="whJDBCTemplate"/> -->
+        <property name="orgService" ref="orgService"/>
+        <property name="orgFun" ref="orgFun"/>
+    </bean>
+    <!--使用Memcached管理session中的用户信息-->
+    <bean class="com.brc.client.session.SessionMemcachedImpl" id="sessionCache" scope="singleton">
+    	<property name="cache" ref="xMemcachedClient"/>
+	</bean> 
+	<!--RTX相关-->
+<!-- 	<bean id="rtxService" class="com.brc.system.rtx.service.impl.RTXServiceImpl"> -->
+<!-- 		<property name="serviceUtil" ref="serviceUtil"/> -->
+<!-- 	</bean> -->
+<!-- 	 <bean id="rtxAction" class="com.brc.system.rtx.action.RTXAction" scope="prototype"> -->
+<!--         <property name="rtxService" ref="rtxService"/> -->
+<!--         <property name="workflowService" ref="workflowService"/> -->
+<!--         <property name="infoPromulgateService" ref="oaInfoService"/> -->
+<!--         <property name="authenticationService" ref="authenticationService"/> -->
+<!--     </bean> -->
+    
+    <!--  微信 -->
+<!--     <bean id="wxCpInMemoryConfigStorage" class="me.chanjar.weixin.cp.api.WxCpInMemoryConfigStorage"> -->
+<!--         <property name="corpId" value="${weixin.corpId}"/> -->
+<!--         <property name="corpSecret" value="${weixin.corpSecret}"/> -->
+<!--         <property name="agentId" value="${weixin.agentId}"/> -->
+<!--     </bean> -->
+
+<!--     <bean id="wxCpService" class="me.chanjar.weixin.cp.api.WxCpServiceImpl"> -->
+<!--           <property name="wxCpConfigStorage" ref="wxCpInMemoryConfigStorage"/> -->
+<!--     </bean> -->
+    
+<!--     <bean id="wxCpInMemoryConfigStorageForReport" class="me.chanjar.weixin.cp.api.WxCpInMemoryConfigStorage"> -->
+<!--         <property name="corpId" value="${weixin.corpId}"/> -->
+<!--         <property name="corpSecret" value="${weixin.corpSecretForReport}"/> -->
+<!--         <property name="agentId" value="${weixin.agentIdForReport}"/> -->
+<!--     </bean> -->
+    
+<!--     <bean id="wxCpServiceForReport" class="me.chanjar.weixin.cp.api.WxCpServiceImpl"> -->
+<!--           <property name="wxCpConfigStorage" ref="wxCpInMemoryConfigStorageForReport"/> -->
+<!--     </bean> -->
+    
+<!--     <bean id="weiXinService" class="com.brc.system.weixin.service.impl.WeiXinServiceImpl"> -->
+<!--         <property name="wxCpService" ref="wxCpService"/> -->
+<!--         <property name="wxCpServiceForReport" ref="wxCpServiceForReport"/> -->
+<!--         <property name="serviceUtil" ref="serviceUtil"/> -->
+<!--         <property name="synIdLogService" ref="synIdLogService"/> -->
+<!--         <property name="authenticationService" ref="authenticationService"/> -->
+<!--         <property name="tokenManager" ref="tokenManager"/> -->
+<!--     </bean> -->
+    
+<!--      <bean id="synIdLogService" class="com.brc.system.datasyn.service.impl.SynIdLogServiceImpl"> -->
+<!--         <property name="serviceUtil" ref="serviceUtil"/> -->
+<!--     </bean> -->
+<!--     <bean id="weiXinAction" class="com.brc.system.weixin.action.WeiXinAction" scope ="prototype"> -->
+<!--         <property name="weiXinService" ref="weiXinService"/> -->
+<!--     </bean>  -->
+</beans>
